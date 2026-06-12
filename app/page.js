@@ -1,10 +1,44 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Home() {
   const photoInputRef = useRef(null);
+const [status, setStatus] = useState("");
+const handleQuoteSubmit = async (e) => {
+  e.preventDefault();
 
+  setStatus("sending");
+
+  const form = e.currentTarget;
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch("/api/quote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        name: formData.get("name"),
+        phone: formData.get("phone"),
+        issue: formData.get("issue"),
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      setStatus("success");
+      form.reset();
+    } else {
+      setStatus("error");
+    }
+  } catch (error) {
+    setStatus("error");
+  }
+};
   const openQuoteCamera = () => {
     document.getElementById("quote")?.scrollIntoView({ behavior: "smooth" });
 
@@ -222,20 +256,23 @@ export default function Home() {
           </div>
 
           <div className="bg-white rounded-[32px] p-6 md:p-8">
-            <div className="grid gap-4">
+            <form onSubmit={handleQuoteSubmit} className="grid gap-4">
               <input
+              name="name"
                 type="text"
                 placeholder="Your name"
                 className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none"
               />
 
               <input
+              name="phone"
                 type="text"
                 placeholder="Phone number"
                 className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none"
               />
 
               <textarea
+              name="issue"
                 placeholder="Describe the issue"
                 className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none min-h-[140px]"
               />
@@ -259,10 +296,25 @@ export default function Home() {
                 </p>
               </div>
 
-              <button className="bg-black hover:bg-zinc-800 text-white py-5 rounded-full font-bold text-lg transition">
-                Request Quote
-              </button>
-            </div>
+              <button
+  type="submit"
+  className="bg-black hover:bg-zinc-800 text-white py-5 rounded-full font-bold text-xl"
+>
+  Request Quote
+</button>
+
+{status === "success" && (
+  <div className="bg-green-500 text-white rounded-2xl p-4 text-center font-semibold">
+    Thank you for contacting HandyYet. Your request is being processed.
+  </div>
+)}
+
+{status === "error" && (
+  <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-semibold">
+    Something went wrong. Please try again.
+  </div>
+)}
+            </form>
           </div>
         </div>
       </section>
