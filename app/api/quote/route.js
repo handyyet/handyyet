@@ -7,9 +7,9 @@ export async function POST(req) {
     const body = await req.json();
 
     await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "HandyYet <onboarding@resend.dev>",
 
-      to: "admin@handyyet.com",
+      to: "nikita2808rnd@gmail.com",
 
       subject: "New HandyYet Quote Request",
 
