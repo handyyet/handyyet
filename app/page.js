@@ -4,9 +4,11 @@ export default function Home() {
 
       {/* NAVBAR */}
       <nav className="flex items-center justify-between px-8 py-6 border-b border-white/10">
-        <h1 className="text-2xl font-bold">
-          Handy<span className="text-orange-500">Yet</span>
-        </h1>
+        <img
+  src="/images/logo.png"
+  alt="HandyYet Logo"
+  className="h-28 md:h-32 w-auto"
+/>
 
         <div className="hidden md:flex gap-8 text-sm text-gray-300">
           <a href="#services">Services</a>
@@ -53,7 +55,7 @@ export default function Home() {
 
         <div className="bg-zinc-900 rounded-3xl overflow-hidden border border-white/10">
           <img
-            src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop"
+            src="/images/install shelves and LED lights with wood wall.png"
             alt="Shelving"
             className="w-full h-[550px] object-cover"
           />
@@ -243,11 +245,28 @@ export default function Home() {
                 placeholder="Phone number"
                 className="bg-zinc-100 rounded-2xl px-5 py-4 outline-none"
               />
+<textarea
+  placeholder="Describe the issue"
+  className="bg-zinc-100 rounded-2xl px-5 py-4 outline-none min-h-[140px]"
+/>
 
-              <textarea
-                placeholder="Describe the issue"
-                className="bg-zinc-100 rounded-2xl px-5 py-4 outline-none min-h-[140px]"
-              />
+<div className="space-y-3">
+  <label className="text-sm text-gray-300">
+    Upload photos of the issue
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    capture="environment"
+    multiple
+    className="w-full bg-zinc-900 border border-white/10 rounded-2xl px-4 py-4"
+  />
+
+  <p className="text-xs text-gray-500">
+    Take photos directly from your phone or upload existing images
+  </p>
+</div>
 
               <button className="bg-black hover:bg-zinc-800 text-white py-4 rounded-full font-semibold transition">
                 Request Quote
