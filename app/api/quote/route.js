@@ -34,18 +34,35 @@ ${issue}
     });
 
     // Send photos
-    for (const photo of photos) {
-      if (photo && photo.size > 0) {
-        const photoForm = new FormData();
-
-        photoForm.append("chat_id", chatId);
-        photoForm.append("document", photo, photo.name || "photo.jpg");
-
-await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
   method: "POST",
-  body: photoForm,
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    chat_id: chatId,
+    text: `Photos received: ${photos.length}`,
+  }),
 });
 
+for (const photo of photos) {
+  if (photo && photo.size > 0) {
+    const photoForm = new FormData();
+
+    photoForm.append("chat_id", chatId);
+    photoForm.append("document", photo, photo.name || "photo.jpg");
+
+    const photoRes = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+      method: "POST",
+      body: photoForm,
+    });
+
+    const photoData = await photoRes.json();
+    console.log("PHOTO RESPONSE:", photoData);
+
+    if (!photoData.ok) {
+      throw new Error(photoData.description);
+    }
+  }
+}
     return Response.json({ success: true });
   } catch (error) {
     console.log(error);
