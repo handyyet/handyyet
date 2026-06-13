@@ -48,9 +48,9 @@ for (const photo of photos) {
     const photoForm = new FormData();
 
     photoForm.append("chat_id", chatId);
-    photoForm.append("document", photo, photo.name || "photo.jpg");
+    photoForm.append("photo", photo, photo.name || "photo.jpg");
 
-    const photoRes = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+    const photoRes = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
       method: "POST",
       body: photoForm,
     });

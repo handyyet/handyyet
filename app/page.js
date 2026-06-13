@@ -23,25 +23,28 @@ async function compressImage(file) {
 
     img.onload = () => {
       const canvas = document.createElement("canvas");
-      const maxWidth = 1200;
+
+      const maxWidth = 700;
 
       const scale = Math.min(maxWidth / img.width, 1);
+
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
 
       const ctx = canvas.getContext("2d");
+
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob(
         (blob) => {
           resolve(
-            new File([blob], file.name.replace(/\.\w+$/, ".jpg"), {
+            new File([blob], `photo-${Date.now()}.jpg`, {
               type: "image/jpeg",
             })
           );
         },
         "image/jpeg",
-        0.72
+        0.4
       );
     };
 
@@ -53,25 +56,53 @@ export default function Home() {
   const [status, setStatus] = useState("");
   const [filesCount, setFilesCount] = useState(0);
 
-  const handleQuoteSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("sending");
+ const handleQuoteSubmit = async (e) => {
+  e.preventDefault();
 
+  setStatus("sending");
+
+  try {
     const form = e.currentTarget;
-    const formData = new FormData(form);
 
-    formData.delete("photos");
+    const name = form.name.value;
+    const phone = form.phone.value;
+    const issue = form.issue.value;
 
-const files = photoInputRef.current?.files;
+    const files = Array.from(photoInputRef.current?.files || []);
 
-if (files && files.length > 0) {
-  const selectedFiles = Array.from(files).slice(0, 5);
+    const formData = new FormData();
 
-  for (const file of selectedFiles) {
-    const compressed = await compressImage(file);
-    formData.append("photos", compressed);
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("issue", issue);
+
+    for (const file of files.slice(0, 10)) {
+      const compressed = await compressImage(file);
+      formData.append("photos", compressed);
+    }
+
+    const res = await fetch("/api/quote", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      setStatus("success");
+      form.reset();
+
+      if (photoInputRef.current) {
+        photoInputRef.current.value = "";
+      }
+    } else {
+      setStatus("error");
+    }
+  } catch (err) {
+    console.log(err);
+    setStatus("error");
   }
-}
+};
 
   return (
     <main className="min-h-screen bg-[#f7f4ef] text-zinc-950">
