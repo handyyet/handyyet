@@ -39,14 +39,12 @@ ${issue}
         const photoForm = new FormData();
 
         photoForm.append("chat_id", chatId);
-        photoForm.append("photo", photo);
+        photoForm.append("document", photo, photo.name || "photo.jpg");
 
-        await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-          method: "POST",
-          body: photoForm,
-        });
-      }
-    }
+await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+  method: "POST",
+  body: photoForm,
+});
 
     return Response.json({ success: true });
   } catch (error) {
