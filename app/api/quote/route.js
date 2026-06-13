@@ -1,41 +1,45 @@
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req) {
   try {
-    const body = await req.json();
+    const formData = await req.formData();
 
-    await resend.emails.send({
-      from: "HandyYet <onboarding@resend.dev>",
+    const name = formData.get("name");
+    const phone = formData.get("phone");
+    const issue = formData.get("issue");
+    const photos = formData.getAll("photos");
 
-      to: "nikita2808rnd@gmail.com",
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
 
-      subject: "New HandyYet Quote Request",
+    const message = `🔧 New HandyYet Quote Request
 
-      html: `
-        <div style="font-family:sans-serif;padding:20px">
-          <h1>New Quote Request</h1>
+👤 Name: ${name}
+📞 Phone: ${phone}
 
-          <p><strong>Name:</strong> ${body.name}</p>
+📝 Issue:
+${issue}`;
 
-          <p><strong>Phone:</strong> ${body.phone}</p>
-
-          <p><strong>Issue:</strong></p>
-
-          <p>${body.issue}</p>
-        </div>
-      `,
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text: message }),
     });
 
-    return Response.json({
-      success: true,
-    });
+    for (const photo of photos) {
+      if (photo && photo.size > 0) {
+        const photoForm = new FormData();
+        photoForm.append("chat_id", chatId);
+        photoForm.append("photo", photo);
+
+        await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+          method: "POST",
+          body: photoForm,
+        });
+      }
+    }
+
+    return Response.json({ success: true });
   } catch (error) {
     console.log(error);
-
-    return Response.json({
-      success: false,
-    });
+    return Response.json({ success: false });
   }
 }
