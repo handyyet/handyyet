@@ -15,17 +15,9 @@ const handleQuoteSubmit = async (e) => {
 
   try {
     const res = await fetch("/api/quote", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        name: formData.get("name"),
-        phone: formData.get("phone"),
-        issue: formData.get("issue"),
-      }),
-    });
+  method: "POST",
+  body: formData,
+});
 
     const data = await res.json();
 
