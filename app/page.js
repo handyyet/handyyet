@@ -257,7 +257,7 @@ const handleQuoteSubmit = async (e) => {
               />
 
               <input
-  name="phone"
+  name="photos"
   type="tel"
   inputMode="numeric"
   pattern="[0-9]{10}"
@@ -283,9 +283,9 @@ const handleQuoteSubmit = async (e) => {
 
                 <input
                   ref={photoInputRef}
+                  name="photos"
                   type="file"
                   accept="image/*"
-                  capture="environment"
                   multiple
                   className="w-full bg-zinc-900 text-white border border-white/10 rounded-2xl px-4 py-4"
                 />
