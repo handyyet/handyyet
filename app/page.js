@@ -2,113 +2,91 @@
 
 import { useRef, useState } from "react";
 
+const services = [
+  "TV Mounting",
+  "Furniture Assembly",
+  "Smart Home",
+  "Lighting",
+  "Door Hardware",
+  "Shelving",
+  "Plumbing",
+  "Painting",
+];
+
 export default function Home() {
   const photoInputRef = useRef(null);
-const [status, setStatus] = useState("");
-const handleQuoteSubmit = async (e) => {
-  e.preventDefault();
+  const [status, setStatus] = useState("");
+  const [filesCount, setFilesCount] = useState(0);
 
-  setStatus("sending");
+  const handleQuoteSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("sending");
 
-  const form = e.currentTarget;
-  const formData = new FormData(form);
-  
-const files = photoInputRef.current?.files;
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
-formData.delete("photos");
+    formData.delete("photos");
 
-if (files && files.length > 0) {
-  Array.from(files).forEach((file) => {
-    formData.append("photos", file);
-  });
-}
-  try {
-    const res = await fetch("/api/quote", {
-  method: "POST",
-  body: formData,
-});
+    const files = photoInputRef.current?.files;
+    if (files && files.length > 0) {
+      Array.from(files).forEach((file) => {
+        formData.append("photos", file);
+      });
+    }
 
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (data.success) {
-      setStatus("success");
-      form.reset();
-    } else {
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus("success");
+        form.reset();
+        setFilesCount(0);
+      } else {
+        setStatus("error");
+      }
+    } catch {
       setStatus("error");
     }
-  } catch (error) {
-    setStatus("error");
-  }
-};
-  const openQuoteCamera = () => {
-    document.getElementById("quote")?.scrollIntoView({ behavior: "smooth" });
-
-    setTimeout(() => {
-      photoInputRef.current?.click();
-    }, 600);
   };
 
-  const services = [
-    "Plumbing Repairs",
-    "Door & Hardware",
-    "Shelving & Mounting",
-    "Furniture Assembly",
-    "Lighting Fixtures",
-    "Painting & Finish Work",
-  ];
-
-  const projects = [
-    {
-      title: "Wood Wall + LED Shelves",
-      text: "Clean install with premium finish.",
-      img: "/images/install shelves and LED lights with wood wall.png",
-    },
-    {
-      title: "Furniture Assembly",
-      text: "Fast, clean, reliable setup.",
-      img: "/images/assembly desk.jpg",
-    },
-    {
-      title: "Smart Thermostat",
-      text: "Modern upgrade, clean install.",
-      img: "/images/thermostat.png",
-    },
-  ];
-
   return (
-    <main className="min-h-screen bg-black text-white overflow-hidden">
-      {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <img
-            src="/images/logo.PNG"
-            alt="HandyYet Logo"
-            className="h-20 md:h-24 w-auto"
-          />
+    <main className="min-h-screen bg-[#f7f4ef] text-zinc-950">
+      {/* NAV */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-black/10">
+        <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+          <a href="#" className="font-black text-2xl tracking-tight">
+            Handy<span className="text-orange-500">Yet</span>
+          </a>
 
-          <div className="hidden md:flex gap-8 text-sm text-gray-300">
+          <div className="hidden md:flex gap-7 text-sm font-semibold text-zinc-700">
             <a href="#services">Services</a>
-            <a href="#projects">Projects</a>
+            <a href="#work">Work</a>
+            <a href="#reviews">Reviews</a>
             <a href="#quote">Quote</a>
           </div>
 
-          <button
-            onClick={openQuoteCamera}
-            className="bg-orange-500 hover:bg-orange-400 text-black font-bold px-6 py-3 rounded-full transition"
+          <a
+            href="#quote"
+            className="bg-zinc-950 text-white px-5 py-3 rounded-full font-bold hover:bg-orange-500 transition"
           >
-            Get a Quote
-          </button>
+            Get Quote
+          </a>
         </div>
       </nav>
 
       {/* HERO */}
-      <section className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <div className="inline-flex items-center gap-2 border border-white/10 rounded-full px-4 py-2 text-sm text-gray-300 mb-8">
-            📍 Orange County • Southern California
+      <section className="max-w-7xl mx-auto px-5 py-16 md:py-24 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="animate-fadeUp">
+          <div className="inline-flex items-center gap-2 bg-white border border-black/10 rounded-full px-4 py-2 text-sm font-bold mb-6">
+            ⭐ Orange County • Southern California
           </div>
 
-          <h1 className="text-6xl md:text-8xl font-black leading-none tracking-tight mb-8">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-none">
             Snap.
             <br />
             Solve.
@@ -116,226 +94,241 @@ if (files && files.length > 0) {
             <span className="text-orange-500">Repair.</span>
           </h1>
 
-          <p className="text-gray-400 text-xl max-w-xl mb-10">
-            Upload photos of the issue, get a fast estimate, and book clean,
+          <p className="mt-8 text-xl text-zinc-600 max-w-xl">
+            Send photos of the issue, get a fast estimate, and book clean,
             reliable handyman service.
           </p>
 
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={openQuoteCamera}
-              className="bg-orange-500 hover:bg-orange-400 text-black px-8 py-4 rounded-full font-bold transition"
-            >
-              Take Photos
-            </button>
-
+          <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href="#projects"
-              className="border border-white/10 hover:border-white/30 px-8 py-4 rounded-full font-semibold transition"
+              href="#quote"
+              className="bg-orange-500 text-black px-7 py-4 rounded-full font-black hover:scale-105 transition"
+            >
+              Send Photos
+            </a>
+            <a
+              href="#work"
+              className="bg-white border border-black/10 px-7 py-4 rounded-full font-black hover:bg-zinc-100 transition"
             >
               View Work
             </a>
           </div>
-
-          <div className="grid grid-cols-3 gap-4 mt-12 max-w-lg">
-            <div className="bg-zinc-900 border border-white/10 rounded-2xl p-4">
-              <p className="text-2xl font-bold text-orange-500">Fast</p>
-              <p className="text-sm text-gray-400">Photo estimates</p>
-            </div>
-            <div className="bg-zinc-900 border border-white/10 rounded-2xl p-4">
-              <p className="text-2xl font-bold text-orange-500">Clean</p>
-              <p className="text-sm text-gray-400">Professional work</p>
-            </div>
-            <div className="bg-zinc-900 border border-white/10 rounded-2xl p-4">
-              <p className="text-2xl font-bold text-orange-500">Local</p>
-              <p className="text-sm text-gray-400">Orange County</p>
-            </div>
-          </div>
         </div>
 
-        <div className="relative">
-          <div className="absolute -inset-6 bg-orange-500/20 blur-3xl rounded-full" />
-          <div className="relative bg-zinc-900 border border-white/10 rounded-[36px] overflow-hidden shadow-2xl">
+        <div className="relative animate-fadeUp delay-100">
+          <div className="rounded-[36px] overflow-hidden shadow-2xl bg-white p-3">
             <img
-              src="/images/install shelves and LED lights with wood wall.png"
-              alt="HandyYet project"
-              className="w-full h-[520px] object-cover"
+              src="/images/hero.jpg"
+              alt="Handyman service"
+              className="rounded-[28px] w-full h-[520px] object-cover"
             />
           </div>
-        </div>
-      </section>
 
-      {/* HOW IT WORKS */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <p className="text-orange-500 uppercase text-sm mb-4">How it works</p>
-        <h2 className="text-4xl md:text-6xl font-black mb-12">
-          Simple repair process.
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            ["01", "Snap photos", "Take or upload photos of the issue."],
-            ["02", "Get estimate", "We review details and send next steps."],
-            ["03", "Book repair", "Clean, reliable work at your home."],
-          ].map(([num, title, text]) => (
-            <div
-              key={num}
-              className="bg-zinc-900 border border-white/10 rounded-3xl p-8"
-            >
-              <p className="text-orange-500 text-4xl font-black mb-6">{num}</p>
-              <h3 className="text-2xl font-bold mb-3">{title}</h3>
-              <p className="text-gray-400">{text}</p>
-            </div>
-          ))}
+          <div className="absolute -bottom-6 -left-4 bg-white rounded-3xl shadow-xl p-5 border border-black/10">
+            <p className="text-4xl font-black">5★</p>
+            <p className="text-sm text-zinc-500 font-semibold">
+              Local home service
+            </p>
+          </div>
         </div>
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="max-w-7xl mx-auto px-6 py-20">
-        <p className="text-orange-500 uppercase text-sm mb-4">Services</p>
-        <h2 className="text-4xl md:text-6xl font-black mb-12">
-          Small repairs. Done right.
+      <section id="services" className="max-w-7xl mx-auto px-5 py-16">
+        <div className="flex items-end justify-between gap-6 mb-10">
+          <div>
+            <p className="text-orange-500 font-black uppercase tracking-wide">
+              Services
+            </p>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight">
+              Small jobs. Clean results.
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {services.map((service) => (
+            <a
+              key={service}
+              href="#quote"
+              className="group bg-white rounded-3xl p-6 border border-black/10 hover:-translate-y-1 hover:shadow-xl transition"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl mb-6">
+                🛠
+              </div>
+              <h3 className="text-xl font-black">{service}</h3>
+              <p className="text-zinc-500 mt-2">
+                Fast estimate, clean install, professional finish.
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* WORK */}
+      <section id="work" className="max-w-7xl mx-auto px-5 py-16">
+        <p className="text-orange-500 font-black uppercase tracking-wide">
+          Recent Work
+        </p>
+        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-10">
+          Before. After. Done right.
         </h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.map((service) => (
+        <div className="grid md:grid-cols-3 gap-5">
+          {[
+            ["/images/project-1.jpg", "Smart thermostat install"],
+            ["/images/project-2.jpg", "Furniture assembly"],
+            ["/images/project-3.jpg", "Shelving & mounting"],
+          ].map(([img, title]) => (
             <div
-              key={service}
-              className="group bg-zinc-900 hover:bg-zinc-800 border border-white/10 rounded-3xl p-7 transition"
+              key={title}
+              className="bg-white rounded-[32px] overflow-hidden border border-black/10 hover:shadow-xl transition"
             >
-              <div className="text-3xl mb-5">✓</div>
-              <h3 className="text-2xl font-bold mb-3">{service}</h3>
-              <p className="text-gray-400">
-                Clean, detail-focused handyman service with quick communication.
-              </p>
+              <img src={img} alt={title} className="h-72 w-full object-cover" />
+              <div className="p-6">
+                <h3 className="font-black text-xl">{title}</h3>
+                <p className="text-zinc-500 mt-2">
+                  Clean, reliable, photo-ready finish.
+                </p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* PROJECTS */}
-      <section id="projects" className="max-w-7xl mx-auto px-6 py-20">
-        <p className="text-orange-500 uppercase text-sm mb-4">Recent work</p>
-        <h2 className="text-4xl md:text-6xl font-black mb-12">
-          Real work. Real results.
-        </h2>
+      {/* REVIEWS */}
+      <section id="reviews" className="max-w-7xl mx-auto px-5 py-16">
+        <div className="bg-zinc-950 text-white rounded-[40px] p-8 md:p-14">
+          <p className="text-orange-400 font-black uppercase tracking-wide">
+            Reviews
+          </p>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight">
+            Reliable help when you need it.
+          </h2>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <div
-              key={project.title}
-              className="bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden"
-            >
-              <img
-                src={project.img}
-                alt={project.title}
-                className="w-full h-72 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                <p className="text-gray-400">{project.text}</p>
+          <div className="grid md:grid-cols-3 gap-5 mt-10">
+            {[
+              "Fast response and very clean work.",
+              "Professional, friendly, and finished everything perfectly.",
+              "Easy to book. Great communication. Highly recommend.",
+            ].map((text, i) => (
+              <div key={i} className="bg-white/10 rounded-3xl p-6">
+                <p className="text-orange-400 text-xl">★★★★★</p>
+                <p className="mt-4 text-lg">{text}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* QUOTE */}
-      <section id="quote" className="max-w-7xl mx-auto px-6 py-24">
-        <div className="bg-orange-500 rounded-[40px] p-8 md:p-16 grid lg:grid-cols-2 gap-12 items-center">
+      <section id="quote" className="max-w-7xl mx-auto px-5 py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-start">
           <div>
-            <h2 className="text-5xl md:text-7xl font-black text-black leading-none mb-8">
+            <p className="text-orange-500 font-black uppercase tracking-wide">
+              Get a Quote
+            </p>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight">
               Send photos.
               <br />
               Get a quote.
             </h2>
-
-            <p className="text-black/80 text-xl max-w-lg">
-              Take photos directly from your phone and tell us what needs fixing.
-              We’ll respond with next steps.
+            <p className="mt-6 text-xl text-zinc-600 max-w-xl">
+              Upload photos from your phone, describe the issue, and we’ll
+              respond with next steps.
             </p>
           </div>
 
-          <div className="bg-white rounded-[32px] p-6 md:p-8">
-            <form onSubmit={handleQuoteSubmit} className="grid gap-4">
-              <input
+          <form
+            onSubmit={handleQuoteSubmit}
+            className="bg-white rounded-[36px] p-6 md:p-8 grid gap-4 shadow-xl border border-black/10"
+          >
+            <input
               name="name"
-                type="text"
-                placeholder="Your name"
-                className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none"
-              />
+              type="text"
+              placeholder="Your name"
+              required
+              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none"
+            />
+
+            <input
+              name="phone"
+              type="tel"
+              inputMode="numeric"
+              pattern="[0-9]{10}"
+              maxLength="10"
+              placeholder="Phone number"
+              required
+              onInput={(e) => {
+                e.currentTarget.value = e.currentTarget.value
+                  .replace(/\D/g, "")
+                  .slice(0, 10);
+              }}
+              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none"
+            />
+
+            <textarea
+              name="issue"
+              placeholder="Describe the issue"
+              required
+              rows={5}
+              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none resize-none"
+            />
+
+            <div>
+              <label className="text-sm font-bold text-zinc-500">
+                Upload photos
+              </label>
 
               <input
-  name="phone"
-  type="tel"
-  inputMode="numeric"
-  pattern="[0-9]{10}"
-  maxLength="10"
-  placeholder="Phone number"
-  required
-  onInput={(e) => {
-    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 10);
-  }}
-  className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none"
-/>
-
-              <textarea
-              name="issue"
-                placeholder="Describe the issue"
-                className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none min-h-[140px]"
+                ref={photoInputRef}
+                name="photos"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => setFilesCount(e.target.files?.length || 0)}
+                className="mt-2 w-full bg-zinc-950 text-white rounded-2xl px-5 py-4"
               />
 
-              <div className="space-y-3">
-                <label className="text-sm text-gray-500">
-                  Upload photos of the issue
-                </label>
+              <p className="text-sm text-zinc-500 mt-2">
+                {filesCount > 0
+                  ? `${filesCount} photo${filesCount > 1 ? "s" : ""} selected`
+                  : "You can select multiple photos from your library."}
+              </p>
+            </div>
 
-                <input
-                  ref={photoInputRef}
-                  name="photos"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="w-full bg-zinc-900 text-white border border-white/10 rounded-2xl px-4 py-4"
-                />
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="bg-orange-500 hover:bg-orange-400 text-black rounded-full py-5 font-black text-lg transition disabled:opacity-60"
+            >
+              {status === "sending" ? "Sending..." : "Request Quote"}
+            </button>
 
-                <p className="text-xs text-gray-500">
-                  Tap “Take Photos” or any quote button to open camera on mobile.
-                </p>
+            {status === "success" && (
+              <div className="bg-green-500 text-white rounded-2xl p-4 text-center font-bold">
+                Thank you. Your request is being processed.
               </div>
+            )}
 
-              <button
-  type="submit"
-  className="bg-black hover:bg-zinc-800 text-white py-5 rounded-full font-bold text-xl"
->
-  Request Quote
-</button>
-
-{status === "success" && (
-  <div className="bg-green-500 text-white rounded-2xl p-4 text-center font-semibold">
-    Thank you for contacting HandyYet. Your request is being processed.
-  </div>
-)}
-
-{status === "error" && (
-  <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-semibold">
-    Something went wrong. Please try again.
-  </div>
-)}
-            </form>
-          </div>
+            {status === "error" && (
+              <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-bold">
+                Something went wrong. Please try again.
+              </div>
+            )}
+          </form>
         </div>
       </section>
 
-      {/* MOBILE FLOATING CTA */}
-      <button
-        onClick={openQuoteCamera}
-        className="fixed bottom-5 left-5 right-5 z-50 md:hidden bg-orange-500 text-black font-black py-4 rounded-full shadow-2xl"
+      {/* MOBILE CTA */}
+      <a
+        href="#quote"
+        className="fixed bottom-5 left-5 right-5 z-50 md:hidden bg-orange-500 text-black rounded-full py-5 text-center font-black shadow-2xl"
       >
         Take Photo & Get Quote
-      </button>
+      </a>
 
-      <footer className="border-t border-white/10 py-10 text-center text-gray-500">
+      <footer className="border-t border-black/10 py-10 text-center text-zinc-500">
         © 2026 HandyYet LLC. Snap. Solve. Repair.
       </footer>
     </main>
