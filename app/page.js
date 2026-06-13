@@ -12,7 +12,16 @@ const handleQuoteSubmit = async (e) => {
 
   const form = e.currentTarget;
   const formData = new FormData(form);
+  
+const files = photoInputRef.current?.files;
 
+formData.delete("photos");
+
+if (files && files.length > 0) {
+  Array.from(files).forEach((file) => {
+    formData.append("photos", file);
+  });
+}
   try {
     const res = await fetch("/api/quote", {
   method: "POST",
@@ -257,7 +266,7 @@ const handleQuoteSubmit = async (e) => {
               />
 
               <input
-  name="photos"
+  name="phone"
   type="tel"
   inputMode="numeric"
   pattern="[0-9]{10}"
