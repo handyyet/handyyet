@@ -265,11 +265,18 @@ const handleQuoteSubmit = async (e) => {
               />
 
               <input
-              name="phone"
-                type="text"
-                placeholder="Phone number"
-                className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none"
-              />
+  name="phone"
+  type="tel"
+  inputMode="numeric"
+  pattern="[0-9]{10}"
+  maxLength="10"
+  placeholder="Phone number"
+  required
+  onInput={(e) => {
+    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 10);
+  }}
+  className="bg-zinc-100 text-black placeholder:text-gray-400 rounded-2xl px-5 py-4 outline-none"
+/>
 
               <textarea
               name="issue"
