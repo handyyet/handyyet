@@ -24,7 +24,7 @@ async function compressImage(file) {
     img.onload = () => {
       const canvas = document.createElement("canvas");
 
-      const maxWidth = 700;
+      const maxWidth = 500;
 
       const scale = Math.min(maxWidth / img.width, 1);
 
@@ -44,7 +44,7 @@ async function compressImage(file) {
           );
         },
         "image/jpeg",
-        0.4
+        0.3
       );
     };
 
