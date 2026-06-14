@@ -28,7 +28,20 @@ const services = [
     link: "/services/handyman-repairs",
   },
 ];
-
+const reviews = [
+  {
+    name: "Michael R.",
+    text: "Very professional and clean work. Mounted my TV perfectly.",
+  },
+  {
+    name: "Sarah T.",
+    text: "Fast response and fair pricing. Highly recommend HandyYet.",
+  },
+  {
+    name: "Daniel K.",
+    text: "Installed smart thermostat and fixed several issues same day.",
+  },
+];
 async function compressImage(file) {
   return new Promise((resolve) => {
     const img = new Image();
