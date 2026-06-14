@@ -1,17 +1,45 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const services = [
-  "TV Mounting",
-  "Furniture Assembly",
-  "Smart Home",
-  "Lighting",
-  "Door Hardware",
-  "Shelving",
-  "Plumbing",
-  "Painting",
+  {
+    title: "Furniture Assembly",
+    desc: "Fast and clean assembly for IKEA, Wayfair and more.",
+    icon: "🪑",
+  },
+  {
+    title: "TV Mounting",
+    desc: "Professional TV installation with cable management.",
+    icon: "📺",
+  },
+  {
+    title: "Smart Home",
+    desc: "Thermostats, cameras, locks and smart devices.",
+    icon: "🏠",
+  },
+  {
+    title: "Repairs",
+    desc: "Doors, drywall, fixtures, leaks and general repairs.",
+    icon: "🛠️",
+  },
 ];
+
+const reviews = [
+  {
+    name: "Michael R.",
+    text: "Very professional and clean work. Mounted my TV perfectly.",
+  },
+  {
+    name: "Sarah T.",
+    text: "Fast response and fair pricing. Highly recommend HandyYet.",
+  },
+  {
+    name: "Daniel K.",
+    text: "Installed smart thermostat and fixed several issues same day.",
+  },
+];
+
 async function compressImage(file) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -51,78 +79,109 @@ async function compressImage(file) {
     reader.readAsDataURL(file);
   });
 }
+
 export default function Home() {
   const photoInputRef = useRef(null);
+
   const [status, setStatus] = useState("");
   const [filesCount, setFilesCount] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
 
- const handleQuoteSubmit = async (e) => {
-  e.preventDefault();
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
 
-  setStatus("sending");
+    window.addEventListener("scroll", handleScroll);
 
-  try {
-    const form = e.currentTarget;
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    const name = form.name.value;
-    const phone = form.phone.value;
-    const issue = form.issue.value;
+  const handleQuoteSubmit = async (e) => {
+    e.preventDefault();
 
-    const files = Array.from(photoInputRef.current?.files || []);
+    setStatus("sending");
 
-    const formData = new FormData();
+    try {
+      const form = e.currentTarget;
 
-    formData.append("name", name);
-    formData.append("phone", phone);
-    formData.append("issue", issue);
+      const name = form.name.value;
+      const phone = form.phone.value;
+      const issue = form.issue.value;
 
-    for (const file of files.slice(0, 10)) {
-      const compressed = await compressImage(file);
-      formData.append("photos", compressed);
-    }
+      const files = Array.from(photoInputRef.current?.files || []);
 
-    const res = await fetch("/api/quote", {
-      method: "POST",
-      body: formData,
-    });
+      const formData = new FormData();
 
-    const data = await res.json();
+      formData.append("name", name);
+      formData.append("phone", phone);
+      formData.append("issue", issue);
 
-    if (data.success) {
-      setStatus("success");
-      form.reset();
+      for (const file of files.slice(0, 10)) {
+        const compressed = await compressImage(file);
 
-      if (photoInputRef.current) {
-        photoInputRef.current.value = "";
+        formData.append("photos", compressed);
       }
-    } else {
+
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus("success");
+
+        form.reset();
+
+        if (photoInputRef.current) {
+          photoInputRef.current.value = "";
+        }
+
+        setFilesCount(0);
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      console.log(err);
+
       setStatus("error");
     }
-  } catch (err) {
-    console.log(err);
-    setStatus("error");
-  }
-};
-
-  return (
-    <main className="min-h-screen bg-[#f7f4ef] text-zinc-950">
+  };
+    return (
+    <main className="min-h-screen bg-[#f6f3ee] text-zinc-950 overflow-hidden">
       {/* NAV */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-black/10">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-white/90 backdrop-blur-xl shadow-sm border-b border-black/10"
+            : "bg-transparent"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
-          <a href="#" className="font-black text-2xl tracking-tight">
+          <a href="#" className="text-3xl font-black tracking-tight">
             Handy<span className="text-orange-500">Yet</span>
           </a>
 
-          <div className="hidden md:flex gap-7 text-sm font-semibold text-zinc-700">
-            <a href="#services">Services</a>
-            <a href="#work">Work</a>
-            <a href="#reviews">Reviews</a>
-            <a href="#quote">Quote</a>
+          <div className="hidden md:flex items-center gap-8 text-sm font-bold text-zinc-700">
+            <a href="#services" className="hover:text-orange-500 transition">
+              Services
+            </a>
+            <a href="#work" className="hover:text-orange-500 transition">
+              Work
+            </a>
+            <a href="#reviews" className="hover:text-orange-500 transition">
+              Reviews
+            </a>
+            <a href="#quote" className="hover:text-orange-500 transition">
+              Quote
+            </a>
           </div>
 
           <a
             href="#quote"
-            className="bg-zinc-950 text-white px-5 py-3 rounded-full font-bold hover:bg-orange-500 transition"
+            className="bg-zinc-950 text-white px-6 py-3 rounded-full font-black hover:bg-orange-500 hover:text-black transition"
           >
             Get Quote
           </a>
@@ -130,115 +189,144 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <section className="max-w-7xl mx-auto px-5 py-16 md:py-24 grid lg:grid-cols-2 gap-12 items-center">
-        <div className="animate-fadeUp">
-          <div className="inline-flex items-center gap-2 bg-white border border-black/10 rounded-full px-4 py-2 text-sm font-bold mb-6">
-            ⭐ Orange County • Southern California
-          </div>
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0020,transparent_35%),radial-gradient(circle_at_bottom_left,#00000010,transparent_30%)]" />
 
-          <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-none">
-            Snap.
-            <br />
-            Solve.
-            <br />
-            <span className="text-orange-500">Repair.</span>
-          </h1>
+        <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
+          <div className="animate-fadeUp">
+            <div className="inline-flex items-center gap-2 bg-white border border-black/10 shadow-sm rounded-full px-4 py-2 text-sm font-black mb-7">
+              <span>⭐</span> Orange County • Southern California
+            </div>
 
-          <p className="mt-8 text-xl text-zinc-600 max-w-xl">
-            Send photos of the issue, get a fast estimate, and book clean,
-            reliable handyman service.
-          </p>
+            <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">
+              Home repairs
+              <br />
+              made
+              <span className="text-orange-500"> simple.</span>
+            </h1>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href="#quote"
-              className="bg-orange-500 text-black px-7 py-4 rounded-full font-black hover:scale-105 transition"
-            >
-              Send Photos
-            </a>
-            <a
-              href="#work"
-              className="bg-white border border-black/10 px-7 py-4 rounded-full font-black hover:bg-zinc-100 transition"
-            >
-              View Work
-            </a>
-          </div>
-        </div>
-
-        <div className="relative animate-fadeUp delay-100">
-          <div className="rounded-[36px] overflow-hidden shadow-2xl bg-white p-3">
-            <img
-              src="/images/hero.jpg"
-              alt="Handyman service"
-              className="rounded-[28px] w-full h-[520px] object-cover"
-            />
-          </div>
-
-          <div className="absolute -bottom-6 -left-4 bg-white rounded-3xl shadow-xl p-5 border border-black/10">
-            <p className="text-4xl font-black">5★</p>
-            <p className="text-sm text-zinc-500 font-semibold">
-              Local home service
+            <p className="mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed">
+              Send photos, describe the issue, and get a fast quote from a
+              reliable handyman service.
             </p>
+
+            <div className="mt-9 flex flex-wrap gap-4">
+              <a
+                href="#quote"
+                className="bg-orange-500 text-black px-8 py-5 rounded-full font-black shadow-xl hover:scale-105 transition"
+              >
+                Send Photos
+              </a>
+
+              <a
+                href="#services"
+                className="bg-white text-zinc-950 border border-black/10 px-8 py-5 rounded-full font-black hover:bg-zinc-100 transition"
+              >
+                View Services
+              </a>
+            </div>
+
+            <div className="mt-10 grid grid-cols-3 gap-4 max-w-xl">
+              {["Fast quotes", "Clean work", "Photo updates"].map((item) => (
+                <div
+                  key={item}
+                  className="bg-white rounded-3xl p-4 border border-black/10 shadow-sm"
+                >
+                  <p className="font-black">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative animate-fadeUp">
+            <div className="bg-white rounded-[44px] p-3 shadow-2xl border border-black/10 rotate-1 hover:rotate-0 transition duration-500">
+              <div className="rounded-[36px] overflow-hidden bg-zinc-200 aspect-[4/5]">
+                <img
+                  src="/images/hero.jpg"
+                  alt="HandyYet home service"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="absolute -bottom-6 -left-2 md:-left-8 bg-zinc-950 text-white rounded-3xl p-5 shadow-xl">
+              <p className="text-4xl font-black text-orange-400">5★</p>
+              <p className="font-bold text-sm">Reliable local service</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="max-w-7xl mx-auto px-5 py-16">
-        <div className="flex items-end justify-between gap-6 mb-10">
-          <div>
-            <p className="text-orange-500 font-black uppercase tracking-wide">
-              Services
-            </p>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight">
-              Small jobs. Clean results.
-            </h2>
-          </div>
+      <section id="services" className="max-w-7xl mx-auto px-5 py-20">
+        <div className="mb-12">
+          <p className="text-orange-500 font-black uppercase tracking-widest">
+            Services
+          </p>
+          <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">
+            One call.
+            <br />
+            Many fixes.
+          </h2>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {services.map((service) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {services.map((service, index) => (
             <a
-              key={service}
+              key={service.title}
               href="#quote"
-              className="group bg-white rounded-3xl p-6 border border-black/10 hover:-translate-y-1 hover:shadow-xl transition"
+              className="group bg-white rounded-[32px] p-6 border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-300"
+              style={{ animationDelay: `${index * 80}ms` }}
             >
-              <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl mb-6">
-                🛠
+              <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition">
+                {service.icon}
               </div>
-              <h3 className="text-xl font-black">{service}</h3>
-              <p className="text-zinc-500 mt-2">
-                Fast estimate, clean install, professional finish.
+
+              <h3 className="text-2xl font-black">{service.title}</h3>
+              <p className="mt-3 text-zinc-500 leading-relaxed">
+                {service.desc}
               </p>
             </a>
           ))}
         </div>
       </section>
+            {/* WORK */}
+      <section id="work" className="max-w-7xl mx-auto px-5 py-20">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <p className="text-orange-500 font-black uppercase tracking-widest">
+              Recent Work
+            </p>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">
+              Real repairs.
+              <br />
+              Real results.
+            </h2>
+          </div>
 
-      {/* WORK */}
-      <section id="work" className="max-w-7xl mx-auto px-5 py-16">
-        <p className="text-orange-500 font-black uppercase tracking-wide">
-          Recent Work
-        </p>
-        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-10">
-          Before. After. Done right.
-        </h2>
+          <a
+            href="#quote"
+            className="bg-zinc-950 text-white px-7 py-4 rounded-full font-black w-fit hover:bg-orange-500 hover:text-black transition"
+          >
+            Start your project
+          </a>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-5">
           {[
-            ["/images/project-1.jpg", "Smart thermostat install"],
+            ["/images/project-1.jpg", "Smart thermostat installation"],
             ["/images/project-2.jpg", "Furniture assembly"],
             ["/images/project-3.jpg", "Shelving & mounting"],
           ].map(([img, title]) => (
             <div
               key={title}
-              className="bg-white rounded-[32px] overflow-hidden border border-black/10 hover:shadow-xl transition"
+              className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-300"
             >
-              <img src={img} alt={title} className="h-72 w-full object-cover" />
+              <img src={img} alt={title} className="h-80 w-full object-cover" />
               <div className="p-6">
-                <h3 className="font-black text-xl">{title}</h3>
-                <p className="text-zinc-500 mt-2">
-                  Clean, reliable, photo-ready finish.
+                <h3 className="text-2xl font-black">{title}</h3>
+                <p className="mt-3 text-zinc-500">
+                  Clean finish, fast communication, and photo-ready results.
                 </p>
               </div>
             </div>
@@ -247,58 +335,79 @@ export default function Home() {
       </section>
 
       {/* REVIEWS */}
-      <section id="reviews" className="max-w-7xl mx-auto px-5 py-16">
-        <div className="bg-zinc-950 text-white rounded-[40px] p-8 md:p-14">
-          <p className="text-orange-400 font-black uppercase tracking-wide">
-            Reviews
-          </p>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight">
-            Reliable help when you need it.
-          </h2>
+      <section id="reviews" className="max-w-7xl mx-auto px-5 py-20">
+        <div className="bg-zinc-950 text-white rounded-[44px] p-8 md:p-14 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/20 blur-3xl rounded-full" />
 
-          <div className="grid md:grid-cols-3 gap-5 mt-10">
-            {[
-              "Fast response and very clean work.",
-              "Professional, friendly, and finished everything perfectly.",
-              "Easy to book. Great communication. Highly recommend.",
-            ].map((text, i) => (
-              <div key={i} className="bg-white/10 rounded-3xl p-6">
-                <p className="text-orange-400 text-xl">★★★★★</p>
-                <p className="mt-4 text-lg">{text}</p>
-              </div>
-            ))}
+          <div className="relative">
+            <p className="text-orange-400 font-black uppercase tracking-widest">
+              Reviews
+            </p>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">
+              Built on trust.
+            </h2>
+
+            <div className="grid md:grid-cols-3 gap-5 mt-12">
+              {reviews.map((review) => (
+                <div
+                  key={review.name}
+                  className="bg-white/10 backdrop-blur rounded-[32px] p-6 border border-white/10"
+                >
+                  <p className="text-orange-400 text-xl">★★★★★</p>
+                  <p className="mt-5 text-lg leading-relaxed">
+                    “{review.text}”
+                  </p>
+                  <p className="mt-6 font-black">{review.name}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* QUOTE */}
-      <section id="quote" className="max-w-7xl mx-auto px-5 py-16">
-        <div className="grid lg:grid-cols-2 gap-10 items-start">
-          <div>
-            <p className="text-orange-500 font-black uppercase tracking-wide">
+      <section id="quote" className="max-w-7xl mx-auto px-5 py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="sticky top-28">
+            <p className="text-orange-500 font-black uppercase tracking-widest">
               Get a Quote
             </p>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tight">
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">
               Send photos.
               <br />
-              Get a quote.
+              Get a fast quote.
             </h2>
-            <p className="mt-6 text-xl text-zinc-600 max-w-xl">
-              Upload photos from your phone, describe the issue, and we’ll
-              respond with next steps.
+            <p className="mt-6 text-xl text-zinc-600 max-w-xl leading-relaxed">
+              Upload up to 10 photos, describe the issue, and we’ll respond
+              with next steps in Telegram.
             </p>
+
+            <div className="mt-8 grid gap-4 max-w-md">
+              {[
+                "No long phone calls",
+                "Photo-based estimates",
+                "Fast local response",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="bg-white rounded-2xl p-4 border border-black/10 font-bold"
+                >
+                  ✓ {item}
+                </div>
+              ))}
+            </div>
           </div>
 
           <form
             onSubmit={handleQuoteSubmit}
-            className="bg-white rounded-[36px] p-6 md:p-8 grid gap-4 shadow-xl border border-black/10"
+            className="bg-white rounded-[40px] p-6 md:p-8 grid gap-4 shadow-2xl border border-black/10"
           >
             <input
               name="name"
               type="text"
               placeholder="Your name"
               required
-              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none"
+              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-orange-500"
             />
 
             <input
@@ -314,7 +423,7 @@ export default function Home() {
                   .replace(/\D/g, "")
                   .slice(0, 10);
               }}
-              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none"
+              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-orange-500"
             />
 
             <textarea
@@ -322,11 +431,11 @@ export default function Home() {
               placeholder="Describe the issue"
               required
               rows={5}
-              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none resize-none"
+              className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none resize-none focus:ring-2 focus:ring-orange-500"
             />
 
-            <div>
-              <label className="text-sm font-bold text-zinc-500">
+            <div className="bg-zinc-100 rounded-3xl p-5">
+              <label className="text-sm font-black text-zinc-600">
                 Upload photos
               </label>
 
@@ -337,13 +446,13 @@ export default function Home() {
                 accept="image/*"
                 multiple
                 onChange={(e) => setFilesCount(e.target.files?.length || 0)}
-                className="mt-2 w-full bg-zinc-950 text-white rounded-2xl px-5 py-4"
+                className="mt-3 w-full bg-zinc-950 text-white rounded-2xl px-5 py-4"
               />
 
-              <p className="text-sm text-zinc-500 mt-2">
+              <p className="text-sm text-zinc-500 mt-3">
                 {filesCount > 0
                   ? `${filesCount} photo${filesCount > 1 ? "s" : ""} selected`
-                  : "You can select multiple photos from your library."}
+                  : "Select multiple photos from your library."}
               </p>
             </div>
 
@@ -356,13 +465,13 @@ export default function Home() {
             </button>
 
             {status === "success" && (
-              <div className="bg-green-500 text-white rounded-2xl p-4 text-center font-bold">
+              <div className="bg-green-500 text-white rounded-2xl p-4 text-center font-black">
                 Thank you. Your request is being processed.
               </div>
             )}
 
             {status === "error" && (
-              <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-bold">
+              <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-black">
                 Something went wrong. Please try again.
               </div>
             )}
@@ -375,7 +484,7 @@ export default function Home() {
         href="#quote"
         className="fixed bottom-5 left-5 right-5 z-50 md:hidden bg-orange-500 text-black rounded-full py-5 text-center font-black shadow-2xl"
       >
-        Take Photo & Get Quote
+        Send Photos & Get Quote
       </a>
 
       <footer className="border-t border-black/10 py-10 text-center text-zinc-500">
