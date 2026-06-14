@@ -261,25 +261,26 @@ export default function Home() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {services.map((service, index) => (
-            <a
-  href={service.link}
-  key={service.title}
-  className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-2 hover:shadow-2xl transition duration-300"
->
-  <div className="text-5xl">{service.icon}</div>
+  <a
+    href={service.link}
+    key={service.title}
+    className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-2 hover:shadow-2xl transition duration-300"
+  >
+    <div className="text-5xl">{service.icon}</div>
 
-  <h3 className="text-2xl font-black mt-6">
-    {service.title}
-  </h3>
+    <h3 className="text-2xl font-black mt-6">
+      {service.title}
+    </h3>
 
-  <p className="mt-3 text-zinc-500 leading-relaxed">
-    {service.text}
-  </p>
+    <p className="mt-3 text-zinc-500 leading-relaxed">
+      {service.text}
+    </p>
 
-  <div className="mt-6 font-black text-orange-500 group-hover:translate-x-2 transition">
-    Learn more →
-  </div>
-</a>
+    <div className="mt-6 font-black text-orange-500 group-hover:translate-x-2 transition">
+      Learn more →
+    </div>
+  </a>
+))}
           ))}
         </div>
       </section>
