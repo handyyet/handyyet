@@ -4,39 +4,28 @@ import { useRef, useState, useEffect } from "react";
 
 const services = [
   {
-    title: "Furniture Assembly",
-    desc: "Fast and clean assembly for IKEA, Wayfair and more.",
-    icon: "🪑",
-  },
-  {
-    title: "TV Mounting",
-    desc: "Professional TV installation with cable management.",
     icon: "📺",
+    title: "TV Mounting",
+    text: "Clean installations with cable management.",
+    link: "/services/tv-mounting",
   },
   {
-    title: "Smart Home",
-    desc: "Thermostats, cameras, locks and smart devices.",
+    icon: "🪑",
+    title: "Furniture Assembly",
+    text: "Fast and precise furniture setup.",
+    link: "/services/furniture-assembly",
+  },
+  {
     icon: "🏠",
+    title: "Smart Home",
+    text: "Thermostats, cameras and smart devices.",
+    link: "/services/smart-home",
   },
   {
-    title: "Repairs",
-    desc: "Doors, drywall, fixtures, leaks and general repairs.",
-    icon: "🛠️",
-  },
-];
-
-const reviews = [
-  {
-    name: "Michael R.",
-    text: "Very professional and clean work. Mounted my TV perfectly.",
-  },
-  {
-    name: "Sarah T.",
-    text: "Fast response and fair pricing. Highly recommend HandyYet.",
-  },
-  {
-    name: "Daniel K.",
-    text: "Installed smart thermostat and fixed several issues same day.",
+    icon: "🔧",
+    title: "Handyman Repairs",
+    text: "General repairs and home fixes.",
+    link: "/services/handyman-repairs",
   },
 ];
 
@@ -273,20 +262,24 @@ export default function Home() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {services.map((service, index) => (
             <a
-              key={service.title}
-              href="#quote"
-              className="group bg-white rounded-[32px] p-6 border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-300"
-              style={{ animationDelay: `${index * 80}ms` }}
-            >
-              <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition">
-                {service.icon}
-              </div>
+  href={service.link}
+  key={service.title}
+  className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-2 hover:shadow-2xl transition duration-300"
+>
+  <div className="text-5xl">{service.icon}</div>
 
-              <h3 className="text-2xl font-black">{service.title}</h3>
-              <p className="mt-3 text-zinc-500 leading-relaxed">
-                {service.desc}
-              </p>
-            </a>
+  <h3 className="text-2xl font-black mt-6">
+    {service.title}
+  </h3>
+
+  <p className="mt-3 text-zinc-500 leading-relaxed">
+    {service.text}
+  </p>
+
+  <div className="mt-6 font-black text-orange-500 group-hover:translate-x-2 transition">
+    Learn more →
+  </div>
+</a>
           ))}
         </div>
       </section>
