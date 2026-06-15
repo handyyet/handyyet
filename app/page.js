@@ -1,5 +1,6 @@
 "use client";
 
+import { LoadScript, Autocomplete } from "@react-google-maps/api";
 import { useRef, useState, useEffect } from "react"
 import { Autocomplete } from "@react-google-maps/api"
 import { motion } from "framer-motion";
@@ -88,6 +89,7 @@ export default function Home() {
   const photoInputRef = useRef(null);
 
   const [status, setStatus] = useState("");
+  const [autocomplete, setAutocomplete] = useState(null);
   const [filesCount, setFilesCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
@@ -439,13 +441,34 @@ export default function Home() {
               }}
               className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-orange-500"
             />
-  <input
-    type="text"
-    name="address"
-    placeholder="Enter your address"
-    required
-    className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none focus:border-orange-400"
-  />
+  <LoadScript
+  googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+  libraries={["places"]}
+>
+  <Autocomplete
+    onLoad={(auto) => setAutocomplete(auto)}
+  >
+    <input
+      type="text"
+      name="address"
+      placeholder="Enter your address"
+      required
+      onPlaceChanged={() => {
+        if (autocomplete) {
+          const place = autocomplete.getPlace();
+          const addressInput = document.querySelector(
+            'input[name="address"]'
+          );
+
+          if (place?.formatted_address && addressInput) {
+            addressInput.value = place.formatted_address;
+          }
+        }
+      }}
+      className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none focus:border-orange-400"
+    />
+  </Autocomplete>
+</LoadScript>
             <textarea
               name="issue"
               placeholder="Describe the issue"
