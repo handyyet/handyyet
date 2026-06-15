@@ -437,7 +437,6 @@ export default function Home() {
               }}
               className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-orange-500"
             />
-<<Autocomplete>
   <input
     type="text"
     name="address"
@@ -445,7 +444,6 @@ export default function Home() {
     required
     className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none focus:border-orange-400"
   />
-</Autocomplete>
             <textarea
               name="issue"
               placeholder="Describe the issue"
