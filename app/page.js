@@ -390,8 +390,7 @@ export default function Home() {
               Get a fast quote.
             </h2>
             <p className="mt-6 text-xl text-zinc-600 max-w-xl leading-relaxed">
-              Upload up to 10 photos, describe the issue, and we’ll respond
-              with next steps in Telegram.
+              UUpload photos, describe the issue, and we’ll contact you with a fast estimate and next steps.
             </p>
 
             <div className="mt-8 grid gap-4 max-w-md">
@@ -437,7 +436,12 @@ export default function Home() {
               }}
               className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-orange-500"
             />
-
+<input
+  type="text"
+  name="address"
+  placeholder="Service Address"
+  className="w-full rounded-[24px] border border-black/10 bg-white px-6 py-5 text-lg outline-none"
+/>
             <textarea
               name="issue"
               placeholder="Describe the issue"
