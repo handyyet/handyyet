@@ -4,6 +4,7 @@ export async function POST(req) {
 
     const name = formData.get("name");
     const phone = formData.get("phone");
+    const address = formData.get("address");
     const issue = formData.get("issue");
     const photos = formData.getAll("photos");
 
@@ -16,6 +17,8 @@ export async function POST(req) {
 👤 Name: ${name}
 
 📞 Phone: ${phone}
+
+📍 Address: ${address || "Not provided"}
 
 📋 Issue:
 ${issue}

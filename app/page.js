@@ -391,7 +391,7 @@ export default function Home() {
               Get a fast quote.
             </h2>
             <p className="mt-6 text-xl text-zinc-600 max-w-xl leading-relaxed">
-              UUpload photos, describe the issue, and we’ll contact you with a fast estimate and next steps.
+              Upload photos, describe the issue, and we’ll contact you with a fast estimate and next steps.
             </p>
 
             <div className="mt-8 grid gap-4 max-w-md">
