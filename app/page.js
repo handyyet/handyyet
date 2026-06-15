@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const services = [
   {
@@ -191,7 +192,12 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28">
+      <motion.section
+  initial={{ opacity: 0, y: 80 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  className="relative pt-32 pb-20 md:pt-40 md:pb-28"
+>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0020,transparent_35%),radial-gradient(circle_at_bottom_left,#00000010,transparent_30%)]" />
 
         <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
@@ -257,7 +263,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* SERVICES */}
       <section id="services" className="max-w-7xl mx-auto px-5 py-20">
