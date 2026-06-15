@@ -1,8 +1,7 @@
 "use client";
 
+import { useRef, useState, useEffect } from "react";
 import { LoadScript, Autocomplete } from "@react-google-maps/api";
-import { useRef, useState, useEffect } from "react"
-import { Autocomplete } from "@react-google-maps/api"
 import { motion } from "framer-motion";
 
 const services = [
