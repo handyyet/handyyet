@@ -111,6 +111,7 @@ export default function Home() {
 
       const name = form.name.value;
       const phone = form.phone.value;
+      const address = form.address.value;
       const issue = form.issue.value;
 
       const files = Array.from(photoInputRef.current?.files || []);
@@ -119,6 +120,7 @@ export default function Home() {
 
       formData.append("name", name);
       formData.append("phone", phone);
+      formData.append("address", address);
       formData.append("issue", issue);
 
       for (const file of files.slice(0, 10)) {
