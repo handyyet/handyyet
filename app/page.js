@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react"
+import { Autocomplete } from "@react-google-maps/api"
 import { motion } from "framer-motion";
 
 const services = [
@@ -436,12 +437,15 @@ export default function Home() {
               }}
               className="bg-zinc-100 text-black rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-orange-500"
             />
-<input
-  type="text"
-  name="address"
-  placeholder="Service Address"
-  className="w-full rounded-[24px] border border-black/10 bg-white px-6 py-5 text-lg outline-none"
-/>
+<<Autocomplete>
+  <input
+    type="text"
+    name="address"
+    placeholder="Enter your address"
+    required
+    className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none focus:border-orange-400"
+  />
+</Autocomplete>
             <textarea
               name="issue"
               placeholder="Describe the issue"
