@@ -18,7 +18,7 @@ export async function POST(req) {
 
 📞 Phone: ${phone}
 
-📍 Address: ${address || "Not provided"}
+📍 Address: ${address}
 
 📋 Issue:
 ${issue}
