@@ -1,5 +1,10 @@
 "use client";
 
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import AddressAutocomplete from "./components/AddressAutocomplete";
+import BookingCalendar from "./components/BookingCalendar";
+
 import { useRef, useState } from "react";
 import { services, reviews, pricing } from "../lib/services";
 
@@ -14,41 +19,26 @@ async function compressImage(file) {
 
     img.onload = () => {
       const canvas = document.createElement("canvas");
-      const maxWidth = 500;
+      const maxWidth = 1280;
       const scale = Math.min(maxWidth / img.width, 1);
       canvas.width = Math.round(img.width * scale);
       canvas.height = Math.round(img.height * scale);
       canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
       canvas.toBlob((blob) => {
         resolve(new File([blob], `photo-${Date.now()}.jpg`, { type: "image/jpeg" }));
-      }, "image/jpeg", 0.3);
+      }, "image/jpeg", 0.7);
     };
 
     reader.readAsDataURL(file);
   });
 }
 
-function Navbar() {
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-black/10">
-      <div className="max-w-7xl mx-auto px-5 h-20 flex items-center justify-between">
-        <a href="/" className="text-3xl font-black tracking-tight">Handy<span className="text-orange-500">Yet</span></a>
-        <div className="hidden md:flex gap-8 font-bold text-sm text-zinc-700">
-          <a href="/services" className="hover:text-orange-500">Services</a>
-          <a href="/#work" className="hover:text-orange-500">Work</a>
-          <a href="/pricing" className="hover:text-orange-500">Pricing</a>
-          <a href="/reviews" className="hover:text-orange-500">Reviews</a>
-        </div>
-        <a href="/#quote" className="bg-black text-white px-6 py-3 rounded-full font-black hover:bg-orange-500 hover:text-black transition">Get Quote</a>
-      </div>
-    </nav>
-  );
-}
-
 export default function Home() {
   const photoInputRef = useRef(null);
   const [status, setStatus] = useState("");
   const [filesCount, setFilesCount] = useState(0);
+  const [address, setAddress] = useState("");
+  const [booking, setBooking] = useState(null);
 
   const handleQuoteSubmit = async (e) => {
     e.preventDefault();
@@ -62,12 +52,15 @@ export default function Home() {
       formData.append("address", form.address.value);
       formData.append("service", form.service.value);
       formData.append("issue", form.issue.value);
+      if (booking) formData.append("booking", `${booking.date.toDateString()} at ${booking.time}`);
 
       const files = Array.from(photoInputRef.current?.files || []);
-      for (const file of files.slice(0, 10)) {
-        const compressed = await compressImage(file);
-        formData.append("photos", compressed);
-      }
+const compressedFiles = await Promise.all(
+  files.slice(0, 10).map((file) => compressImage(file))
+);
+for (const compressed of compressedFiles) {
+  formData.append("photos", compressed);
+}
 
       const res = await fetch("/api/quote", { method: "POST", body: formData });
       const data = await res.json();
@@ -134,10 +127,14 @@ export default function Home() {
         <p className="text-orange-500 font-black uppercase tracking-widest">Recent Work</p>
         <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 mb-12">Real work.<br />Clean results.</h2>
         <div className="grid md:grid-cols-3 gap-5">
-          {["/images/project-1.jpg", "/images/project-2.jpg", "/images/project-3.jpg"].map((img, i) => (
-            <div key={img} className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition">
-              <img src={img} alt="HandyYet project" className="w-full h-80 object-cover bg-zinc-200" />
-              <div className="p-6"><h3 className="text-2xl font-black">Project #{i + 1}</h3><p className="mt-3 text-zinc-500">Before/after ready handyman work.</p></div>
+          {[
+            { img: "/images/project-1.jpg", title: "Custom Wall Build", text: "Decorative wall panel, lit shelving, and custom cabinets installed." },
+            { img: "/images/project-2.jpg", title: "Fountain Repair", text: "Waterproofing and full repaint of an outdoor fountain." },
+            { img: "/images/project-3.jpg", title: "Garbage Disposal Switch", text: "In-sink button installed for garbage disposal control." },
+          ].map((item) => (
+            <div key={item.img} className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition">
+              <img src={item.img} alt={item.title} className="w-full h-80 object-cover bg-zinc-200" />
+              <div className="p-6"><h3 className="text-2xl font-black">{item.title}</h3><p className="mt-3 text-zinc-500">{item.text}</p></div>
             </div>
           ))}
         </div>
@@ -158,18 +155,31 @@ export default function Home() {
       </section>
 
       <section id="reviews" className="max-w-7xl mx-auto px-5 py-20">
-        <div className="bg-zinc-950 text-white rounded-[44px] p-8 md:p-14">
-          <p className="text-orange-400 font-black uppercase tracking-widest">Reviews</p>
-          <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">Built on trust.</h2>
-          <div className="grid md:grid-cols-3 gap-5 mt-12">
-            {reviews.map((review) => (
-              <div key={review.name} className="bg-white/10 rounded-[32px] p-6 border border-white/10">
-                <p className="text-orange-400 text-xl">★★★★★</p>
-                <p className="mt-5 text-lg leading-relaxed">“{review.text}”</p>
-                <p className="mt-6 font-black">{review.name}</p>
+        <p className="text-orange-500 font-black uppercase tracking-widest">Reviews</p>
+        <div className="flex items-end justify-between mt-3 mb-10 flex-wrap gap-4">
+          <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">85 reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
+          <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-zinc-100 transition">See all →</a>
+        </div>
+        <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory -mx-5 px-5">
+          {[
+            { text: "Nikita was responsive, communicative, professional, skilled and quick. He did a quality job. I would book him again in a heartbeat.", service: "Electrical", date: "Mar 7, 2026" },
+            { text: "He arrived on time, communicated clearly, and did a great job replacing my faucet. Everything completed efficiently and professionally. Highly recommend.", service: "Plumbing", date: "Mar 23, 2026" },
+            { text: "Amazing job. Super efficient, knowledgeable, and worked with great attention to detail. Everything was done perfectly. Beyond 5 stars!", service: "Light Carpentry", date: "Jun 13, 2026" },
+            { text: "Nikita did an amazing job hanging up my artwork and lights, super precise and quick! He also replaced my bathroom exhaust fan. Highly recommend!", service: "General Mounting", date: "Mar 18, 2026" },
+            { text: "Five stars for speed! Our disposal died and Nikita had the new one installed and tested before I could even finish my coffee. Truly efficient.", service: "Plumbing", date: "Apr 1, 2026" },
+            { text: "I had a wonderful experience with Nikita! He showed up on time, kept things clean and explained everything before and after the job. Would definitely call him again.", service: "Electrical", date: "Mar 29, 2026" },
+            { text: "Nikita was absolutely fantastic! He replaced my shower cartridge, changed toilet seats, and hung pictures throughout my house. My go-to guy!", service: "Plumbing", date: "Apr 3, 2026" },
+            { text: "Nik was excellent in several tasks: electrical, cabinet assembly, door knob fix, water heater. Great attention to detail and very professional.", service: "Electrical", date: "Apr 3, 2026" },
+          ].map((review, i) => (
+            <div key={i} className="min-w-[300px] md:min-w-[360px] snap-start bg-white rounded-[28px] p-7 border border-black/10 shadow-sm flex-shrink-0">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-xs font-black bg-orange-100 text-orange-700 px-3 py-1 rounded-full">{review.service}</span>
+                <span className="text-zinc-400 text-sm font-bold">{review.date}</span>
               </div>
-            ))}
-          </div>
+              <p className="text-orange-500 mt-4">★★★★★</p>
+              <p className="mt-3 text-zinc-700 leading-relaxed">"{review.text}"</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -187,11 +197,13 @@ export default function Home() {
           <form onSubmit={handleQuoteSubmit} className="bg-white rounded-[40px] p-6 md:p-8 grid gap-4 shadow-2xl border border-black/10">
             <input name="name" type="text" placeholder="Your name" required className="input-premium" />
             <input name="phone" type="tel" inputMode="numeric" pattern="[0-9]{10}" maxLength="10" placeholder="Phone number" required onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '').slice(0, 10); }} className="input-premium" />
-            <input name="address" type="text" placeholder="Address" required className="input-premium" />
+            <AddressAutocomplete value={address} onChange={setAddress} className="input-premium" />
+            <input type="hidden" name="address" value={address} />
             <select name="service" className="input-premium" defaultValue="General quote">
               <option>General quote</option>
               {services.map((service) => <option key={service.slug}>{service.title}</option>)}
             </select>
+            <BookingCalendar value={booking} onChange={setBooking} />
             <textarea name="issue" placeholder="Describe the issue" required rows={5} className="input-premium resize-none" />
             <div className="bg-zinc-100 rounded-3xl p-5">
               <label className="text-sm font-black text-zinc-600">Upload photos</label>

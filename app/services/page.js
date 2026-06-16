@@ -1,8 +1,12 @@
 import { services } from "../../lib/services";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
-function Navbar() {
-  return <nav className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-black/10"><div className="max-w-7xl mx-auto px-5 h-20 flex items-center justify-between"><a href="/" className="text-3xl font-black">Handy<span className="text-orange-500">Yet</span></a><a href="/#quote" className="bg-black text-white px-6 py-3 rounded-full font-black">Get Quote</a></div></nav>;
-}
+export const metadata = {
+  title: "Services | HandyYet",
+  description:
+    "Browse HandyYet's handyman services: TV mounting, furniture assembly, smart home setup, and small home repairs in Orange County.",
+};
 
 export default function ServicesPage() {
   return (
@@ -15,11 +19,16 @@ export default function ServicesPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
           {services.map((service) => (
             <a href={`/services/${service.slug}`} key={service.slug} className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-2 hover:shadow-2xl transition duration-300">
-              <div className="text-5xl">{service.icon}</div><h2 className="text-2xl font-black mt-6">{service.title}</h2><p className="mt-3 text-zinc-500 leading-relaxed">{service.short}</p><p className="mt-5 text-orange-500 font-black">{service.price}</p><div className="mt-6 font-black text-orange-500">Learn more →</div>
+              <div className="text-5xl">{service.icon}</div>
+              <h2 className="text-2xl font-black mt-6">{service.title}</h2>
+              <p className="mt-3 text-zinc-500 leading-relaxed">{service.short}</p>
+              <p className="mt-5 text-orange-500 font-black">{service.price}</p>
+              <div className="mt-6 font-black text-orange-500">Learn more →</div>
             </a>
           ))}
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
