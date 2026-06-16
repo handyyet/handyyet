@@ -55,7 +55,7 @@ export default function Navbar() {
           {links.map((l, i) => (
             <a key={l.href} href={l.href} onClick={() => setOpen(false)}
               style={{ transitionDelay: open ? `${i * 60}ms` : "0ms" }}
-              className={`text-5xl font-black py-5 border-b border-black/06 hover:text-orange-500 transition-all duration-300 ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}>
+              className={`text-3xl font-bold py-4 border-b border-black/06 text-zinc-800 hover:text-orange-500 transition-all duration-300 tracking-tight ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}>
               {l.label}
             </a>
           ))}

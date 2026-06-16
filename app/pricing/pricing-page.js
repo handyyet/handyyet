@@ -119,10 +119,10 @@ export default function PricingPage() {
 
       {/* Bottom CTA */}
       <section className="max-w-7xl mx-auto px-5 pb-28">
-        <div className="bg-zinc-950 text-white rounded-[44px] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="bg-white border border-black/10 rounded-[44px] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
           <div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight">Not sure about the price?</h2>
-            <p className="mt-4 text-zinc-400 text-xl">Send photos — we'll give you an exact quote in minutes.</p>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-zinc-950">Not sure about the price?</h2>
+            <p className="mt-4 text-zinc-500 text-xl">Send photos — we'll give you an exact quote in minutes.</p>
           </div>
           <a href="/#quote" className="bg-orange-500 text-black px-10 py-6 rounded-full font-black text-xl whitespace-nowrap hover:scale-105 transition shadow-xl">
             Send Photos →
