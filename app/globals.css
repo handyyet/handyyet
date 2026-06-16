@@ -5,48 +5,68 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: #111; }
 
-/* Fade up animation */
+/* ── Page load fade-in ── */
+@keyframes pageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+body { animation: pageIn 0.4s ease both; }
+
+/* ── Hero fade-up (used on hero elements) ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(32px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-up { animation: fadeUp .7s ease both; }
+.animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-fade-up-1 { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+.animate-fade-up-2 { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s both; }
+.animate-fade-up-3 { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.35s both; }
 
-/* Scroll reveal */
+/* ── Scroll reveal ── */
 .reveal {
   opacity: 0;
-  transform: translateY(36px);
-  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  transform: translateY(40px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+              transform 0.75s cubic-bezier(0.16,1,0.3,1);
 }
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
 
-/* Scale on hover */
-.hover-lift {
-  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+/* ── Scale reveal (for images) ── */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.96) translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+              transform 0.8s cubic-bezier(0.16,1,0.3,1);
 }
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
+/* ── Input styles ── */
 .input-premium {
-  width: 100%; border-radius: 22px; background: #f4f4f5; color: #111;
-  padding: 18px 20px; outline: none; border: 1.5px solid rgba(0,0,0,.06);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  border-radius: 22px;
+  background: #f4f4f5;
+  color: #111;
+  padding: 18px 20px;
+  outline: none;
+  border: 1.5px solid rgba(0,0,0,.06);
   font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input-premium:focus {
   border-color: #ff6a00;
   box-shadow: 0 0 0 3px rgba(255,106,0,.15);
 }
 
-/* Hide scrollbar */
+/* ── Hide scrollbar ── */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

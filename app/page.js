@@ -89,15 +89,15 @@ for (const compressed of compressedFiles) {
       <section className="relative pt-36 md:pt-44 pb-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0026,transparent_35%)]" />
         <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
-          <div className="animate-fade-up">
-            <h1 className="mt-7 text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span></h1>
-            <p className="mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed">Premium handyman help for mounting, assembly, smart home setup, and small repairs. Send photos and get a fast estimate.</p>
-            <div className="mt-9 flex flex-wrap gap-4">
+          <div>
+            <h1 className="animate-fade-up text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span></h1>
+            <p className="animate-fade-up-1 mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed">Premium handyman help for mounting, assembly, smart home setup, and small repairs. Send photos and get a fast estimate.</p>
+            <div className="animate-fade-up-2 mt-9 flex flex-wrap gap-4">
               <a href="#quote" className="bg-orange-500 text-black px-8 py-5 rounded-full font-black shadow-xl hover:scale-105 transition">Send Photos</a>
               <a href="/services" className="bg-white border border-black/10 px-8 py-5 rounded-full font-black hover:bg-zinc-100 transition">View Services</a>
             </div>
           </div>
-          <div className="relative animate-fade-up">
+          <div className="relative animate-fade-up-3">
             <div className="bg-white rounded-[44px] p-3 shadow-2xl border border-black/10 rotate-1 hover:rotate-0 transition duration-500">
               <img src="/images/hero.jpg" alt="HandyYet project" className="rounded-[36px] w-full h-[520px] object-cover bg-zinc-200" />
             </div>
@@ -135,11 +135,13 @@ for (const compressed of compressedFiles) {
             { img: "/images/project-1.jpg", title: "Custom Wall Build", text: "Decorative wall panel, lit shelving, and custom cabinets installed." },
             { img: "/images/project-2.jpg", title: "Fountain Repair", text: "Waterproofing and full repaint of an outdoor fountain." },
             { img: "/images/project-3.jpg", title: "Garbage Disposal Switch", text: "In-sink button installed for garbage disposal control." },
-          ].map((item) => (
-            <div key={item.img} className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition">
-              <img src={item.img} alt={item.title} className="w-full h-80 object-cover bg-zinc-200" />
-              <div className="p-6"><h3 className="text-2xl font-black">{item.title}</h3><p className="mt-3 text-zinc-500">{item.text}</p></div>
-            </div>
+          ].map((item, i) => (
+            <ScrollReveal key={item.img} delay={Math.min(i+1,3)} scale>
+              <div className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition h-full">
+                <img src={item.img} alt={item.title} className="w-full h-80 object-cover bg-zinc-200" />
+                <div className="p-6"><h3 className="text-2xl font-black">{item.title}</h3><p className="mt-3 text-zinc-500">{item.text}</p></div>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
