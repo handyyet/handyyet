@@ -6,7 +6,6 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <a href="/" className="text-2xl font-black">Handy<span className="text-orange-500">Yet</span></a>
-            <p className="text-zinc-500 mt-3 leading-relaxed">Premium handyman services in Orange County, CA.</p>
             <div className="flex gap-3 mt-5">
               <a href="https://www.yelp.com/biz/handyyet" target="_blank" rel="noopener noreferrer"
                 className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-black text-sm hover:bg-red-600 transition">Y</a>

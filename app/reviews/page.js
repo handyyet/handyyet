@@ -64,15 +64,15 @@ export default function ReviewsPage() {
 
       {/* Stats */}
       <section className="max-w-7xl mx-auto px-5 pb-20">
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-3 gap-3 md:gap-5">
           {[
             { num: "85", label: "Total reviews" },
-            { num: "5.0", label: "Average rating" },
-            { num: "100%", label: "5-star reviews" },
+            { num: "5.0", label: "Avg rating" },
+            { num: "100%", label: "5-star" },
           ].map((s) => (
-            <div key={s.label} className="bg-white rounded-[32px] p-8 border border-black/10 text-center">
-              <p className="text-5xl md:text-6xl font-black text-orange-500">{s.num}</p>
-              <p className="text-zinc-500 font-bold mt-2">{s.label}</p>
+            <div key={s.label} className="bg-white rounded-[24px] p-5 md:p-8 border border-black/10 text-center">
+              <p className="text-3xl md:text-6xl font-black text-orange-500">{s.num}</p>
+              <p className="text-zinc-500 font-bold mt-1 text-xs md:text-base">{s.label}</p>
             </div>
           ))}
         </div>
@@ -80,9 +80,9 @@ export default function ReviewsPage() {
 
       {/* Reviews grid */}
       <section className="max-w-7xl mx-auto px-5 pb-28">
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {reviews.map((review, i) => (
-            <div key={i} className="break-inside-avoid bg-white rounded-[28px] p-7 border border-black/10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
+            <div key={i} className="bg-white rounded-[24px] p-5 md:p-7 border border-black/10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <span className={`text-xs font-black px-3 py-1 rounded-full ${serviceColors[review.service] || "bg-zinc-100 text-zinc-700"}`}>
                   {review.service}
@@ -90,7 +90,7 @@ export default function ReviewsPage() {
                 <span className="text-zinc-400 text-sm font-bold">{review.date}</span>
               </div>
               <p className="text-orange-400 mt-4">★★★★★</p>
-              <p className="mt-3 text-zinc-700 leading-relaxed">"{review.text}"</p>
+              <p className="mt-3 text-zinc-700 leading-snug text-[15px]">"{review.text}"</p>
             </div>
           ))}
         </div>
