@@ -22,6 +22,7 @@ export async function POST(req) {
     const service = clean(formData.get("service"), 100) || "General quote";
     const issue = clean(formData.get("issue"), 2000) || "Not provided";
     const booking = clean(formData.get("booking"), 100) || "Not specified";
+    const email = clean(formData.get("email"), 200) || "Not provided";
     const photos = formData.getAll("photos") || [];
 
     const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -51,6 +52,8 @@ export async function POST(req) {
 🔧 Service: ${service}
 
 📅 Booking: ${booking}
+
+📧 Email: ${email}
 
 📋 Issue:
 ${issue}

@@ -51,6 +51,7 @@ export default function Home() {
       formData.append("phone", form.phone.value);
       formData.append("address", form.address.value);
       formData.append("service", form.service.value);
+      if (form.email.value) formData.append("email", form.email.value);
       formData.append("issue", form.issue.value);
       if (booking) formData.append("booking", `${booking.date.toDateString()} at ${booking.time}`);
 
@@ -160,7 +161,7 @@ for (const compressed of compressedFiles) {
           <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">85 reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
           <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-zinc-100 transition">See all →</a>
         </div>
-        <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory -mx-5 px-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { text: "Nikita was responsive, communicative, professional, skilled and quick. He did a quality job. I would book him again in a heartbeat.", service: "Electrical", date: "Mar 7, 2026" },
             { text: "He arrived on time, communicated clearly, and did a great job replacing my faucet. Everything completed efficiently and professionally. Highly recommend.", service: "Plumbing", date: "Mar 23, 2026" },
@@ -168,16 +169,14 @@ for (const compressed of compressedFiles) {
             { text: "Nikita did an amazing job hanging up my artwork and lights, super precise and quick! He also replaced my bathroom exhaust fan. Highly recommend!", service: "General Mounting", date: "Mar 18, 2026" },
             { text: "Five stars for speed! Our disposal died and Nikita had the new one installed and tested before I could even finish my coffee. Truly efficient.", service: "Plumbing", date: "Apr 1, 2026" },
             { text: "I had a wonderful experience with Nikita! He showed up on time, kept things clean and explained everything before and after the job. Would definitely call him again.", service: "Electrical", date: "Mar 29, 2026" },
-            { text: "Nikita was absolutely fantastic! He replaced my shower cartridge, changed toilet seats, and hung pictures throughout my house. My go-to guy!", service: "Plumbing", date: "Apr 3, 2026" },
-            { text: "Nik was excellent in several tasks: electrical, cabinet assembly, door knob fix, water heater. Great attention to detail and very professional.", service: "Electrical", date: "Apr 3, 2026" },
           ].map((review, i) => (
-            <div key={i} className="min-w-[300px] md:min-w-[360px] snap-start bg-white rounded-[28px] p-7 border border-black/10 shadow-sm flex-shrink-0">
-              <div className="flex items-center justify-between gap-3">
+            <div key={i} className="bg-white rounded-[24px] p-6 border border-black/10 shadow-sm flex flex-col">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
                 <span className="text-xs font-black bg-orange-100 text-orange-700 px-3 py-1 rounded-full">{review.service}</span>
-                <span className="text-zinc-400 text-sm font-bold">{review.date}</span>
+                <span className="text-zinc-400 text-xs font-bold">{review.date}</span>
               </div>
               <p className="text-orange-500 mt-4">★★★★★</p>
-              <p className="mt-3 text-zinc-700 leading-relaxed">"{review.text}"</p>
+              <p className="mt-3 text-zinc-600 leading-relaxed text-sm flex-1">"{review.text}"</p>
             </div>
           ))}
         </div>
@@ -197,6 +196,7 @@ for (const compressed of compressedFiles) {
           <form onSubmit={handleQuoteSubmit} className="bg-white rounded-[40px] p-6 md:p-8 grid gap-4 shadow-2xl border border-black/10">
             <input name="name" type="text" placeholder="Your name" required className="input-premium" />
             <input name="phone" type="tel" inputMode="numeric" pattern="[0-9]{10}" maxLength="10" placeholder="Phone number" required onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '').slice(0, 10); }} className="input-premium" />
+            <input name="email" type="email" placeholder="Email (optional)" className="input-premium" />
             <AddressAutocomplete value={address} onChange={setAddress} className="input-premium" />
             <input type="hidden" name="address" value={address} />
             <select name="service" className="input-premium" defaultValue="General quote">
