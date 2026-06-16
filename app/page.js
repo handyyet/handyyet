@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AddressAutocomplete from "./components/AddressAutocomplete";
 import BookingCalendar from "./components/BookingCalendar";
+import ScrollReveal from "./components/ScrollReveal";
+import SmartButton from "./components/SmartButton";
 
 import { useRef, useState } from "react";
 import { services, reviews, pricing } from "../lib/services";
@@ -88,7 +90,6 @@ for (const compressed of compressedFiles) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0026,transparent_35%)]" />
         <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
           <div className="animate-fade-up">
-            <p className="inline-flex bg-white border border-black/10 rounded-full px-4 py-2 font-black text-sm shadow-sm">⭐ Orange County • Southern California</p>
             <h1 className="mt-7 text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span></h1>
             <p className="mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed">Premium handyman help for mounting, assembly, smart home setup, and small repairs. Send photos and get a fast estimate.</p>
             <div className="mt-9 flex flex-wrap gap-4">
@@ -112,14 +113,16 @@ for (const compressed of compressedFiles) {
         <p className="text-orange-500 font-black uppercase tracking-widest">Services</p>
         <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 mb-12">One call.<br />Many fixes.</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {services.map((service) => (
-            <a key={service.slug} href={`/services/${service.slug}`} className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-2 hover:shadow-2xl transition duration-300">
+          {services.map((service, i) => (
+            <ScrollReveal key={service.slug} delay={Math.min(i+1,4)}>
+            <a href={`/services/${service.slug}`} className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-2 hover:shadow-2xl transition duration-300 block">
               <div className="text-5xl">{service.icon}</div>
               <h3 className="text-2xl font-black mt-6">{service.title}</h3>
               <p className="mt-3 text-zinc-500 leading-relaxed">{service.short}</p>
               <p className="mt-5 text-orange-500 font-black">{service.price}</p>
               <div className="mt-6 font-black text-orange-500 group-hover:translate-x-2 transition">Learn more →</div>
             </a>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -141,19 +144,7 @@ for (const compressed of compressedFiles) {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-5 py-20">
-        <p className="text-orange-500 font-black uppercase tracking-widest">Pricing</p>
-        <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 mb-12">Simple starting prices.</h2>
-        <div className="grid md:grid-cols-3 gap-5">
-          {pricing.map((item) => (
-            <div key={item.title} className="bg-white rounded-[32px] p-8 border border-black/10 shadow-sm">
-              <h3 className="text-2xl font-black">{item.title}</h3>
-              <p className="text-5xl font-black text-orange-500 mt-5">{item.price}</p>
-              <p className="mt-5 text-zinc-500 leading-relaxed">{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       <section id="reviews" className="max-w-7xl mx-auto px-5 py-20">
         <p className="text-orange-500 font-black uppercase tracking-widest">Reviews</p>
@@ -161,7 +152,7 @@ for (const compressed of compressedFiles) {
           <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">85 reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
           <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-zinc-100 transition">See all →</a>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { text: "Nikita was responsive, communicative, professional, skilled and quick. He did a quality job. I would book him again in a heartbeat.", service: "Electrical", date: "Mar 7, 2026" },
             { text: "He arrived on time, communicated clearly, and did a great job replacing my faucet. Everything completed efficiently and professionally. Highly recommend.", service: "Plumbing", date: "Mar 23, 2026" },
@@ -176,7 +167,7 @@ for (const compressed of compressedFiles) {
                 <span className="text-zinc-400 text-xs font-bold">{review.date}</span>
               </div>
               <p className="text-orange-500 mt-4">★★★★★</p>
-              <p className="mt-3 text-zinc-600 leading-relaxed text-sm flex-1">"{review.text}"</p>
+              <p className="mt-3 text-zinc-700 leading-snug text-[15px] flex-1">"{review.text}"</p>
             </div>
           ))}
         </div>
@@ -217,7 +208,7 @@ for (const compressed of compressedFiles) {
         </div>
       </section>
 
-      <a href="#quote" className="fixed bottom-5 left-5 right-5 z-50 md:hidden bg-orange-500 text-black rounded-full py-5 text-center font-black shadow-2xl">Send Photos & Get Quote</a>
+      <SmartButton />
       <footer className="border-t border-black/10 py-10 text-center text-zinc-500">© 2026 HandyYet LLC. Snap. Solve. Repair.</footer>
     </main>
   );
