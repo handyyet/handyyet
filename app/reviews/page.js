@@ -98,14 +98,23 @@ export default function ReviewsPage() {
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-5 pb-28">
-        <div className="bg-white border border-black/10 rounded-[44px] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-zinc-950">Join 85+ happy clients.</h2>
-            <p className="mt-4 text-zinc-500 text-xl">Send photos and get a fast quote today.</p>
+        <div className="relative bg-zinc-950 rounded-[36px] overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,#ff6a0030,transparent_60%)]" />
+          <div className="relative p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div>
+              <p className="text-orange-500 font-black uppercase tracking-widest text-sm">Get Started</p>
+              <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mt-2">Join 85+ happy clients.</h2>
+              <p className="mt-3 text-zinc-400 text-lg">Send photos and get a fast quote today.</p>
+            </div>
+            <div className="flex flex-col gap-3 w-full md:w-auto">
+              <a href="/#quote" className="bg-orange-500 text-black px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-orange-400 hover:scale-105 transition shadow-xl">
+                Send Photos →
+              </a>
+              <a href="tel:+19498283959" className="bg-white/10 text-white px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-white/20 transition">
+                📞 (949) 828-3959
+              </a>
+            </div>
           </div>
-          <a href="/#quote" className="bg-orange-500 text-black px-10 py-6 rounded-full font-black text-xl whitespace-nowrap hover:scale-105 transition shadow-xl">
-            Get Quote →
-          </a>
         </div>
       </section>
 

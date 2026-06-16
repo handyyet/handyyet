@@ -17,7 +17,7 @@ export default function Footer() {
 
           {/* Yelp + Google icons */}
           <div className="flex items-center gap-3">
-            <a href="https://www.yelp.com/search?find_desc=handyyet&find_loc=Orange+County%2C+CA" target="_blank" rel="noopener noreferrer"
+            <a href="https://m.yelp.com/biz/handyyet-huntington-beach" target="_blank" rel="noopener noreferrer"
               className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-black text-sm hover:bg-red-600 transition shadow-sm">Y</a>
             <a href="https://www.google.com/search?q=handyyet+orange+county" target="_blank" rel="noopener noreferrer"
               className="w-10 h-10 bg-white border border-black/10 rounded-full flex items-center justify-center font-black text-sm hover:bg-zinc-100 transition shadow-sm">G</a>
