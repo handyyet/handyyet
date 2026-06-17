@@ -19,6 +19,10 @@ export default async function ServicePage({ params }) {
   const service = services.find((item) => item.slug === slug);
   if (!service) notFound();
 
+  const isHandyman = slug === "handyman-repairs";
+  const ctaLabel = isHandyman ? "Book Now" : "Get Quote";
+  const timeLabel = isHandyman ? "Booking time" : "Estimated time";
+
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950">
       <Navbar />
@@ -31,7 +35,7 @@ export default async function ServicePage({ params }) {
           <p className="mt-6 text-lg text-zinc-600 leading-relaxed">{service.description}</p>
           <p className="mt-5 text-3xl font-black text-orange-500">{service.price}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="/#quote" className="bg-orange-500 text-black px-7 py-4 rounded-full font-black shadow-xl hover:scale-105 transition">Get Quote</a>
+            <a href="/#quote" className="bg-orange-500 text-black px-7 py-4 rounded-full font-black shadow-xl hover:scale-105 transition">{ctaLabel}</a>
             <a href="/services" className="bg-white border border-black/10 px-7 py-4 rounded-full font-black hover:bg-zinc-100 transition">All Services</a>
           </div>
         </div>
@@ -45,7 +49,7 @@ export default async function ServicePage({ params }) {
       <section className="max-w-7xl mx-auto px-5 pb-16">
         <div className="grid grid-cols-3 gap-3 md:gap-5">
           {[
-            { icon: "⏱️", label: "Estimated time", value: service.time },
+            { icon: "⏱️", label: timeLabel, value: service.time },
             { icon: "📊", label: "Difficulty", value: service.difficulty },
             { icon: "📦", label: "Materials", value: service.materials },
           ].map((item) => (
@@ -145,14 +149,14 @@ export default async function ServicePage({ params }) {
               <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mt-2">Ready to book?</h2>
               <p className="mt-3 text-zinc-400 text-lg">Send photos — we'll reply with a quote fast.</p>
               <div className="flex flex-wrap gap-3 mt-5">
-                {["No phone calls", "Fast response", "Fair pricing"].map(f => (
+                {["No phone calls", "Fast response", isHandyman ? "$70/hr — no surprises" : "Fair pricing"].map(f => (
                   <span key={f} className="bg-white/10 text-white text-sm font-bold px-4 py-2 rounded-full">✓ {f}</span>
                 ))}
               </div>
             </div>
             <div className="flex flex-col gap-3 w-full md:w-auto">
               <a href="/#quote" className="bg-orange-500 text-black px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-orange-400 hover:scale-105 transition shadow-xl">
-                Send Photos →
+                {ctaLabel} →
               </a>
               <a href="tel:+19498283959" className="bg-white/10 text-white px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-white/20 transition">
                 📞 (949) 828-3959
