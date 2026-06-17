@@ -11,6 +11,7 @@ const categories = [
     icon: "⚡",
     title: "Electrical",
     image: "/images/electrical-2.jpg",
+    hourly: false,
     items: [
       { name: "Outlet / Switch Replacement", price: "$79", desc: "Safe swap of standard outlets or switches." },
       { name: "Ceiling Fan Installation", price: "$109", desc: "Full install with wiring and balancing." },
@@ -23,6 +24,7 @@ const categories = [
     icon: "🔧",
     title: "Plumbing",
     image: "/images/plumbing-2.jpg",
+    hourly: false,
     items: [
       { name: "Faucet Replacement", price: "$99", desc: "New faucet installed with drain assembly." },
       { name: "Toilet Repair / Replace", price: "$115", desc: "Flapper, fill valve, or full replacement." },
@@ -34,6 +36,7 @@ const categories = [
     icon: "📺",
     title: "Mounting & Assembly",
     image: "/images/tv-mounting-1.jpg",
+    hourly: false,
     items: [
       { name: "TV Mounting", price: "$89", desc: "Secure mount on drywall, studs, or brick." },
       { name: "Furniture Assembly", price: "$75", desc: "IKEA, Wayfair, Amazon and more." },
@@ -45,6 +48,7 @@ const categories = [
     icon: "🏠",
     title: "Smart Home",
     image: "/images/smart-1.jpg",
+    hourly: false,
     items: [
       { name: "Smart Thermostat", price: "$85", desc: "Nest, Ecobee, or Honeywell install." },
       { name: "Doorbell / Camera Install", price: "$79", desc: "Ring, Nest, Arlo setup and mounting." },
@@ -53,12 +57,16 @@ const categories = [
   },
   {
     icon: "🛠️",
-    title: "General Repairs",
+    title: "Handyman",
     image: "/images/repair-1.jpg",
+    hourly: true,
     items: [
-      { name: "Door Hardware", price: "$69", desc: "Handle, lock, hinge replacement." },
-      { name: "Caulking & Touch-ups", price: "$59", desc: "Kitchen, bath, windows resealed." },
-      { name: "Custom Wall Build", price: "$225", desc: "Panels, shelving, and cabinet installs." },
+      { name: "Door hardware & hinges", desc: "Handle, lock, hinge replacement." },
+      { name: "Shelving & mounting", desc: "Floating shelves, brackets, gallery walls." },
+      { name: "Caulking & touch-ups", desc: "Kitchen, bath, windows resealed." },
+      { name: "Drywall patches", desc: "Small to medium holes patched and sanded." },
+      { name: "Curtain rods & blinds", desc: "Rods, shades, and blinds installed level." },
+      { name: "Fixture swaps & more", desc: "Any small home repair or maintenance job." },
     ],
   },
 ];
@@ -101,16 +109,63 @@ export default function PricingPage() {
               </div>
 
               {/* Items */}
-              <div className="p-8 divide-y divide-black/5">
-                {cat.items.map((item) => (
-                  <div key={item.name} className="flex items-start justify-between gap-6 py-4 first:pt-0 last:pb-0">
-                    <div>
-                      <p className="font-black text-lg">{item.name}</p>
-                      <p className="text-zinc-500 text-sm mt-1">{item.desc}</p>
+              <div className="p-8">
+                {cat.hourly ? (
+                  <>
+                    {/* Hourly rate */}
+                    <div className="mb-6 pb-6 border-b border-black/5">
+                      <div className="flex items-center gap-4 mb-5">
+                        <div>
+                          <p className="text-5xl font-black text-orange-500">$70<span className="text-2xl text-zinc-400">/hr</span></p>
+                          <p className="text-zinc-500 text-sm mt-1">1 hour minimum · any job · any difficulty</p>
+                        </div>
+                        <a href="/#quote" className="ml-auto bg-orange-500 text-black px-6 py-3 rounded-full font-black text-sm whitespace-nowrap hover:scale-105 transition shadow-md">
+                          Book Now →
+                        </a>
+                      </div>
+                      {/* Bundle deals */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-orange-50 border border-orange-200 rounded-[20px] p-4">
+                          <p className="text-zinc-400 text-sm font-black">5 hours</p>
+                          <div className="flex items-baseline gap-2 mt-1">
+                            <p className="text-3xl font-black text-orange-500">$300</p>
+                            <p className="text-zinc-400 text-sm line-through">$350</p>
+                          </div>
+                        </div>
+                        <div className="bg-orange-50 border border-orange-200 rounded-[20px] p-4">
+                          <p className="text-zinc-400 text-sm font-black">8 hours</p>
+                          <div className="flex items-baseline gap-2 mt-1">
+                            <p className="text-3xl font-black text-orange-500">$450</p>
+                            <p className="text-zinc-400 text-sm line-through">$560</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-orange-500 font-black text-xl whitespace-nowrap">{item.price}</p>
+                    <div className="divide-y divide-black/5">
+                      {cat.items.map((item) => (
+                        <div key={item.name} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0">
+                          <div className="text-orange-500 font-black mt-0.5">✓</div>
+                          <div>
+                            <p className="font-black">{item.name}</p>
+                            <p className="text-zinc-500 text-sm mt-0.5">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="divide-y divide-black/5">
+                    {cat.items.map((item) => (
+                      <div key={item.name} className="flex items-start justify-between gap-6 py-4 first:pt-0 last:pb-0">
+                        <div>
+                          <p className="font-black text-lg">{item.name}</p>
+                          <p className="text-zinc-500 text-sm mt-1">{item.desc}</p>
+                        </div>
+                        <p className="text-orange-500 font-black text-xl whitespace-nowrap">{item.price}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
