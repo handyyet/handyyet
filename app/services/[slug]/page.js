@@ -6,11 +6,73 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
 
+// ─── Photo Modal (mobile tap) ──────────────────────────────────────────────────
+function PhotoModal({ image, onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-end justify-center md:items-center px-0 md:px-5"
+      style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)" }}
+      onClick={onClose}
+    >
+      <div
+        className="bg-white w-full md:max-w-lg rounded-t-[36px] md:rounded-[36px] overflow-hidden shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Photo */}
+        <div className="relative">
+          <img
+            src={image.src}
+            alt={image.title}
+            className="w-full h-64 object-cover"
+          />
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-9 h-9 bg-black/50 text-white rounded-full font-black text-lg flex items-center justify-center backdrop-blur-sm"
+          >
+            ×
+          </button>
+        </div>
+        {/* Info */}
+        <div className="p-7">
+          <p className="text-orange-500 font-black text-xl leading-snug">{image.title}</p>
+          <p className="text-zinc-600 mt-3 leading-relaxed">{image.desc}</p>
+          <div className="mt-5 flex flex-col gap-2">
+            <div className="flex items-center gap-3 text-sm text-zinc-500 font-bold">
+              <span className="text-lg">⏱</span><span>{image.time}</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-zinc-500 font-bold">
+              <span className="text-lg">📦</span><span>{image.materials}</span>
+            </div>
+          </div>
+          <div className="mt-5 flex items-center justify-between">
+            <span className="bg-orange-500 text-black text-xl font-black px-5 py-2.5 rounded-full">
+              {image.price}
+            </span>
+            <a
+              href="/#quote"
+              onClick={onClose}
+              className="bg-zinc-950 text-white text-sm font-black px-5 py-2.5 rounded-full hover:bg-orange-500 hover:text-black transition"
+            >
+              Book this →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Flip Card Component ───────────────────────────────────────────────────────
 function FlipCard({ image }) {
   const [flipped, setFlipped] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  // Simple image object (handyman) → plain image, no flip
+  // Handyman → plain image, no interaction
   if (!image.title) {
     return (
       <img
@@ -21,74 +83,87 @@ function FlipCard({ image }) {
     );
   }
 
+  const isTouchDevice = typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+
+  const handleClick = () => {
+    if (isTouchDevice) {
+      setModalOpen(true);
+    } else {
+      setFlipped((f) => !f);
+    }
+  };
+
   return (
-    <div
-      className="h-44 md:h-72 w-full cursor-pointer"
-      style={{ perspective: "1000px" }}
-      onClick={() => setFlipped((f) => !f)}
-      onMouseEnter={() => {
-        if (window.matchMedia("(hover: hover)").matches) setFlipped(true);
-      }}
-      onMouseLeave={() => {
-        if (window.matchMedia("(hover: hover)").matches) setFlipped(false);
-      }}
-    >
+    <>
+      {modalOpen && <PhotoModal image={image} onClose={() => setModalOpen(false)} />}
+
       <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          transformStyle: "preserve-3d",
-          transition: "transform 0.55s cubic-bezier(0.4,0,0.2,1)",
-          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        className="h-44 md:h-72 w-full cursor-pointer"
+        style={{ perspective: "1000px" }}
+        onClick={handleClick}
+        onMouseEnter={() => {
+          if (window.matchMedia("(hover: hover)").matches) setFlipped(true);
+        }}
+        onMouseLeave={() => {
+          if (window.matchMedia("(hover: hover)").matches) setFlipped(false);
         }}
       >
-        {/* Front */}
-        <div
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
-          className="absolute inset-0 rounded-[24px] overflow-hidden border border-black/10"
-        >
-          <img
-            src={image.src}
-            alt={image.title}
-            className="w-full h-full object-cover object-center bg-zinc-200"
-          />
-          {/* Hint badge */}
-          <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm md:hidden">
-            Tap for info
-          </div>
-          <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm hidden md:block">
-            Hover for info
-          </div>
-        </div>
-
-        {/* Back */}
         <div
           style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            transformStyle: "preserve-3d",
+            transition: "transform 0.55s cubic-bezier(0.4,0,0.2,1)",
+            transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
           }}
-          className="absolute inset-0 rounded-[24px] bg-zinc-950 border border-black/10 flex flex-col justify-between p-4 md:p-6"
         >
-          <div>
-            <p className="text-orange-500 font-black text-sm md:text-base leading-snug">{image.title}</p>
-            <p className="text-zinc-300 text-xs md:text-sm mt-2 leading-relaxed">{image.desc}</p>
+          {/* Front */}
+          <div
+            style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+            className="absolute inset-0 rounded-[24px] overflow-hidden border border-black/10"
+          >
+            <img
+              src={image.src}
+              alt={image.title}
+              className="w-full h-full object-cover object-center bg-zinc-200"
+            />
+            <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm md:hidden">
+              Tap for info
+            </div>
+            <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm hidden md:block">
+              Hover for info
+            </div>
           </div>
-          <div className="space-y-1.5 mt-3">
-            <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
-              <span>⏱</span><span>{image.time}</span>
+
+          {/* Back (desktop only) */}
+          <div
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+            }}
+            className="absolute inset-0 rounded-[24px] bg-zinc-950 border border-black/10 flex flex-col justify-between p-6"
+          >
+            <div>
+              <p className="text-orange-500 font-black text-base leading-snug">{image.title}</p>
+              <p className="text-zinc-300 text-sm mt-2 leading-relaxed">{image.desc}</p>
             </div>
-            <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
-              <span>📦</span><span>{image.materials}</span>
-            </div>
-            <div className="mt-2 inline-block bg-orange-500 text-black text-sm font-black px-3 py-1 rounded-full">
-              {image.price}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
+                <span>⏱</span><span>{image.time}</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
+                <span>📦</span><span>{image.materials}</span>
+              </div>
+              <div className="mt-2 inline-block bg-orange-500 text-black text-sm font-black px-3 py-1 rounded-full">
+                {image.price}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
