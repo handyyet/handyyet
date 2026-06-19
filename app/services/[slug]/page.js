@@ -1,23 +1,142 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { notFound, useParams } from "next/navigation";
 import { services } from "../../../lib/services";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { useState, useEffect } from "react";
 
-export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
+// ─── Flip Card Component ───────────────────────────────────────────────────────
+function FlipCard({ image }) {
+  const [flipped, setFlipped] = useState(false);
+
+  // Simple image object (handyman) → plain image, no flip
+  if (!image.title) {
+    return (
+      <img
+        src={image.src}
+        alt="Work photo"
+        className="rounded-[24px] h-44 md:h-72 w-full object-cover object-center bg-zinc-200 border border-black/10"
+      />
+    );
+  }
+
+  return (
+    <div
+      className="h-44 md:h-72 w-full cursor-pointer"
+      style={{ perspective: "1000px" }}
+      onClick={() => setFlipped((f) => !f)}
+      onMouseEnter={() => {
+        if (window.matchMedia("(hover: hover)").matches) setFlipped(true);
+      }}
+      onMouseLeave={() => {
+        if (window.matchMedia("(hover: hover)").matches) setFlipped(false);
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          transformStyle: "preserve-3d",
+          transition: "transform 0.55s cubic-bezier(0.4,0,0.2,1)",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+      >
+        {/* Front */}
+        <div
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+          className="absolute inset-0 rounded-[24px] overflow-hidden border border-black/10"
+        >
+          <img
+            src={image.src}
+            alt={image.title}
+            className="w-full h-full object-cover object-center bg-zinc-200"
+          />
+          {/* Hint badge */}
+          <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm md:hidden">
+            Tap for info
+          </div>
+          <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm hidden md:block">
+            Hover for info
+          </div>
+        </div>
+
+        {/* Back */}
+        <div
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+          }}
+          className="absolute inset-0 rounded-[24px] bg-zinc-950 border border-black/10 flex flex-col justify-between p-4 md:p-6"
+        >
+          <div>
+            <p className="text-orange-500 font-black text-sm md:text-base leading-snug">{image.title}</p>
+            <p className="text-zinc-300 text-xs md:text-sm mt-2 leading-relaxed">{image.desc}</p>
+          </div>
+          <div className="space-y-1.5 mt-3">
+            <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
+              <span>⏱</span><span>{image.time}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
+              <span>📦</span><span>{image.materials}</span>
+            </div>
+            <div className="mt-2 inline-block bg-orange-500 text-black text-sm font-black px-3 py-1 rounded-full">
+              {image.price}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const service = services.find((item) => item.slug === slug);
-  if (!service) return {};
-  return { title: `${service.title} | HandyYet`, description: service.description };
+// ─── Thank You Modal ───────────────────────────────────────────────────────────
+function ThankYouModal({ onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center px-5"
+      style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-[40px] p-8 md:p-12 max-w-md w-full shadow-2xl text-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="text-6xl mb-4">✅</div>
+        <h2 className="text-3xl font-black tracking-tight">Thank you!</h2>
+        <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
+          Your request has been received. We'll reach out via <span className="font-black text-zinc-950">text or email</span> shortly to confirm details and schedule your visit.
+        </p>
+        <button
+          onClick={onClose}
+          className="mt-8 w-full bg-orange-500 hover:bg-orange-400 text-black rounded-full py-4 font-black text-lg transition"
+        >
+          Got it →
+        </button>
+      </div>
+    </div>
+  );
 }
 
-export default async function ServicePage({ params }) {
-  const { slug } = await params;
+// ─── Main Page ─────────────────────────────────────────────────────────────────
+export default function ServicePage() {
+  const params = useParams();
+  const slug = params?.slug;
   const service = services.find((item) => item.slug === slug);
-  if (!service) notFound();
+
+  const [showModal, setShowModal] = useState(false);
+
+  if (!service) {
+    notFound();
+    return null;
+  }
 
   const isHandyman = slug === "handyman-repairs";
   const ctaLabel = isHandyman ? "Book Now" : "Get Quote";
@@ -25,6 +144,8 @@ export default async function ServicePage({ params }) {
 
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950">
+      {showModal && <ThankYouModal onClose={() => setShowModal(false)} />}
+
       <Navbar />
 
       {/* Hero */}
@@ -94,14 +215,20 @@ export default async function ServicePage({ params }) {
         </section>
       )}
 
-      {/* Gallery */}
+      {/* Gallery with Flip Cards */}
       <section className="max-w-7xl mx-auto px-5 pb-16">
         <p className="text-orange-500 font-black uppercase tracking-widest text-sm">Gallery</p>
-        <h2 className="text-3xl md:text-5xl font-black tracking-tight mt-2 mb-6">Example work.</h2>
+        <h2 className="text-3xl md:text-5xl font-black tracking-tight mt-2 mb-2">Example work.</h2>
+        {!isHandyman && (
+          <p className="text-zinc-400 text-sm font-bold mb-6">
+            <span className="md:hidden">Tap a photo to see details and price.</span>
+            <span className="hidden md:inline">Hover over a photo to see details and price.</span>
+          </p>
+        )}
+        {isHandyman && <div className="mb-6" />}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
           {service.images.map((img, i) => (
-            <img key={img} src={img} alt={`${service.title} ${i + 1}`}
-              className="rounded-[24px] h-44 md:h-72 w-full object-cover object-center bg-zinc-200 border border-black/10 hover:-translate-y-1 hover:shadow-xl transition duration-300" />
+            <FlipCard key={i} image={img} />
           ))}
         </div>
       </section>

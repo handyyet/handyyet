@@ -7,8 +7,41 @@ import BookingCalendar from "./components/BookingCalendar";
 import ScrollReveal from "./components/ScrollReveal";
 import SmartButton from "./components/SmartButton";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { services, reviews, pricing } from "../lib/services";
+
+// ─── Thank You Modal ───────────────────────────────────────────────────────────
+function ThankYouModal({ onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center px-5"
+      style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-[40px] p-8 md:p-12 max-w-md w-full shadow-2xl text-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="text-6xl mb-4">✅</div>
+        <h2 className="text-3xl font-black tracking-tight">Thank you!</h2>
+        <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
+          Your request has been received. We'll reach out via <span className="font-black text-zinc-950">text or email</span> shortly to confirm details and schedule your visit.
+        </p>
+        <button
+          onClick={onClose}
+          className="mt-8 w-full bg-orange-500 hover:bg-orange-400 text-black rounded-full py-4 font-black text-lg transition"
+        >
+          Got it →
+        </button>
+      </div>
+    </div>
+  );
+}
 
 async function compressImage(file) {
   return new Promise((resolve, reject) => {
@@ -38,6 +71,7 @@ async function compressImage(file) {
 export default function Home() {
   const photoInputRef = useRef(null);
   const [status, setStatus] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [filesCount, setFilesCount] = useState(0);
   const [address, setAddress] = useState("");
   const [booking, setBooking] = useState(null);
@@ -58,18 +92,19 @@ export default function Home() {
       if (booking) formData.append("booking", `${booking.date.toDateString()} at ${booking.time}`);
 
       const files = Array.from(photoInputRef.current?.files || []);
-const compressedFiles = await Promise.all(
-  files.slice(0, 10).map((file) => compressImage(file))
-);
-for (const compressed of compressedFiles) {
-  formData.append("photos", compressed);
-}
+      const compressedFiles = await Promise.all(
+        files.slice(0, 10).map((file) => compressImage(file))
+      );
+      for (const compressed of compressedFiles) {
+        formData.append("photos", compressed);
+      }
 
       const res = await fetch("/api/quote", { method: "POST", body: formData });
       const data = await res.json();
 
       if (data.success) {
         setStatus("success");
+        setShowModal(true);
         form.reset();
         setFilesCount(0);
         if (photoInputRef.current) photoInputRef.current.value = "";
@@ -84,6 +119,8 @@ for (const compressed of compressedFiles) {
 
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950 overflow-hidden">
+      {showModal && <ThankYouModal onClose={() => { setShowModal(false); setStatus(""); }} />}
+
       <Navbar />
 
       <section className="relative pt-36 md:pt-44 pb-20">
@@ -146,8 +183,6 @@ for (const compressed of compressedFiles) {
         </div>
       </section>
 
-
-
       <section id="reviews" className="max-w-7xl mx-auto px-5 py-20">
         <p className="text-orange-500 font-black uppercase tracking-widest">Reviews</p>
         <div className="flex items-end justify-between mt-3 mb-10 flex-wrap gap-4">
@@ -180,7 +215,7 @@ for (const compressed of compressedFiles) {
           <div className="lg:sticky lg:top-28">
             <p className="text-orange-500 font-black uppercase tracking-widest">Get a Quote</p>
             <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">Send photos.<br />Get a fast quote.</h2>
-            <p className="mt-6 text-xl text-zinc-600 max-w-xl leading-relaxed">Upload photos, describe the issue, and we’ll contact you with a fast estimate and next steps.</p>
+            <p className="mt-6 text-xl text-zinc-600 max-w-xl leading-relaxed">Upload photos, describe the issue, and we'll contact you with a fast estimate and next steps.</p>
             <div className="mt-8 grid gap-4 max-w-md">
               {['No long phone calls','Photo-based estimates','Fast local response'].map((item) => <div key={item} className="bg-white rounded-2xl p-4 border border-black/10 font-bold">✓ {item}</div>)}
             </div>
@@ -204,7 +239,6 @@ for (const compressed of compressedFiles) {
               <p className="text-sm text-zinc-500 mt-3">{filesCount > 0 ? `${filesCount} photo${filesCount > 1 ? 's' : ''} selected` : 'Select multiple photos from your library.'}</p>
             </div>
             <button type="submit" disabled={status === 'sending'} className="bg-orange-500 hover:bg-orange-400 text-black rounded-full py-5 font-black text-lg transition disabled:opacity-60">{status === 'sending' ? 'Sending...' : 'Request Quote'}</button>
-            {status === 'success' && <div className="bg-green-500 text-white rounded-2xl p-4 text-center font-black">Thank you. Your request is being processed.</div>}
             {status === 'error' && <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-black">Something went wrong. Please try again.</div>}
           </form>
         </div>
