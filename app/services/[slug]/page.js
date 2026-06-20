@@ -13,7 +13,7 @@ function PhotoModal({ image, serviceTitle, onClose }) {
     return () => { document.body.style.overflow = ""; };
   }, []);
 
-  const quoteUrl = `/#quote?service=${encodeURIComponent(serviceTitle)}`;
+  const quoteUrl = `/booking?service=${encodeURIComponent(serviceTitle)}`;
 
   return (
     <div
@@ -216,7 +216,7 @@ export default function ServicePage() {
           <p className="mt-6 text-lg text-zinc-600 leading-relaxed">{service.description}</p>
           <p className="mt-5 text-3xl font-black text-orange-500">{service.price}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href={`/#quote?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-7 py-4 rounded-full font-black shadow-xl hover:scale-105 transition">{ctaLabel}</a>
+            <a href={`/booking?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-7 py-4 rounded-full font-black shadow-xl hover:scale-105 transition">{ctaLabel}</a>
             <a href="/services" className="bg-white border border-black/10 px-7 py-4 rounded-full font-black hover:bg-zinc-100 transition">All Services</a>
           </div>
         </div>
@@ -327,7 +327,7 @@ export default function ServicePage() {
               </div>
             </div>
             <div className="flex flex-col gap-3 w-full md:w-auto">
-              <a href={`/#quote?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-orange-400 hover:scale-105 transition shadow-xl">
+              <a href={`/booking?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-orange-400 hover:scale-105 transition shadow-xl">
                 {ctaLabel} →
               </a>
               <a href="tel:+19498283959" className="bg-white/10 text-white px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-white/20 transition">

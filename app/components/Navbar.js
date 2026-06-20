@@ -17,6 +17,7 @@ export default function Navbar() {
     { href: "/work", label: "Work" },
     { href: "/pricing", label: "Pricing" },
     { href: "/reviews", label: "Reviews" },
+    { href: "/booking", label: "Booking" },
   ];
 
   return (
@@ -33,7 +34,7 @@ export default function Navbar() {
           </div>
           <div className="hidden md:flex items-center gap-3">
             <a href="tel:+19498283959" className="text-sm font-bold text-zinc-500 hover:text-zinc-950 transition">(949) 828-3959</a>
-            <a href="/#quote" className="bg-zinc-950 text-white px-5 py-2.5 rounded-full font-black text-sm hover:bg-orange-500 transition-colors">Get Quote</a>
+            <a href="/booking" className="bg-zinc-950 text-white px-5 py-2.5 rounded-full font-black text-sm hover:bg-orange-500 transition-colors">Book Now</a>
           </div>
 
           {/* Burger */}
@@ -61,9 +62,9 @@ export default function Navbar() {
           ))}
         </div>
         <div className="px-5 pb-10 flex flex-col gap-3">
-          <a href="/#quote" onClick={() => setOpen(false)}
+          <a href="/booking" onClick={() => setOpen(false)}
             className="bg-orange-500 text-black rounded-full py-5 text-center font-black text-xl hover:bg-orange-400 transition">
-            Get Quote →
+            Book Now →
           </a>
           <div className="flex flex-col items-center gap-1 pt-2">
             <a href="tel:+19498283959" className="font-bold text-zinc-600">📞 (949) 828-3959</a>
