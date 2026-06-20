@@ -75,6 +75,14 @@ export default function Home() {
   const [filesCount, setFilesCount] = useState(0);
   const [address, setAddress] = useState("");
   const [booking, setBooking] = useState(null);
+  const [selectedService, setSelectedService] = useState("General quote");
+
+  // Pre-select service from URL param e.g. /#quote?service=TV+Mounting
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const s = params.get("service");
+    if (s) setSelectedService(s);
+  }, []);
 
   const handleQuoteSubmit = async (e) => {
     e.preventDefault();
@@ -107,6 +115,7 @@ export default function Home() {
         setShowModal(true);
         form.reset();
         setFilesCount(0);
+        setSelectedService("General quote");
         if (photoInputRef.current) photoInputRef.current.value = "";
       } else {
         setStatus("error");
@@ -227,7 +236,7 @@ export default function Home() {
             <input name="email" type="email" placeholder="Email (optional)" className="input-premium" />
             <AddressAutocomplete value={address} onChange={setAddress} className="input-premium" />
             <input type="hidden" name="address" value={address} />
-            <select name="service" className="input-premium" defaultValue="General quote">
+            <select name="service" className="input-premium" value={selectedService} onChange={(e) => setSelectedService(e.target.value)}>
               <option>General quote</option>
               {services.map((service) => <option key={service.slug}>{service.title}</option>)}
             </select>
