@@ -50,7 +50,7 @@ function ThankYouModal({ onClose }) {
         <div className="text-6xl mb-4">✅</div>
         <h2 className="text-3xl font-black tracking-tight">Booking received!</h2>
         <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
-          We'll confirm your appointment via <span className="font-black text-zinc-950">text or email</span> within a few hours.
+          We'll confirm your appointment via <span className="font-black text-zinc-950">text or email</span> as soon as possible.
         </p>
         <button
           onClick={onClose}
