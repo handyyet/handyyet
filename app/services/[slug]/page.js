@@ -7,11 +7,13 @@ import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
 
 // ─── Photo Modal (mobile tap) ──────────────────────────────────────────────────
-function PhotoModal({ image, onClose }) {
+function PhotoModal({ image, serviceTitle, onClose }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
+
+  const quoteUrl = `/#quote?service=${encodeURIComponent(serviceTitle)}`;
 
   return (
     <div
@@ -41,20 +43,12 @@ function PhotoModal({ image, onClose }) {
         <div className="p-7">
           <p className="text-orange-500 font-black text-xl leading-snug">{image.title}</p>
           <p className="text-zinc-600 mt-3 leading-relaxed">{image.desc}</p>
-          <div className="mt-5 flex flex-col gap-2">
-            <div className="flex items-center gap-3 text-sm text-zinc-500 font-bold">
-              <span className="text-lg">⏱</span><span>{image.time}</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm text-zinc-500 font-bold">
-              <span className="text-lg">📦</span><span>{image.materials}</span>
-            </div>
-          </div>
           <div className="mt-5 flex items-center justify-between">
             <span className="bg-orange-500 text-black text-xl font-black px-5 py-2.5 rounded-full">
               {image.price}
             </span>
             <a
-              href="/#quote"
+              href={quoteUrl}
               onClick={onClose}
               className="bg-zinc-950 text-white text-sm font-black px-5 py-2.5 rounded-full hover:bg-orange-500 hover:text-black transition"
             >
@@ -68,7 +62,7 @@ function PhotoModal({ image, onClose }) {
 }
 
 // ─── Flip Card Component ───────────────────────────────────────────────────────
-function FlipCard({ image }) {
+function FlipCard({ image, serviceTitle }) {
   const [flipped, setFlipped] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -95,7 +89,7 @@ function FlipCard({ image }) {
 
   return (
     <>
-      {modalOpen && <PhotoModal image={image} onClose={() => setModalOpen(false)} />}
+      {modalOpen && <PhotoModal image={image} serviceTitle={serviceTitle} onClose={() => setModalOpen(false)} />}
 
       <div
         className="h-44 md:h-72 w-full cursor-pointer"
@@ -149,16 +143,8 @@ function FlipCard({ image }) {
               <p className="text-orange-500 font-black text-base leading-snug">{image.title}</p>
               <p className="text-zinc-300 text-sm mt-2 leading-relaxed">{image.desc}</p>
             </div>
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
-                <span>⏱</span><span>{image.time}</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
-                <span>📦</span><span>{image.materials}</span>
-              </div>
-              <div className="mt-2 inline-block bg-orange-500 text-black text-sm font-black px-3 py-1 rounded-full">
-                {image.price}
-              </div>
+            <div className="mt-2 inline-block bg-orange-500 text-black text-sm font-black px-3 py-1.5 rounded-full">
+              {image.price}
             </div>
           </div>
         </div>
@@ -215,7 +201,6 @@ export default function ServicePage() {
 
   const isHandyman = slug === "handyman-repairs";
   const ctaLabel = isHandyman ? "Book Now" : "Get Quote";
-  const timeLabel = isHandyman ? "Booking time" : "Estimated time";
 
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950">
@@ -231,7 +216,7 @@ export default function ServicePage() {
           <p className="mt-6 text-lg text-zinc-600 leading-relaxed">{service.description}</p>
           <p className="mt-5 text-3xl font-black text-orange-500">{service.price}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="/#quote" className="bg-orange-500 text-black px-7 py-4 rounded-full font-black shadow-xl hover:scale-105 transition">{ctaLabel}</a>
+            <a href={`/#quote?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-7 py-4 rounded-full font-black shadow-xl hover:scale-105 transition">{ctaLabel}</a>
             <a href="/services" className="bg-white border border-black/10 px-7 py-4 rounded-full font-black hover:bg-zinc-100 transition">All Services</a>
           </div>
         </div>
@@ -241,22 +226,7 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {/* Info cards */}
-      <section className="max-w-7xl mx-auto px-5 pb-16">
-        <div className="grid grid-cols-3 gap-3 md:gap-5">
-          {[
-            { icon: "⏱️", label: timeLabel, value: service.time },
-            { icon: "📊", label: "Difficulty", value: service.difficulty },
-            { icon: "📦", label: "Materials", value: service.materials },
-          ].map((item) => (
-            <div key={item.label} className="bg-white rounded-[24px] p-4 md:p-7 border border-black/10 flex flex-col gap-2">
-              <p className="text-2xl">{item.icon}</p>
-              <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-zinc-400 leading-tight">{item.label}</p>
-              <p className="text-base md:text-xl font-black leading-tight">{item.value}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* Bullets */}
       <section className="max-w-7xl mx-auto px-5 pb-16">
@@ -303,7 +273,7 @@ export default function ServicePage() {
         {isHandyman && <div className="mb-6" />}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
           {service.images.map((img, i) => (
-            <FlipCard key={i} image={img} />
+            <FlipCard key={i} image={img} serviceTitle={service.title} />
           ))}
         </div>
       </section>
@@ -357,7 +327,7 @@ export default function ServicePage() {
               </div>
             </div>
             <div className="flex flex-col gap-3 w-full md:w-auto">
-              <a href="/#quote" className="bg-orange-500 text-black px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-orange-400 hover:scale-105 transition shadow-xl">
+              <a href={`/#quote?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-orange-400 hover:scale-105 transition shadow-xl">
                 {ctaLabel} →
               </a>
               <a href="tel:+19498283959" className="bg-white/10 text-white px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-white/20 transition">
