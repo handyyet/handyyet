@@ -1,8 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  icons: { icon: "/favicon.svg" },
-
+icons: { icon: "/icon.PNG", apple: "/icon.PNG" },
   title: {
     default: "HandyYet | Handyman Services in Huntington Beach & Orange County",
     template: "%s | HandyYet – Handyman Orange County",
