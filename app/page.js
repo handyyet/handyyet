@@ -137,7 +137,7 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
           <div>
             <h1 className="animate-fade-up text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span></h1>
-            <p className="animate-fade-up-1 mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed">Premium handyman help for mounting, assembly, smart home setup, and small repairs. Send photos and get a fast estimate.</p>
+            <p className="animate-fade-up-1 mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed">Huntington Beach handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup. Send photos and get a fast estimate.</p>
             <div className="animate-fade-up-2 mt-9 flex flex-wrap gap-4">
               <a href="#quote" className="bg-orange-500 text-black px-8 py-5 rounded-full font-black shadow-xl hover:scale-105 transition">Send Photos</a>
               <a href="/services" className="bg-white border border-black/10 px-8 py-5 rounded-full font-black hover:bg-zinc-100 transition">View Services</a>
@@ -149,7 +149,7 @@ export default function Home() {
             </div>
             <div className="absolute -bottom-6 -left-2 bg-zinc-950 text-white rounded-3xl p-5 shadow-xl">
               <p className="text-4xl font-black text-orange-400">5★</p>
-              <p className="font-bold text-sm">Reliable local service</p>
+              <p className="font-bold text-sm">Huntington Beach & OC</p>
             </div>
           </div>
         </div>
@@ -224,9 +224,9 @@ export default function Home() {
           <div className="lg:sticky lg:top-28">
             <p className="text-orange-500 font-black uppercase tracking-widest">Get a Quote</p>
             <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">Send photos.<br />Get a fast quote.</h2>
-            <p className="mt-6 text-xl text-zinc-600 max-w-xl leading-relaxed">Upload photos, describe the issue, and we'll contact you with a fast estimate and next steps.</p>
+            <p className="mt-6 text-xl text-zinc-600 max-w-xl leading-relaxed">Upload photos, describe the issue, and we'll contact you with a fast estimate. Serving Huntington Beach and all of Orange County, CA.</p>
             <div className="mt-8 grid gap-4 max-w-md">
-              {['No long phone calls','Photo-based estimates','Fast local response'].map((item) => <div key={item} className="bg-white rounded-2xl p-4 border border-black/10 font-bold">✓ {item}</div>)}
+              {['No long phone calls','Photo-based estimates','Fast response in Orange County'].map((item) => <div key={item} className="bg-white rounded-2xl p-4 border border-black/10 font-bold">✓ {item}</div>)}
             </div>
           </div>
 
