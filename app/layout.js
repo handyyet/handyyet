@@ -22,7 +22,9 @@ export const metadata = {
     "smart home setup Orange County",
     "affordable handyman Orange County",
   ],
-
+verification: {
+  google: "LYcwtlioV3N40Pu3xWkJi1K1nreoVnserRLjfN9Hom0",
+},
   openGraph: {
     title: "HandyYet | Handyman Services in Huntington Beach & Orange County",
     description:
