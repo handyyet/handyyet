@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
 icons: { icon: "/icon.PNG", apple: "/icon.PNG" },
@@ -73,7 +74,7 @@ const localBusinessSchema = {
     "Fast, affordable handyman services in Huntington Beach and Orange County, CA.",
   url: "https://handyyet.com",
   telephone: "+1-949-828-3959",
-  email: "admin@handyyet.com",
+  email: "hello@handyyet.com",
   priceRange: "$$",
   image: "https://handyyet.com/images/hero.jpg",
   logo: "https://handyyet.com/favicon.svg",
@@ -138,7 +139,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
-      <body>{children}</body>
+      <body>{children}<Analytics /></body>
     </html>
   );
 }
