@@ -206,6 +206,7 @@ export default function BookingPage() {
 
             <div className="bg-zinc-100 rounded-3xl p-5">
               <label className="text-sm font-black text-zinc-600">Photos (optional but helpful)</label>
+              <p className="text-xs text-zinc-400 mt-1">Upload 1–5 photos so we can prepare the right tools and give an accurate quote.</p>
               <input
                 ref={photoInputRef}
                 name="photos" type="file" accept="image/*" multiple
