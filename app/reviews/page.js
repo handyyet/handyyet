@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 
 export const metadata = {
   title: "Reviews | HandyYet",
-  description: "85 five-star reviews from real clients in Orange County. See what people say about HandyYet handyman services.",
+  description: "Five-star reviews from real clients in Orange County. See what people say about HandyYet handyman services.",
 };
 
 const reviews = [
@@ -55,10 +55,10 @@ export default function ReviewsPage() {
       <section className="max-w-7xl mx-auto px-5 pt-36 pb-20">
         <p className="text-orange-500 font-black uppercase tracking-widest">Reviews</p>
         <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9] mt-4">
-          85 reviews.<br /><span className="text-orange-500">All 5 stars.</span>
+          Trusted by<br /><span className="text-orange-500">local clients.</span>
         </h1>
         <p className="mt-8 text-xl text-zinc-600 max-w-2xl leading-relaxed">
-          Real reviews from real clients across Orange County. Every single one is 5 stars.
+          Real reviews from real clients across Orange County. 5-star service, every time.
         </p>
       </section>
 
@@ -66,7 +66,7 @@ export default function ReviewsPage() {
       <section className="max-w-7xl mx-auto px-5 pb-20">
         <div className="grid grid-cols-3 gap-3 md:gap-5">
           {[
-            { num: "85", label: "Total reviews" },
+            { num: "85+", label: "Happy clients" },
             { num: "5.0", label: "Avg rating" },
             { num: "100%", label: "5-star" },
           ].map((s) => (
@@ -103,7 +103,7 @@ export default function ReviewsPage() {
           <div className="relative p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
               <p className="text-orange-500 font-black uppercase tracking-widest text-sm">Get Started</p>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mt-2">Join 85+ happy clients.</h2>
+              <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mt-2">Join our happy clients.</h2>
               <p className="mt-3 text-zinc-400 text-lg">Send photos and get a fast quote today.</p>
             </div>
             <div className="flex flex-col gap-3 w-full md:w-auto">
