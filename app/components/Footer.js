@@ -26,10 +26,10 @@ export default function Footer() {
 
           {/* Yelp + Google icons */}
           <div className="flex items-center gap-3">
-            <a href="https://www.yelp.com/writeareview/biz/7asHGqucJQSljXn1dF2RTw?review_origin=mobile-site-biz-details-action-button&return_url=https://m.yelp.com/biz/handyyet-huntington-beach"
+            <a href="https://m.yelp.com/biz/handyyet-huntington-beach"
               target="_blank" rel="noopener noreferrer"
               className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-black text-sm hover:bg-red-600 transition shadow-sm">Y</a>
-            <a href="https://g.page/r/Caqs8MHefRFaEBM/review" target="_blank" rel="noopener noreferrer"
+            <a href="https://maps.app.goo.gl/RfHEGR8dPZKsyz8d6?g_st=ic" target="_blank" rel="noopener noreferrer"
               className="w-10 h-10 bg-white border border-black/10 rounded-full flex items-center justify-center hover:shadow-md transition shadow-sm">
               <GoogleIcon />
             </a>
