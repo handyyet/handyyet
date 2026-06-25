@@ -46,6 +46,15 @@ const serviceColors = {
   "Furniture Assembly": "bg-pink-100 text-pink-800",
 };
 
+const GoogleIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-5 h-5 shrink-0">
+    <path fill="#4285F4" d="M24 9.5c3.1 0 5.8 1.1 8 2.9l6-6C34.5 3.1 29.6 1 24 1 14.8 1 7 6.7 3.7 14.6l7 5.4C12.4 13.8 17.7 9.5 24 9.5z"/>
+    <path fill="#34A853" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.8-2.1 5.1-4.5 6.7l7 5.4C43.1 36.8 46.1 31.1 46.1 24.5z"/>
+    <path fill="#FBBC05" d="M10.7 28.6A14.7 14.7 0 0 1 9.5 24c0-1.6.3-3.1.7-4.6l-7-5.4A23.9 23.9 0 0 0 .1 24c0 3.9.9 7.5 2.6 10.7l7.9-6.1z"/>
+    <path fill="#EA4335" d="M24 47c5.6 0 10.4-1.9 13.9-5l-7-5.4c-1.9 1.3-4.3 2-6.9 2-6.3 0-11.6-4.3-13.5-10.1l-7.9 6.1C7 40.3 14.8 47 24 47z"/>
+  </svg>
+);
+
 export default function ReviewsPage() {
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950">
@@ -63,7 +72,7 @@ export default function ReviewsPage() {
       </section>
 
       {/* Stats */}
-      <section className="max-w-7xl mx-auto px-5 pb-20">
+      <section className="max-w-7xl mx-auto px-5 pb-12">
         <div className="grid grid-cols-3 gap-3 md:gap-5">
           {[
             { num: "85+", label: "Happy clients" },
@@ -75,6 +84,25 @@ export default function ReviewsPage() {
               <p className="text-zinc-500 font-bold mt-1 text-xs md:text-base">{s.label}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Leave a Review buttons */}
+      <section className="max-w-7xl mx-auto px-5 pb-16">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://g.page/r/Caqs8MHefRFaEBM/review" target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-3 bg-white border border-black/10 rounded-full px-8 py-4 font-black text-zinc-950 hover:shadow-lg hover:-translate-y-0.5 transition">
+            <GoogleIcon />
+            Leave a Google Review
+          </a>
+          <a href="https://www.yelp.com/writeareview/biz/7asHGqucJQSljXn1dF2RTw?review_origin=mobile-site-biz-details-action-button&return_url=https://m.yelp.com/biz/handyyet-huntington-beach"
+            target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-3 bg-[#FF1A1A] text-white rounded-full px-8 py-4 font-black hover:shadow-lg hover:-translate-y-0.5 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="white">
+              <path d="M12.28 2.25c-.38-.01-.7.28-.75.66L10.4 9.7a.77.77 0 0 0 1.2.78l5.18-3.7a.77.77 0 0 0-.1-1.33 9.2 9.2 0 0 0-4.4-1.2zM7.1 7.93a.77.77 0 0 0-.96.28 9.2 9.2 0 0 0-1.4 4.3.77.77 0 0 0 .97.79l6.14-1.93a.77.77 0 0 0 .12-1.43L7.1 7.93zm10.5 2.75-5.7 2.96a.77.77 0 0 0 .17 1.44l6.3 1.2a.77.77 0 0 0 .85-.97 9.2 9.2 0 0 0-1.62-4.63zM9.4 15.05l-5.52 2.9a.77.77 0 0 0 .13 1.42 9.2 9.2 0 0 0 4.56.63.77.77 0 0 0 .62-1.06l-1.7-3.84a.77.77 0 0 0-.09-.05zm5.36.93a.77.77 0 0 0-1.1.62l-.47 6.35a.77.77 0 0 0 1.06.77 9.2 9.2 0 0 0 3.76-2.77.77.77 0 0 0-.27-1.2l-3-1.77z"/>
+            </svg>
+            Leave a Yelp Review
+          </a>
         </div>
       </section>
 
