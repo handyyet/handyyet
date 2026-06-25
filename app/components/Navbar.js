@@ -88,7 +88,7 @@ export default function Navbar() {
           </a>
           <div className="flex flex-col items-center gap-1 pt-2">
             <a href="tel:+19498283959" className="font-bold text-zinc-600">📞 (949) 828-3959</a>
-            <a href="mailto:admin@handyyet.com" className="text-zinc-400 font-bold text-sm">admin@handyyet.com</a>
+            <a href="mailto:support@handyyet.com" className="text-zinc-400 font-bold text-sm">support@handyyet.com</a>
           </div>
         </div>
       </div>

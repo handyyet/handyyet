@@ -303,6 +303,9 @@ export default function Home() {
                 <p className="text-sm text-zinc-500 mt-3">
                   {filesCount > 0 ? `${filesCount} photo${filesCount > 1 ? 's' : ''} selected` : 'Select multiple photos from your library.'}
                 </p>
+                <p className="text-xs text-zinc-400 mt-1">
+                  We’ll use them to prepare your estimate accurately.
+                </p>
               </div>
               <button type="submit" disabled={status === 'sending'}
                 className="bg-orange-500 hover:bg-orange-400 text-black rounded-full py-5 font-black text-lg transition hover:scale-[1.02] hover:shadow-xl disabled:opacity-60">
