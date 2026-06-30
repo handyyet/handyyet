@@ -173,11 +173,6 @@ export default function Home() {
               <img src="/images/hero.jpg" alt="HandyYet handyman project in Huntington Beach"
                 className="rounded-[36px] w-full h-[520px] object-cover bg-zinc-200" />
             </div>
-            <div className="absolute -bottom-6 -left-2 bg-zinc-950 text-white rounded-3xl p-5 shadow-xl anim-fade-up"
-              style={{ animationDelay: "400ms" }}>
-              <p className="text-4xl font-black text-orange-400">5★</p>
-              <p className="font-bold text-sm">Huntington Beach & OC</p>
-            </div>
           </div>
         </div>
       </section>
