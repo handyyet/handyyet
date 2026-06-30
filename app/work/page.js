@@ -16,6 +16,7 @@ const projects = [
   { img: "/images/project-7.jpg", title: "Faucet Replacement", text: "New faucet installed with drain assembly." },
   { img: "/images/project-8.jpg", title: "House for kids assembly", text: "Outdoor playset assembled for children." },
   { img: "/images/project-9.jpg", title: "Shower head replacement", text: "New shower head installed." },
+  { img: "/images/project-10.jpg", title: "Cabinets handle replacement", text: "Old cabinet handles replaced with new ones." },
 ];
 
 export default function WorkPage() {
