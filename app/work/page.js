@@ -13,6 +13,9 @@ const projects = [
   { img: "/images/project-4.jpg", title: "Backyard Cleaning", text: "Power washed and sealed outdoor surfaces with protective coating." },
   { img: "/images/project-5.jpg", title: "Faucet Replacement", text: "New faucet installed with drain assembly." },
   { img: "/images/project-6.jpeg", title: "Chandelier Swap", text: "Old chandelier replaced with new fixture on a 20-foot ceiling." },
+  { img: "/images/project-7.jpg", title: "Faucet Replacement", text: "New faucet installed with drain assembly." },
+  { img: "/images/project-8.jpg", title: "House for kids assembly", text: "Outdoor playset assembled for children." },
+  { img: "/images/project-9.jpg", title: "Shower head replacement", text: "New shower head installed." },
 ];
 
 export default function WorkPage() {
