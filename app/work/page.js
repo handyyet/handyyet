@@ -17,6 +17,8 @@ const projects = [
   { img: "/images/project-8.jpg", title: "Kids Playhouse Assembly", text: "Wooden playhouse assembled and installed in the backyard." },
   { img: "/images/project-9.jpg", title: "Shower head replacement", text: "New shower head installed." },
   { img: "/images/project-10.jpg", title: "Cabinets handle replacement", text: "Old cabinet handles replaced with new ones." },
+  { img: "/images/project-11.jpg", title: "Hung a picture", text: "Picture hung on wall with appropriate hardware." },
+  { img: "/images/project-12.jpg", title: "Garbage Disposal replacement", text: "New garbage disposal installed with proper connections." },
 ];
 
 export default function WorkPage() {
