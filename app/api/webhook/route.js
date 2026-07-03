@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '../../../lib/stripe';
-import { kv } from '@vercel/kv';
 
 export async function POST(req) {
   const body = await req.text();
@@ -17,31 +16,22 @@ export async function POST(req) {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
 
-    // Only handle setup sessions (card save, not purchases)
     if (session.mode === 'setup' && session.setup_intent) {
       try {
         const setupIntent = await stripe.setupIntents.retrieve(session.setup_intent);
-        const email = session.metadata?.email;
-        if (!email) return NextResponse.json({ received: true });
 
-        const customerData = {
-          customerId: session.customer,
-          paymentMethodId: setupIntent.payment_method,
-          name: session.metadata?.name || '',
-          service: session.metadata?.service || '',
-          savedAt: new Date().toISOString(),
-        };
-
-        // Save customer data to KV
-        await kv.set(`customer:${email}`, customerData);
-
-        // Add to master customers list
-        const list = (await kv.get('customers:list')) || [];
-        if (!list.includes(email)) {
-          await kv.set('customers:list', [...list, email]);
-        }
+        // Save payment method + service info directly on the Stripe customer
+        await stripe.customers.update(session.customer, {
+          invoice_settings: {
+            default_payment_method: setupIntent.payment_method,
+          },
+          metadata: {
+            service: session.metadata?.service || '',
+            handyyet_name: session.metadata?.name || '',
+          },
+        });
       } catch (err) {
-        console.error('KV save error:', err);
+        console.error('Stripe customer update error:', err);
       }
     }
   }
