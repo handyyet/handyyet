@@ -10,14 +10,14 @@ export default function BookingSuccessPage() {
       <section className="max-w-7xl mx-auto px-5 pt-40 pb-24 text-center">
         <div className="text-8xl mb-6">✅</div>
         <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">
-          Booking received!
+          Booking confirmed!
         </h1>
         <p className="mt-6 text-lg text-zinc-600 max-w-lg mx-auto leading-relaxed">
-          Your booking is confirmed and your card has been securely saved via Stripe.
+          Your $50 deposit has been received and your card is saved for the final payment.
           We'll reach out by <span className="font-black text-zinc-950">text or email</span> to confirm details before your visit.
         </p>
         <div className="mt-4 text-sm text-zinc-400">
-          No charge yet — payment happens after the job is confirmed.
+          The deposit will be applied toward your final bill.
         </div>
         <Link
           href="/"

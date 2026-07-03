@@ -12,6 +12,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Email and name are required' }, { status: 400 });
     }
 
+    // Find or create Stripe customer
     const existing = await stripe.customers.list({ email, limit: 1 });
     let customer = existing.data[0];
     if (!customer) {
@@ -20,10 +21,27 @@ export async function POST(req) {
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://handyyet.com';
 
+    // Payment mode: charges $50 deposit AND saves card for future off-session charges
     const session = await stripe.checkout.sessions.create({
-      mode: 'setup',
+      mode: 'payment',
       customer: customer.id,
-      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'HandyYet Booking Deposit',
+              description: `Booking deposit for ${service || 'handyman service'} — applied toward your final bill`,
+            },
+            unit_amount: 5000, // $50.00
+          },
+          quantity: 1,
+        },
+      ],
+      payment_intent_data: {
+        setup_future_usage: 'off_session', // saves card for future charges by Nick
+        metadata: { email, name, service: service || 'General quote' },
+      },
       success_url: `${baseUrl}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/booking`,
       metadata: { email, name, service: service || 'General quote' },
