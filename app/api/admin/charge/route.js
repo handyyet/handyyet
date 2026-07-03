@@ -16,20 +16,26 @@ export async function POST(req) {
   }
 
   const stripe = getStripe();
+
+  // Найти клиента по email
   const customers = await stripe.customers.list({ email, limit: 1 });
   const customer = customers.data[0];
 
   if (!customer) {
-    return NextResponse.json(
-      { error: 'Customer not found. They may not have saved a card yet.' },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'Customer not found.' }, { status: 404 });
   }
 
-  const paymentMethodId = customer.invoice_settings?.default_payment_method;
-  if (!paymentMethodId) {
+  // Найти карту напрямую
+  const paymentMethods = await stripe.paymentMethods.list({
+    customer: customer.id,
+    type: 'card',
+  });
+
+  if (paymentMethods.data.length === 0) {
     return NextResponse.json({ error: 'No saved card for this customer.' }, { status: 404 });
   }
+
+  const paymentMethodId = paymentMethods.data[0].id;
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
@@ -43,7 +49,11 @@ export async function POST(req) {
       metadata: { email, customerName: customer.name || '' },
     });
 
-    return NextResponse.json({ success: true, id: paymentIntent.id, status: paymentIntent.status });
+    return NextResponse.json({
+      success: true,
+      id: paymentIntent.id,
+      status: paymentIntent.status,
+    });
   } catch (err) {
     console.error('Charge error:', err);
     const message =
