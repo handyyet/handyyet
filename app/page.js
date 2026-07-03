@@ -333,8 +333,8 @@ export default function Home() {
                 <label className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-3 block">How would you like to pay?</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: "cash", icon: "💵", label: "Pay after service", sub: "Cash or Venmo on the day" },
-                    { value: "card", icon: "💳", label: "Pay $50 deposit", sub: "Apple Pay · Google Pay · Card" },
+                    { value: "cash", icon: "✌️", label: "No payment now", sub: "Pay after the job · Cash or Venmo" },
+                    { value: "card", icon: "✅", label: "Reserve with card", sub: "$50 holds your booking · Apple Pay · Card" },
                   ].map((opt) => (
                     <button key={opt.value} type="button"
                       onClick={() => { setPaymentMethod(opt.value); setStatus(""); }}
@@ -351,14 +351,14 @@ export default function Home() {
                 </div>
                 {paymentMethod === "card" && (
                   <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-                    $50 deposit charged now, applied toward your final bill. Card saved for the remaining balance.
+                    A $50 deposit secures your booking and goes toward your final bill. No surprises — we'll confirm everything before we arrive.
                   </p>
                 )}
               </div>
 
               <button type="submit" disabled={status === 'sending'}
                 className="bg-orange-500 hover:bg-orange-400 text-black rounded-full py-5 font-black text-lg transition hover:scale-[1.02] hover:shadow-xl disabled:opacity-60">
-                {status === 'sending' ? 'Sending…' : paymentMethod === 'card' ? 'Pay $50 Deposit & Book →' : 'Request Quote'}
+                {status === 'sending' ? 'Sending…' : paymentMethod === 'card' ? 'Reserve with Card · $50 →' : 'Request Quote'}
               </button>
               {status === 'error' && (
                 <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-black">Something went wrong. Please try again.</div>

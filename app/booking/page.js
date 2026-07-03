@@ -249,8 +249,8 @@ export default function BookingPage() {
               <label className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-3 block">How would you like to pay?</label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: "cash", icon: "💵", label: "Pay after service", sub: "Cash or Venmo on the day" },
-                  { value: "card", icon: "💳", label: "Pay $50 deposit", sub: "Apple Pay · Google Pay · Card" },
+                  { value: "cash", icon: "✌️", label: "No payment now", sub: "Pay after the job · Cash or Venmo" },
+                  { value: "card", icon: "✅", label: "Reserve with card", sub: "$50 holds your booking · Apple Pay · Card" },
                 ].map((opt) => (
                   <button
                     key={opt.value}
@@ -270,7 +270,7 @@ export default function BookingPage() {
               </div>
               {paymentMethod === "card" && (
                 <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-                  $50 deposit is charged now and applied toward your final bill. Your card is saved for the remaining balance after the job.
+                  A $50 deposit secures your booking and goes toward your final bill. No surprises — we'll confirm everything before we arrive.
                 </p>
               )}
             </div>
@@ -297,7 +297,7 @@ export default function BookingPage() {
               {status === 'sending'
                 ? 'Sending…'
                 : paymentMethod === 'card'
-                  ? 'Pay $50 Deposit & Book →'
+                  ? 'Reserve with Card · $50 →'
                   : 'Request Booking →'}
             </button>
 
