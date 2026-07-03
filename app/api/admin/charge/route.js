@@ -1,5 +1,7 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
-import { stripe } from '../../../../lib/stripe';
+import { getStripe } from '../../../../lib/stripe';
 
 export async function POST(req) {
   const token = req.cookies.get('admin_token')?.value;
@@ -13,23 +15,20 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
   }
 
-  // Find the customer in Stripe by email
+  const stripe = getStripe();
   const customers = await stripe.customers.list({ email, limit: 1 });
   const customer = customers.data[0];
 
   if (!customer) {
     return NextResponse.json(
-      { error: 'Customer not found in Stripe. They may not have saved a card yet.' },
+      { error: 'Customer not found. They may not have saved a card yet.' },
       { status: 404 }
     );
   }
 
   const paymentMethodId = customer.invoice_settings?.default_payment_method;
   if (!paymentMethodId) {
-    return NextResponse.json(
-      { error: 'No saved card for this customer.' },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'No saved card for this customer.' }, { status: 404 });
   }
 
   try {
@@ -44,11 +43,7 @@ export async function POST(req) {
       metadata: { email, customerName: customer.name || '' },
     });
 
-    return NextResponse.json({
-      success: true,
-      id: paymentIntent.id,
-      status: paymentIntent.status,
-    });
+    return NextResponse.json({ success: true, id: paymentIntent.id, status: paymentIntent.status });
   } catch (err) {
     console.error('Charge error:', err);
     const message =

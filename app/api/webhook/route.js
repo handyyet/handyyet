@@ -1,7 +1,10 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
-import { stripe } from '../../../lib/stripe';
+import { getStripe } from '../../../lib/stripe';
 
 export async function POST(req) {
+  const stripe = getStripe();
   const body = await req.text();
   const sig = req.headers.get('stripe-signature');
 
@@ -15,12 +18,9 @@ export async function POST(req) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-
     if (session.mode === 'setup' && session.setup_intent) {
       try {
         const setupIntent = await stripe.setupIntents.retrieve(session.setup_intent);
-
-        // Save payment method + service info directly on the Stripe customer
         await stripe.customers.update(session.customer, {
           invoice_settings: {
             default_payment_method: setupIntent.payment_method,
