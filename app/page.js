@@ -106,6 +106,7 @@ export default function Home() {
   const [address, setAddress] = useState("");
   const [booking, setBooking] = useState(null);
   const [selectedService, setSelectedService] = useState("General quote");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   usePremiumReveal();
 
@@ -117,9 +118,14 @@ export default function Home() {
 
   const handleQuoteSubmit = async (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    if (paymentMethod === "card" && !form.email.value.trim()) {
+      setStatus("email-required");
+      form.email.focus();
+      return;
+    }
     setStatus("sending");
     try {
-      const form = e.currentTarget;
       const formData = new FormData();
       formData.append("name", form.name.value);
       formData.append("phone", form.phone.value);
@@ -127,6 +133,7 @@ export default function Home() {
       formData.append("service", form.service.value);
       if (form.email.value) formData.append("email", form.email.value);
       formData.append("issue", form.issue.value);
+      formData.append("paymentMethod", paymentMethod === "card" ? "Card — $50 deposit (Stripe)" : "Cash / Pay after service");
       if (booking) formData.append("booking", `${booking.date.toDateString()} at ${booking.time}`);
       const files = Array.from(photoInputRef.current?.files || []);
       const compressedFiles = await Promise.all(files.slice(0, 10).map((file) => compressImage(file)));
@@ -134,11 +141,21 @@ export default function Home() {
       const res = await fetch("/api/quote", { method: "POST", body: formData });
       const data = await res.json();
       if (data.success) {
+        if (paymentMethod === "card") {
+          const stripeRes = await fetch("/api/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: form.email.value, name: form.name.value, service: form.service.value }),
+          });
+          const stripeData = await stripeRes.json();
+          if (stripeData.url) { window.location.href = stripeData.url; return; }
+        }
         setStatus("success");
         setShowModal(true);
         form.reset();
         setFilesCount(0);
         setSelectedService("General quote");
+        setPaymentMethod("cash");
         if (photoInputRef.current) photoInputRef.current.value = "";
       } else { setStatus("error"); }
     } catch (err) { console.error(err); setStatus("error"); }
@@ -281,7 +298,16 @@ export default function Home() {
               <input name="name" type="text" placeholder="Your name" required className="input-premium" />
               <input name="phone" type="tel" inputMode="numeric" pattern="[0-9]{10}" maxLength="10" placeholder="Phone number" required
                 onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '').slice(0, 10); }} className="input-premium" />
-              <input name="email" type="email" placeholder="Email (optional)" className="input-premium" />
+              <div>
+                <input name="email" type="email"
+                  placeholder={paymentMethod === "card" ? "Email (required for card payment)" : "Email (optional)"}
+                  required={paymentMethod === "card"}
+                  className={`input-premium w-full transition ${paymentMethod === "card" ? "ring-2 ring-orange-400" : ""}`}
+                />
+                {status === "email-required" && (
+                  <p className="text-orange-600 text-xs font-black mt-1">Email is required for card payment.</p>
+                )}
+              </div>
               <AddressAutocomplete value={address} onChange={setAddress} className="input-premium" />
               <input type="hidden" name="address" value={address} />
               <select name="service" className="input-premium" value={selectedService} onChange={(e) => setSelectedService(e.target.value)}>
@@ -302,9 +328,37 @@ export default function Home() {
                   We’ll use them to prepare your estimate accurately.
                 </p>
               </div>
+              {/* Payment selector */}
+              <div>
+                <label className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-3 block">How would you like to pay?</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { value: "cash", icon: "💵", label: "Pay after service", sub: "Cash or Venmo on the day" },
+                    { value: "card", icon: "💳", label: "Pay $50 deposit", sub: "Apple Pay · Google Pay · Card" },
+                  ].map((opt) => (
+                    <button key={opt.value} type="button"
+                      onClick={() => { setPaymentMethod(opt.value); setStatus(""); }}
+                      className={`rounded-[20px] p-4 text-left border-2 transition ${
+                        paymentMethod === opt.value
+                          ? "border-orange-500 bg-orange-50"
+                          : "border-zinc-200 bg-zinc-50 hover:border-zinc-300"
+                      }`}>
+                      <div className="text-2xl mb-1">{opt.icon}</div>
+                      <div className="font-black text-sm text-zinc-900">{opt.label}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5 leading-snug">{opt.sub}</div>
+                    </button>
+                  ))}
+                </div>
+                {paymentMethod === "card" && (
+                  <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+                    $50 deposit charged now, applied toward your final bill. Card saved for the remaining balance.
+                  </p>
+                )}
+              </div>
+
               <button type="submit" disabled={status === 'sending'}
                 className="bg-orange-500 hover:bg-orange-400 text-black rounded-full py-5 font-black text-lg transition hover:scale-[1.02] hover:shadow-xl disabled:opacity-60">
-                {status === 'sending' ? 'Sending...' : 'Request Quote'}
+                {status === 'sending' ? 'Sending…' : paymentMethod === 'card' ? 'Pay $50 Deposit & Book →' : 'Request Quote'}
               </button>
               {status === 'error' && (
                 <div className="bg-red-500 text-white rounded-2xl p-4 text-center font-black">Something went wrong. Please try again.</div>
