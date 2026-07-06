@@ -249,7 +249,7 @@ export default function BookingPage() {
               <label className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-3 block">How would you like to pay?</label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: "cash", icon: "✌️", label: "No payment now", sub: "Pay after the job · Cash or Venmo" },
+                  { value: "cash", icon: "✌️", label: "No payment now", sub: "Pay after the job · Any method" },
                   { value: "card", icon: "✅", label: "Reserve with card", sub: "$50 holds your booking · Apple Pay · Card" },
                 ].map((opt) => (
                   <button
