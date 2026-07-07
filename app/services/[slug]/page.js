@@ -6,6 +6,13 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
 
+// Premium outline treatment — replaces flat black/orange fills
+const BTN_OUTLINE =
+  "border-2 border-[#c8763a] text-zinc-950 bg-white " +
+  "hover:bg-[#c8763a] hover:text-white hover:border-[#c8763a] " +
+  "shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_24px_-8px_rgba(200,118,58,0.45)] " +
+  "transition-all duration-300";
+
 // ─── Photo Modal (mobile tap) ──────────────────────────────────────────────────
 function PhotoModal({ image, serviceTitle, onClose }) {
   useEffect(() => {
@@ -34,7 +41,7 @@ function PhotoModal({ image, serviceTitle, onClose }) {
           />
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-9 h-9 bg-black/50 text-white rounded-full font-black text-lg flex items-center justify-center backdrop-blur-sm"
+            className="absolute top-4 right-4 w-9 h-9 bg-white/90 text-zinc-950 rounded-full font-black text-lg flex items-center justify-center backdrop-blur-sm shadow-sm"
           >
             ×
           </button>
@@ -44,13 +51,13 @@ function PhotoModal({ image, serviceTitle, onClose }) {
           <p className="text-orange-500 font-black text-xl leading-snug">{image.title}</p>
           <p className="text-zinc-600 mt-3 leading-relaxed">{image.desc}</p>
           <div className="mt-5 flex items-center justify-between">
-            <span className="bg-orange-500 text-black text-xl font-black px-5 py-2.5 rounded-full">
+            <span className="border-2 border-[#c8763a] text-[#a85f2a] bg-[#fdf3ea] text-xl font-black px-5 py-2.5 rounded-full">
               {image.price}
             </span>
             <a
               href={quoteUrl}
               onClick={onClose}
-              className="bg-zinc-950 text-white text-sm font-black px-5 py-2.5 rounded-full hover:bg-orange-500 hover:text-black transition"
+              className={`${BTN_OUTLINE} text-sm font-black px-5 py-2.5 rounded-full`}
             >
               Book this →
             </a>
@@ -122,10 +129,10 @@ function FlipCard({ image, serviceTitle }) {
               alt={image.title}
               className="w-full h-full object-cover object-center bg-zinc-200"
             />
-            <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm md:hidden">
+            <div className="absolute bottom-3 right-3 bg-white/90 text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm shadow-sm md:hidden">
               Tap for info
             </div>
-            <div className="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm hidden md:block">
+            <div className="absolute bottom-3 right-3 bg-white/90 text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm shadow-sm hidden md:block">
               Hover for info
             </div>
           </div>
@@ -137,13 +144,13 @@ function FlipCard({ image, serviceTitle }) {
               WebkitBackfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
             }}
-            className="absolute inset-0 rounded-[24px] bg-zinc-950 border border-black/10 flex flex-col justify-between p-6"
+            className="absolute inset-0 rounded-[24px] bg-white border-2 border-[#c8763a] flex flex-col justify-between p-6"
           >
             <div>
-              <p className="text-orange-500 font-black text-base leading-snug">{image.title}</p>
-              <p className="text-zinc-300 text-sm mt-2 leading-relaxed">{image.desc}</p>
+              <p className="text-[#a85f2a] font-black text-base leading-snug">{image.title}</p>
+              <p className="text-zinc-600 text-sm mt-2 leading-relaxed">{image.desc}</p>
             </div>
-            <div className="mt-2 inline-block bg-orange-500 text-black text-sm font-black px-3 py-1.5 rounded-full">
+            <div className="mt-2 inline-block border-2 border-[#c8763a] text-[#a85f2a] bg-[#fdf3ea] text-sm font-black px-3 py-1.5 rounded-full w-fit">
               {image.price}
             </div>
           </div>
@@ -170,14 +177,14 @@ function ThankYouModal({ onClose }) {
         className="bg-white rounded-[40px] p-8 md:p-12 max-w-md w-full shadow-2xl text-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-6xl mb-4">✅</div>
+        <div className="w-12 h-[3px] bg-orange-500 mx-auto mb-6 rounded-full" />
         <h2 className="text-3xl font-black tracking-tight">Thank you!</h2>
         <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
           Your request has been received. We'll reach out via <span className="font-black text-zinc-950">text or email</span> shortly to confirm details and schedule your visit.
         </p>
         <button
           onClick={onClose}
-          className="mt-8 w-full bg-orange-500 hover:bg-orange-400 text-black rounded-full py-4 font-black text-lg transition"
+          className={`mt-8 w-full ${BTN_OUTLINE} rounded-full py-4 font-black text-lg`}
         >
           Got it →
         </button>
@@ -216,8 +223,8 @@ export default function ServicePage() {
           <p className="mt-6 text-lg text-zinc-600 leading-relaxed">{service.description}</p>
           <p className="mt-5 text-3xl font-black text-orange-500">{service.price}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href={`/booking?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-7 py-4 rounded-full font-black shadow-xl hover:scale-105 transition">{ctaLabel}</a>
-            <a href="/services" className="bg-white border border-black/10 px-7 py-4 rounded-full font-black hover:bg-zinc-100 transition">All Services</a>
+            <a href={`/booking?service=${encodeURIComponent(service.title)}`} className={`${BTN_OUTLINE} px-7 py-4 rounded-full font-black`}>{ctaLabel}</a>
+            <a href="/services" className="bg-white border border-black/10 px-7 py-4 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 transition">All Services</a>
           </div>
         </div>
         <div className="bg-white rounded-[36px] p-2.5 shadow-2xl border border-black/10">
@@ -250,11 +257,11 @@ export default function ServicePage() {
           <div className="grid grid-cols-2 gap-3 md:gap-5">
             <div className="relative bg-white rounded-[28px] overflow-hidden border border-black/10">
               <img src={service.beforeAfter.before} alt="Before" className="w-full h-52 md:h-96 object-cover object-center" />
-              <div className="absolute top-3 left-3 bg-zinc-950 text-white px-4 py-1.5 rounded-full font-black text-xs md:text-sm">Before</div>
+              <div className="absolute top-3 left-3 bg-white text-zinc-950 border border-black/15 px-4 py-1.5 rounded-full font-black text-xs md:text-sm">Before</div>
             </div>
             <div className="relative bg-white rounded-[28px] overflow-hidden border border-black/10">
               <img src={service.beforeAfter.after} alt="After" className="w-full h-52 md:h-96 object-cover object-center" />
-              <div className="absolute top-3 left-3 bg-orange-500 text-black px-4 py-1.5 rounded-full font-black text-xs md:text-sm">After</div>
+              <div className="absolute top-3 left-3 bg-[#fdf3ea] text-[#a85f2a] border-2 border-[#c8763a] px-4 py-1.5 rounded-full font-black text-xs md:text-sm">After</div>
             </div>
           </div>
         </section>
@@ -313,25 +320,24 @@ export default function ServicePage() {
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-5 pb-24">
-        <div className="relative bg-zinc-950 rounded-[36px] overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,#ff6a0030,transparent_60%)]" />
+        <div className="relative bg-[#fdfaf5] rounded-[36px] overflow-hidden border-2 border-[#c8763a]/50 shadow-[0_20px_60px_-30px_rgba(200,118,58,0.35)]">
           <div className="relative p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
               <p className="text-orange-500 font-black uppercase tracking-widest text-sm">Get Started</p>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mt-2">Ready to book?</h2>
-              <p className="mt-3 text-zinc-400 text-lg">Send photos — we'll reply with a quote fast.</p>
+              <h2 className="text-4xl md:text-6xl font-black tracking-tight text-zinc-950 mt-2">Ready to book?</h2>
+              <p className="mt-3 text-zinc-500 text-lg">Send photos — we'll reply with a quote fast.</p>
               <div className="flex flex-wrap gap-3 mt-5">
-                {["No phone calls", "Fast response", isHandyman ? "$70/hr — no surprises" : "Fair pricing"].map(f => (
-                  <span key={f} className="bg-white/10 text-white text-sm font-bold px-4 py-2 rounded-full">✓ {f}</span>
+                {["No phone calls", "Fast response", isHandyman ? "$65/hr — no surprises" : "Fair pricing"].map(f => (
+                  <span key={f} className="bg-[#fdf3ea] border border-[#c8763a]/40 text-[#a85f2a] text-sm font-bold px-4 py-2 rounded-full">{f}</span>
                 ))}
               </div>
             </div>
             <div className="flex flex-col gap-3 w-full md:w-auto">
-              <a href={`/booking?service=${encodeURIComponent(service.title)}`} className="bg-orange-500 text-black px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-orange-400 hover:scale-105 transition shadow-xl">
+              <a href={`/booking?service=${encodeURIComponent(service.title)}`} className={`${BTN_OUTLINE} px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap`}>
                 {ctaLabel} →
               </a>
-              <a href="tel:+19498283959" className="bg-white/10 text-white px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-white/20 transition">
-                📞 (949) 828-3959
+              <a href="tel:+19498283959" className="bg-white border border-black/10 text-zinc-950 px-10 py-5 rounded-full font-black text-lg text-center whitespace-nowrap hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 transition">
+                (949) 828-3959
               </a>
             </div>
           </div>
