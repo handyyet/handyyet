@@ -9,6 +9,12 @@ import SmartButton from "../components/SmartButton";
 import { useRef, useState, useEffect } from "react";
 import { services } from "../../lib/services";
 
+const BTN_PREMIUM =
+  "bg-gradient-to-b from-[#2a2620] to-[#15130f] text-[#f3ead9] border border-[#8a6a3f]/50 " +
+  "hover:border-[#c9a06b]/70 hover:from-[#332d24] hover:to-[#1b1915] " +
+  "shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_28px_-10px_rgba(0,0,0,0.6)] " +
+  "transition-all duration-300";
+
 async function compressImage(file) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -47,14 +53,14 @@ function ThankYouModal({ onClose }) {
         className="bg-white rounded-[40px] p-8 md:p-12 max-w-md w-full shadow-2xl text-center"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-6xl mb-4">✅</div>
+        <div className="w-12 h-[3px] bg-orange-500 mx-auto mb-6 rounded-full" />
         <h2 className="text-3xl font-black tracking-tight">Booking received!</h2>
         <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
           We'll confirm your appointment via <span className="font-black text-zinc-950">text or email</span> as soon as possible.
         </p>
         <button
           onClick={onClose}
-          className="mt-8 w-full bg-orange-500 hover:bg-orange-400 text-black rounded-full py-4 font-black text-lg transition"
+          className={`mt-8 w-full ${BTN_PREMIUM} rounded-full py-4 font-black text-lg`}
         >
           Got it →
         </button>
@@ -99,7 +105,7 @@ export default function BookingPage() {
       formData.append("service", form.service.value);
       if (form.email.value) formData.append("email", form.email.value);
       formData.append("issue", form.issue.value);
-      formData.append("paymentMethod", paymentMethod === "card" ? "Card — $50 deposit (Stripe)" : "Cash / Pay after service");
+      formData.append("paymentMethod", paymentMethod === "card" ? "Card — $50 deposit (Stripe)" : "Pay after service — any method");
       if (booking) formData.append("booking", `${booking.date.toDateString()} at ${booking.time}`);
 
       const files = Array.from(photoInputRef.current?.files || []);
@@ -168,25 +174,22 @@ export default function BookingPage() {
           {/* Left: perks */}
           <div className="lg:sticky lg:top-28 space-y-5">
             {[
-              { icon: "📸", title: "Send photos", text: "Upload photos of the job so we can prepare the right tools and give an accurate quote." },
-              { icon: "📅", title: "Pick a time slot", text: "Choose a date and time that works for you. We'll confirm within a few hours." },
-              { icon: "💬", title: "We'll reach out", text: "You'll receive a text or email to confirm your booking and discuss any details." },
-              { icon: "✅", title: "Job done right", text: "We show up on time, do the work cleanly, and leave your space tidy." },
+              { title: "Send photos", text: "Upload photos of the job so we can prepare the right tools and give an accurate quote." },
+              { title: "Pick a time slot", text: "Choose a date and time that works for you. We'll confirm within a few hours." },
+              { title: "We'll reach out", text: "You'll receive a text or email to confirm your booking and discuss any details." },
+              { title: "Job done right", text: "We show up on time, do the work cleanly, and leave your space tidy." },
             ].map((item) => (
-              <div key={item.title} className="bg-white rounded-[24px] p-6 border border-black/10 flex gap-5 items-start">
-                <span className="text-3xl">{item.icon}</span>
-                <div>
-                  <p className="font-black text-lg">{item.title}</p>
-                  <p className="text-zinc-500 text-sm mt-1 leading-relaxed">{item.text}</p>
-                </div>
+              <div key={item.title} className="bg-white rounded-[24px] p-6 border border-black/10 border-l-[3px] border-l-orange-500/60">
+                <p className="font-black text-lg">{item.title}</p>
+                <p className="text-zinc-500 text-sm mt-1 leading-relaxed">{item.text}</p>
               </div>
             ))}
 
             <div className="bg-zinc-950 rounded-[24px] p-6 text-white">
               <p className="font-black text-lg">Questions?</p>
               <p className="text-zinc-400 text-sm mt-1">Call or text us directly.</p>
-              <a href="tel:+19498283959" className="mt-4 inline-block bg-orange-500 text-black font-black px-6 py-3 rounded-full hover:bg-orange-400 transition">
-                📞 (949) 828-3959
+              <a href="tel:+19498283959" className={`mt-4 inline-block ${BTN_PREMIUM} font-black px-6 py-3 rounded-full`}>
+                (949) 828-3959
               </a>
             </div>
           </div>
@@ -249,8 +252,8 @@ export default function BookingPage() {
               <label className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-3 block">How would you like to pay?</label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: "cash", icon: "✌️", label: "No payment now", sub: "Pay after the job · Any method" },
-                  { value: "card", icon: "✅", label: "Reserve with card", sub: "$50 holds your booking · Apple Pay · Card" },
+                  { value: "cash", label: "No payment now", sub: "Pay after the job · Any method" },
+                  { value: "card", label: "Reserve with card", sub: "$50 holds your booking · Apple Pay · Card" },
                 ].map((opt) => (
                   <button
                     key={opt.value}
@@ -262,7 +265,6 @@ export default function BookingPage() {
                         : "border-zinc-200 bg-zinc-50 hover:border-zinc-300"
                     }`}
                   >
-                    <div className="text-2xl mb-1">{opt.icon}</div>
                     <div className="font-black text-sm text-zinc-900">{opt.label}</div>
                     <div className="text-xs text-zinc-500 mt-0.5 leading-snug">{opt.sub}</div>
                   </button>
@@ -292,7 +294,7 @@ export default function BookingPage() {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="bg-orange-500 hover:bg-orange-400 text-black rounded-full py-5 font-black text-lg transition disabled:opacity-60"
+              className={`${BTN_PREMIUM} rounded-full py-5 font-black text-lg disabled:opacity-60`}
             >
               {status === 'sending'
                 ? 'Sending…'

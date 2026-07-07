@@ -8,7 +8,7 @@ export default function BookingSuccessPage() {
       <Navbar />
 
       <section className="max-w-7xl mx-auto px-5 pt-40 pb-24 text-center">
-        <div className="text-8xl mb-6">✅</div>
+        <div className="w-16 h-[3px] bg-orange-500 mx-auto mb-8 rounded-full" />
         <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">
           Booking confirmed!
         </h1>
@@ -21,7 +21,7 @@ export default function BookingSuccessPage() {
         </div>
         <Link
           href="/"
-          className="mt-10 inline-block bg-orange-500 hover:bg-orange-400 text-black font-black px-8 py-5 rounded-full text-lg transition"
+          className="mt-10 inline-block bg-gradient-to-b from-[#2a2620] to-[#15130f] text-[#f3ead9] border border-[#8a6a3f]/50 hover:border-[#c9a06b]/70 hover:from-[#332d24] hover:to-[#1b1915] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_28px_-10px_rgba(0,0,0,0.6)] transition-all duration-300 font-black px-8 py-5 rounded-full text-lg"
         >
           Back to home →
         </Link>
