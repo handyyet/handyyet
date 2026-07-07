@@ -21,7 +21,7 @@ export default function BookingSuccessPage() {
         </div>
         <Link
           href="/"
-          className="mt-10 inline-block bg-gradient-to-b from-[#2a2620] to-[#15130f] text-[#f3ead9] border border-[#8a6a3f]/50 hover:border-[#c9a06b]/70 hover:from-[#332d24] hover:to-[#1b1915] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_28px_-10px_rgba(0,0,0,0.6)] transition-all duration-300 font-black px-8 py-5 rounded-full text-lg"
+          className="mt-10 inline-block border-2 border-[#c8763a] text-zinc-950 bg-white hover:bg-[#c8763a] hover:text-white hover:border-[#c8763a] shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_24px_-8px_rgba(200,118,58,0.45)] transition-all duration-300 font-black px-8 py-5 rounded-full text-lg"
         >
           Back to home →
         </Link>

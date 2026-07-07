@@ -72,8 +72,8 @@ export default function AddressAutocomplete({ value, onChange, className }) {
             return (
               <button key={i} type="button"
                 onMouseDown={() => selectSuggestion(pred)}
-                className="w-full text-left px-5 py-4 hover:bg-orange-50 transition text-sm font-bold border-b border-black/05 last:border-0">
-                📍 {text}
+                className="w-full text-left px-5 py-4 hover:bg-[#fdf3ea] transition text-sm font-bold border-b border-black/05 last:border-0">
+                {text}
               </button>
             );
           })}

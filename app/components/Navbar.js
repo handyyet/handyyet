@@ -10,6 +10,13 @@ const GoogleIcon = () => (
   </svg>
 );
 
+// Premium outline treatment — replaces flat black/orange fills
+const BTN_OUTLINE =
+  "border-2 border-[#c8763a] text-zinc-950 bg-white " +
+  "hover:bg-[#c8763a] hover:text-white hover:border-[#c8763a] " +
+  "shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_24px_-8px_rgba(200,118,58,0.45)] " +
+  "transition-all duration-300";
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -41,7 +48,7 @@ export default function Navbar() {
             ))}
           </div>
           <div className="hidden md:flex items-center gap-3">
-            <a href="/booking" className="bg-zinc-950 text-white px-5 py-2.5 rounded-full font-black text-sm hover:bg-orange-500 transition-colors">Book Now</a>
+            <a href="/booking" className={`${BTN_OUTLINE} px-5 py-2.5 rounded-full font-black text-sm`}>Book Now</a>
           </div>
 
           {/* Burger */}
@@ -70,7 +77,7 @@ export default function Navbar() {
         </div>
         <div className="px-5 pb-10 flex flex-col gap-3">
           <a href="/booking" onClick={() => setOpen(false)}
-            className="bg-orange-500 text-black rounded-full py-5 text-center font-black text-xl hover:bg-orange-400 transition">
+            className={`${BTN_OUTLINE} rounded-full py-5 text-center font-black text-xl`}>
             Book Now →
           </a>
           <a href="https://g.page/r/Caqs8MHefRFaEBM/review" target="_blank" rel="noopener noreferrer"
@@ -80,7 +87,7 @@ export default function Navbar() {
             Leave a Google Review
           </a>
           <div className="flex flex-col items-center gap-1 pt-2">
-            <a href="tel:+19498283959" className="font-bold text-zinc-600">📞 (949) 828-3959</a>
+            <a href="tel:+19498283959" className="font-bold text-zinc-600">(949) 828-3959</a>
             <a href="mailto:support@handyyet.com" className="text-zinc-400 font-bold text-sm">support@handyyet.com</a>
           </div>
         </div>

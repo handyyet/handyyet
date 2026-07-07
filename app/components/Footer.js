@@ -16,11 +16,11 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start gap-2">
             <a href="/" className="text-2xl font-black">Handy<span className="text-orange-500">Yet</span></a>
             <div className="flex flex-col md:flex-row items-center gap-3 mt-1">
-              <a href="tel:+19498283959" className="text-zinc-500 font-bold text-sm hover:text-zinc-950 transition">📞 (949) 828-3959</a>
+              <a href="tel:+19498283959" className="text-zinc-500 font-bold text-sm hover:text-zinc-950 transition">(949) 828-3959</a>
               <span className="hidden md:block text-zinc-300">·</span>
-              <a href="mailto:hello@handyyet.com" className="text-zinc-500 font-bold text-sm hover:text-zinc-950 transition">✉️ hello@handyyet.com</a>
+              <a href="mailto:hello@handyyet.com" className="text-zinc-500 font-bold text-sm hover:text-zinc-950 transition">hello@handyyet.com</a>
               <span className="hidden md:block text-zinc-300">·</span>
-              <span className="text-zinc-400 text-sm">📍 Orange County, CA</span>
+              <span className="text-zinc-400 text-sm">Orange County, CA</span>
             </div>
           </div>
 

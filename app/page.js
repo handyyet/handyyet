@@ -10,6 +10,13 @@ import SmartButton from "./components/SmartButton";
 import { useRef, useState, useEffect } from "react";
 import { services, reviews, pricing } from "../lib/services";
 
+// Premium outline treatment — replaces flat black/orange fills
+const BTN_OUTLINE =
+  "border-2 border-[#c8763a] text-zinc-950 bg-white " +
+  "hover:bg-[#c8763a] hover:text-white hover:border-[#c8763a] " +
+  "shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_24px_-8px_rgba(200,118,58,0.45)] " +
+  "transition-all duration-300";
+
 // ─── Premium animation hook ────────────────────────────────────────────────────
 function usePremiumReveal() {
   useEffect(() => {
@@ -63,12 +70,12 @@ function ThankYouModal({ onClose }) {
       style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }} onClick={onClose}>
       <div className="bg-white rounded-[40px] p-8 md:p-12 max-w-md w-full shadow-2xl text-center"
         onClick={(e) => e.stopPropagation()}>
-        <div className="text-6xl mb-4">✅</div>
+        <div className="w-12 h-[3px] bg-orange-500 mx-auto mb-6 rounded-full" />
         <h2 className="text-3xl font-black tracking-tight">Thank you!</h2>
         <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
           Your request has been received. We'll reach out via <span className="font-black text-zinc-950">text or email</span> shortly to confirm details and schedule your visit.
         </p>
-        <button onClick={onClose} className="mt-8 w-full bg-orange-500 hover:bg-orange-400 text-black rounded-full py-4 font-black text-lg transition">
+        <button onClick={onClose} className={`mt-8 w-full ${BTN_OUTLINE} rounded-full py-4 font-black text-lg`}>
           Got it →
         </button>
       </div>
@@ -133,7 +140,7 @@ export default function Home() {
       formData.append("service", form.service.value);
       if (form.email.value) formData.append("email", form.email.value);
       formData.append("issue", form.issue.value);
-      formData.append("paymentMethod", paymentMethod === "card" ? "Card — $50 deposit (Stripe)" : "Cash / Pay after service");
+      formData.append("paymentMethod", paymentMethod === "card" ? "Card — $50 deposit (Stripe)" : "Pay after service — any method");
       if (booking) formData.append("booking", `${booking.date.toDateString()} at ${booking.time}`);
       const files = Array.from(photoInputRef.current?.files || []);
       const compressedFiles = await Promise.all(files.slice(0, 10).map((file) => compressImage(file)));
@@ -181,8 +188,8 @@ export default function Home() {
               Huntington Beach handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup. Send photos and get a fast estimate.
             </p>
             <div className="anim-fade-up mt-9 flex flex-wrap gap-4" style={{ animationDelay: "220ms" }}>
-              <a href="#quote" className="bg-orange-500 text-black px-8 py-5 rounded-full font-black shadow-xl hover:scale-105 hover:shadow-orange-200 transition duration-300">Send Photos</a>
-              <a href="/services" className="bg-white border border-black/10 px-8 py-5 rounded-full font-black hover:bg-zinc-100 hover:shadow-lg transition duration-300">View Services</a>
+              <a href="#quote" className={`${BTN_OUTLINE} px-8 py-5 rounded-full font-black`}>Send Photos</a>
+              <a href="/services" className="bg-white border border-black/10 px-8 py-5 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 hover:shadow-lg transition duration-300">View Services</a>
             </div>
           </div>
           <div className="relative anim-scale-in" style={{ animationDelay: "180ms" }}>
@@ -232,8 +239,7 @@ export default function Home() {
             <div key={service.slug} data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
               <a href={`/services/${service.slug}`}
                 className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-3 hover:shadow-2xl hover:border-orange-200 transition duration-400 block h-full">
-                <div className="text-5xl group-hover:scale-110 transition duration-300">{service.icon}</div>
-                <h3 className="text-2xl font-black mt-6">{service.title}</h3>
+                <h3 className="text-2xl font-black mt-1">{service.title}</h3>
                 <p className="mt-3 text-zinc-500 leading-relaxed">{service.short}</p>
                 <p className="mt-5 text-orange-500 font-black">{service.price}</p>
                 <div className="mt-6 font-black text-orange-500 group-hover:translate-x-2 transition duration-300">Learn more →</div>
@@ -250,7 +256,7 @@ export default function Home() {
             <p className="text-orange-500 font-black uppercase tracking-widest">Reviews</p>
             <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9] mt-3">85 reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
           </div>
-          <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-zinc-100 hover:shadow-lg transition duration-300">See all →</a>
+          <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 hover:shadow-lg transition duration-300">See all →</a>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
@@ -287,7 +293,7 @@ export default function Home() {
               {['No long phone calls', 'Photo-based estimates', 'Fast response in Orange County'].map((item, i) => (
                 <div key={item} data-reveal style={{ transitionDelay: `${i * 80}ms` }}
                   className="bg-white rounded-2xl p-4 border border-black/10 font-bold hover:shadow-md transition duration-300">
-                  ✓ {item}
+                  {item}
                 </div>
               ))}
             </div>
@@ -320,12 +326,12 @@ export default function Home() {
                 <label className="text-sm font-black text-zinc-600">Upload photos</label>
                 <input ref={photoInputRef} name="photos" type="file" accept="image/*" multiple
                   onChange={(e) => setFilesCount(e.target.files?.length || 0)}
-                  className="mt-3 w-full bg-zinc-950 text-white rounded-2xl px-5 py-4" />
+                  className="mt-3 w-full bg-white border-2 border-[#c8763a]/40 text-zinc-900 rounded-2xl px-5 py-4 focus:border-[#c8763a] transition" />
                 <p className="text-sm text-zinc-500 mt-3">
                   {filesCount > 0 ? `${filesCount} photo${filesCount > 1 ? 's' : ''} selected` : 'Select multiple photos from your library.'}
                 </p>
                 <p className="text-xs text-zinc-400 mt-1">
-                  We’ll use them to prepare your estimate accurately.
+                  We'll use them to prepare your estimate accurately.
                 </p>
               </div>
               {/* Payment selector */}
@@ -333,8 +339,8 @@ export default function Home() {
                 <label className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-3 block">How would you like to pay?</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: "cash", icon: "✌️", label: "No payment now", sub: "Pay after the job · Cash or Venmo" },
-                    { value: "card", icon: "✅", label: "Reserve with card", sub: "$50 holds your booking · Apple Pay · Card" },
+                    { value: "cash", label: "No payment now", sub: "Pay after the job · Any method" },
+                    { value: "card", label: "Reserve with card", sub: "$50 holds your booking · Apple Pay · Card" },
                   ].map((opt) => (
                     <button key={opt.value} type="button"
                       onClick={() => { setPaymentMethod(opt.value); setStatus(""); }}
@@ -343,7 +349,6 @@ export default function Home() {
                           ? "border-orange-500 bg-orange-50"
                           : "border-zinc-200 bg-zinc-50 hover:border-zinc-300"
                       }`}>
-                      <div className="text-2xl mb-1">{opt.icon}</div>
                       <div className="font-black text-sm text-zinc-900">{opt.label}</div>
                       <div className="text-xs text-zinc-500 mt-0.5 leading-snug">{opt.sub}</div>
                     </button>
@@ -357,7 +362,7 @@ export default function Home() {
               </div>
 
               <button type="submit" disabled={status === 'sending'}
-                className="bg-orange-500 hover:bg-orange-400 text-black rounded-full py-5 font-black text-lg transition hover:scale-[1.02] hover:shadow-xl disabled:opacity-60">
+                className={`${BTN_OUTLINE} rounded-full py-5 font-black text-lg hover:scale-[1.02] disabled:opacity-60`}>
                 {status === 'sending' ? 'Sending…' : paymentMethod === 'card' ? 'Reserve with Card · $50 →' : 'Request Quote'}
               </button>
               {status === 'error' && (

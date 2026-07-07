@@ -88,8 +88,8 @@ export default function BookingCalendar({ value, onChange }) {
           const isSelected = selectedDate && d.toDateString() === selectedDate.toDateString();
           return (
             <button key={i} type="button" onClick={() => pickDate(d)}
-              className={`flex flex-col items-center py-2 rounded-2xl transition text-xs font-black
-                ${isSelected ? "bg-orange-500 text-black" : "bg-white border border-black/08 text-zinc-700 hover:border-orange-300 hover:bg-orange-50"}`}>
+              className={`flex flex-col items-center py-2 rounded-2xl transition text-xs font-black border-2
+                ${isSelected ? "bg-[#fdf3ea] border-[#c8763a] text-zinc-950" : "bg-white border-black/08 text-zinc-700 hover:border-[#c8763a]/50 hover:bg-[#fdf3ea]"}`}>
               <span className="text-[10px] opacity-60">{DAY_NAMES[d.getDay()]}</span>
               <span className="text-base mt-0.5">{d.getDate()}</span>
             </button>
@@ -108,10 +108,10 @@ export default function BookingCalendar({ value, onChange }) {
               const selected = selectedTime === t;
               return (
                 <button key={t} type="button" onClick={() => pickTime(t)} disabled={blocked}
-                  className={`py-3 rounded-2xl text-sm font-black transition
-                    ${selected ? "bg-orange-500 text-black" :
-                      blocked ? "bg-zinc-200 text-zinc-400 cursor-not-allowed line-through" :
-                      "bg-white border border-black/08 text-zinc-700 hover:border-orange-300 hover:bg-orange-50"}`}>
+                  className={`py-3 rounded-2xl text-sm font-black transition border-2
+                    ${selected ? "bg-[#fdf3ea] border-[#c8763a] text-zinc-950" :
+                      blocked ? "bg-zinc-100 border-zinc-200 text-zinc-400 cursor-not-allowed line-through" :
+                      "bg-white border-black/08 text-zinc-700 hover:border-[#c8763a]/50 hover:bg-[#fdf3ea]"}`}>
                   {t}
                 </button>
               );
@@ -121,8 +121,8 @@ export default function BookingCalendar({ value, onChange }) {
       )}
 
       {selectedDate && selectedTime && (
-        <div className="mt-4 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-3 text-sm font-black text-orange-700">
-          ✓ {fmt(selectedDate)} at {selectedTime}
+        <div className="mt-4 bg-[#fdf3ea] border border-[#c8763a]/40 rounded-2xl px-4 py-3 text-sm font-black text-[#a85f2a]">
+          {fmt(selectedDate)} at {selectedTime}
         </div>
       )}
     </div>

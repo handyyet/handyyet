@@ -9,10 +9,11 @@ import SmartButton from "../components/SmartButton";
 import { useRef, useState, useEffect } from "react";
 import { services } from "../../lib/services";
 
-const BTN_PREMIUM =
-  "bg-gradient-to-b from-[#2a2620] to-[#15130f] text-[#f3ead9] border border-[#8a6a3f]/50 " +
-  "hover:border-[#c9a06b]/70 hover:from-[#332d24] hover:to-[#1b1915] " +
-  "shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_28px_-10px_rgba(0,0,0,0.6)] " +
+// Premium outline treatment — replaces flat black/orange fills
+const BTN_OUTLINE =
+  "border-2 border-[#c8763a] text-zinc-950 bg-white " +
+  "hover:bg-[#c8763a] hover:text-white hover:border-[#c8763a] " +
+  "shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_24px_-8px_rgba(200,118,58,0.45)] " +
   "transition-all duration-300";
 
 async function compressImage(file) {
@@ -60,7 +61,7 @@ function ThankYouModal({ onClose }) {
         </p>
         <button
           onClick={onClose}
-          className={`mt-8 w-full ${BTN_PREMIUM} rounded-full py-4 font-black text-lg`}
+          className={`mt-8 w-full ${BTN_OUTLINE} rounded-full py-4 font-black text-lg`}
         >
           Got it →
         </button>
@@ -185,10 +186,10 @@ export default function BookingPage() {
               </div>
             ))}
 
-            <div className="bg-zinc-950 rounded-[24px] p-6 text-white">
+            <div className="bg-white rounded-[24px] p-6 border-2 border-[#c8763a]/50">
               <p className="font-black text-lg">Questions?</p>
-              <p className="text-zinc-400 text-sm mt-1">Call or text us directly.</p>
-              <a href="tel:+19498283959" className={`mt-4 inline-block ${BTN_PREMIUM} font-black px-6 py-3 rounded-full`}>
+              <p className="text-zinc-500 text-sm mt-1">Call or text us directly.</p>
+              <a href="tel:+19498283959" className={`mt-4 inline-block ${BTN_OUTLINE} font-black px-6 py-3 rounded-full`}>
                 (949) 828-3959
               </a>
             </div>
@@ -284,7 +285,7 @@ export default function BookingPage() {
                 ref={photoInputRef}
                 name="photos" type="file" accept="image/*" multiple
                 onChange={(e) => setFilesCount(e.target.files?.length || 0)}
-                className="mt-3 w-full bg-zinc-950 text-white rounded-2xl px-5 py-4"
+                className="mt-3 w-full bg-white border-2 border-[#c8763a]/40 text-zinc-900 rounded-2xl px-5 py-4 focus:border-[#c8763a] transition"
               />
               <p className="text-sm text-zinc-500 mt-3">
                 {filesCount > 0 ? `${filesCount} photo${filesCount > 1 ? 's' : ''} selected` : 'Select multiple photos from your library.'}
@@ -294,7 +295,7 @@ export default function BookingPage() {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className={`${BTN_PREMIUM} rounded-full py-5 font-black text-lg disabled:opacity-60`}
+              className={`${BTN_OUTLINE} rounded-full py-5 font-black text-lg disabled:opacity-60`}
             >
               {status === 'sending'
                 ? 'Sending…'
