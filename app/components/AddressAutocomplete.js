@@ -1,84 +1,106 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
+'use client';
 
-export default function AddressAutocomplete({ value, onChange, className }) {
-  const [suggestions, setSuggestions] = useState([]);
-  const [open, setOpen] = useState(false);
-  const sessionToken = useRef(null);
-  const debounce = useRef(null);
+import { useEffect, useRef } from 'react';
+import Script from 'next/script';
+
+/**
+ * Reusable address autocomplete field.
+ *
+ * Usage:
+ * <AddressAutocomplete
+ *   value={address}
+ *   onSelect={(addr) => setAddress(addr)}
+ *   placeholder="Enter your address"
+ * />
+ *
+ * addr shape passed to onSelect:
+ * { formatted, street, city, state, zip }
+ */
+export default function AddressAutocomplete({
+  value,
+  onChange,
+  placeholder = 'Street address',
+  required = false,
+  className = '',
+}) {
+  const containerRef = useRef(null);
+  const elementRef = useRef(null);
+  const prevValueRef = useRef(value);
 
   useEffect(() => {
-    if (window.google) return;
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY}&libraries=places&v=weekly`;
-    script.async = true;
-    document.head.appendChild(script);
+    let cancelled = false;
+
+    async function mount() {
+      if (!window.google?.maps?.importLibrary) return;
+      await window.google.maps.importLibrary('places');
+      if (cancelled || !containerRef.current) return;
+
+      const el = document.createElement('gmp-place-autocomplete');
+      el.setAttribute('placeholder', placeholder);
+      if (required) el.setAttribute('required', '');
+      el.style.width = '100%';
+      el.style.display = 'block';
+
+      containerRef.current.innerHTML = '';
+      containerRef.current.appendChild(el);
+      elementRef.current = el;
+
+      el.addEventListener('gmp-select', async ({ placePrediction }) => {
+        const place = placePrediction.toPlace();
+        await place.fetchFields({ fields: ['formattedAddress'] });
+        onChange?.(place.formattedAddress || '');
+      });
+    }
+
+    if (!elementRef.current) mount();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const fetchSuggestions = (input) => {
-    clearTimeout(debounce.current);
-    if (!input || input.length < 3) { setSuggestions([]); return; }
+  // The web component has no simple value setter, so when the parent
+  // resets the field (e.g. after a successful submit clears the form),
+  // rebuild the widget to clear its visible text.
+  useEffect(() => {
+    const wasCleared = prevValueRef.current && !value;
+    prevValueRef.current = value;
+    if (!wasCleared || !window.google?.maps?.importLibrary) return;
 
-    debounce.current = setTimeout(async () => {
-      if (!window.google) return;
-      try {
-        const { AutocompleteSessionToken, AutocompleteSuggestion } =
-          await window.google.maps.importLibrary("places");
+    window.google.maps.importLibrary('places').then(() => {
+      if (!containerRef.current) return;
+      const el = document.createElement('gmp-place-autocomplete');
+      el.setAttribute('placeholder', placeholder);
+      if (required) el.setAttribute('required', '');
+      el.style.width = '100%';
+      el.style.display = 'block';
 
-        if (!sessionToken.current) {
-          sessionToken.current = new AutocompleteSessionToken();
-        }
+      containerRef.current.innerHTML = '';
+      containerRef.current.appendChild(el);
+      elementRef.current = el;
 
-        const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
-          input,
-          sessionToken: sessionToken.current,
-          includedRegionCodes: ["us"],
-        });
-
-        setSuggestions(suggestions.map(s => s.placePrediction));
-        setOpen(true);
-      } catch (e) {
-        console.error("Places error:", e);
-        setSuggestions([]);
-      }
-    }, 250);
-  };
-
-  const selectSuggestion = (prediction) => {
-    const text = prediction.text?.text || prediction.text?.toString() || "";
-    onChange(text);
-    setSuggestions([]);
-    setOpen(false);
-    sessionToken.current = null;
-  };
+      el.addEventListener('gmp-select', async ({ placePrediction }) => {
+        const place = placePrediction.toPlace();
+        await place.fetchFields({ fields: ['formattedAddress'] });
+        onChange?.(place.formattedAddress || '');
+      });
+    });
+  }, [value]);
 
   return (
-    <div className="relative">
-      <input
-        type="text"
-        placeholder="Address"
-        value={value}
-        onChange={(e) => { onChange(e.target.value); fetchSuggestions(e.target.value); }}
-        onBlur={() => setTimeout(() => setOpen(false), 200)}
-        onFocus={() => suggestions.length > 0 && setOpen(true)}
-        required
-        className={className}
-        autoComplete="off"
+    <>
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&loading=async&libraries=places&v=beta`}
+        strategy="afterInteractive"
       />
-      {open && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-2 bg-white rounded-2xl shadow-2xl border border-black/10 overflow-hidden">
-          {suggestions.map((pred, i) => {
-            const text = pred.text?.text || pred.text?.toString() || "";
-            return (
-              <button key={i} type="button"
-                onMouseDown={() => selectSuggestion(pred)}
-                className="w-full text-left px-5 py-4 hover:bg-[#fdf3ea] transition text-sm font-bold border-b border-black/05 last:border-0">
-                {text}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
+      <div
+        ref={containerRef}
+        className={className}
+        style={{
+          border: '1px solid #d9c9b8',
+          borderRadius: '8px',
+          padding: '2px',
+        }}
+      />
+    </>
   );
 }
