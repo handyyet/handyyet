@@ -209,8 +209,8 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {[
-            { img: "/images/work-shower-fixture.jpg", title: "Shower Valve & Fixture Install", text: "Replaced the shower valve and installed a new brass handset — clean, finished result." },
-            { img: "/images/work-ceiling-fan.jpg", title: "Ceiling Fan Installation", text: "Wired and mounted a new ceiling fan from a bare junction box." },
+            { img: "/images/work-shower-fixture.jpg", title: "Shower Cartridge Replacement", text: "Replaced a worn cartridge and restored cold water supply to the shower." },
+            { img: "/images/work-ceiling-fan.jpg", title: "Ceiling Fan Installation", text: "Installed a new ceiling fan onto the existing wiring." },
             { img: "/images/work-closet-shelving.jpg", title: "Custom Closet Shelving", text: "Built and installed a full 4-shelf system in a custom nook." },
           ].map((item, i) => (
             <div key={item.img} data-reveal data-scale style={{ transitionDelay: `${i * 80}ms` }}

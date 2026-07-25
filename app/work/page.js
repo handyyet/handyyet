@@ -7,8 +7,8 @@ export const metadata = {
 };
 
 const projects = [
-  { img: "/images/work-shower-fixture.jpg", title: "Shower Valve & Fixture Install", text: "Replaced the shower valve and installed a new brass handset — clean, finished result." },
-  { img: "/images/work-ceiling-fan.jpg", title: "Ceiling Fan Installation", text: "Wired and mounted a new ceiling fan from a bare junction box." },
+  { img: "/images/work-shower-fixture.jpg", title: "Shower Cartridge Replacement", text: "Replaced a worn cartridge and restored cold water supply to the shower." },
+  { img: "/images/work-ceiling-fan.jpg", title: "Ceiling Fan Installation", text: "Installed a new ceiling fan onto the existing wiring." },
   { img: "/images/work-closet-shelving.jpg", title: "Custom Closet Shelving", text: "Built and installed a full 4-shelf system in a custom nook." },
   { img: "/images/project-4.jpg", title: "Backyard Cleaning", text: "Power washed and sealed outdoor surfaces with protective coating." },
   { img: "/images/project-5.jpg", title: "Faucet Replacement", text: "New faucet installed with drain assembly." },
