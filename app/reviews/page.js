@@ -7,6 +7,31 @@ export const metadata = {
 };
 
 const reviews = [
+  { date: "Jul 24, 2026", service: "TV Mounting", text: "Nikita was great, early, efficient, made sure I was comfortable with placement and cleaned up. My TV looks great" },
+  { date: "Jul 24, 2026", service: "General Mounting", text: "I've hired many handymen and technicians over the years and Nikita is in the top five for skills and professionalism." },
+  { date: "Jul 24, 2026", service: "Electrical", text: "Nikita's attention to detail is flawless. He completed numerous tasks for me and all were done perfectly. He left his work area clean and I would highly recommend." },
+  { date: "Jul 21, 2026", service: "General Mounting", text: "Fast, timely, cleaned up after himself!" },
+  { date: "Jul 21, 2026", service: "Heavy Lifting & Loading", text: "Nikita was reliable, and able to complete the task request. We are thankful for their attention to detail, communication and flexibility for our task. We would absolutely consider them for future tasks." },
+  { date: "Jul 19, 2026", service: "General Mounting", text: "Super fast and helpful! Thank you!" },
+  { date: "Jul 18, 2026", service: "Electrical", text: "Nikita was on time, good communicator, worked fast, and fixed everything we needed. Would gladly hire him again." },
+  { date: "Jul 17, 2026", service: "General Mounting", text: "This is the 2nd time Nikita did such an outstanding job on a challenging task at our house. Nikita is always there as promised at the arranged time ready to begin and always brings high quality tools for the task. Nikita hung 4 very heavy shelves for us in a nook in our bathroom. These shelves were high quality but the mounting hardware/brackets supplied with the shelves were not strong enough. Nikita came up with an excellent rescue plan for our shelves and made suggestions about how we could mount safely and get the shelves up to reliably hold more weight than we even need. And the shelves look stunning. We are so pleased with his attention to detail and his skills. We are so lucky to have met Nikita." },
+  { date: "Jul 14, 2026", service: "Heavy Lifting & Loading", text: "He did exactly what I needed. He installed my window A/C unit. He was on time, followed the instructions and got it done. I'd hire him again." },
+  { date: "Jul 12, 2026", service: "General Mounting", text: "Was able to come same day for last minute help! Quick to respond and did a very good job!" },
+  { date: "Jul 12, 2026", service: "General Mounting", text: "Very quick, efficient, and professional! Highly recommended!" },
+  { date: "Jul 11, 2026", service: "General Mounting", text: "Such a great person! Did an awesome job!" },
+  { date: "Jul 10, 2026", service: "Plumbing", text: "Nikita showed up on time/early and worked hard. He completed 3 separate sink faucets and changed a hose bib in just over 2 hours. Great communication. Would definitely hire Nikita again! Thanks." },
+  { date: "Jul 9, 2026", service: "TV Mounting", text: "Sooo great! Installed 2 of my TVs perfectly and was so efficient. Luckily he was available same day and came on time. Thank you again!" },
+  { date: "Jul 9, 2026", service: "Electrical", text: "Great worker! Quick, quiet, and quality service." },
+  { date: "Jul 8, 2026", service: "General Mounting", text: "Nikita was great! Will be reaching out to him again for future services. He was quick and had great attention to detail." },
+  { date: "Jul 4, 2026", service: "Heavy Lifting & Loading", text: "Thank you for your help unloading my truck! It took less time than expected and you were great! Thank you!" },
+  { date: "Jun 30, 2026", service: "Heavy Lifting & Loading", text: "Responded within minutes, asked the right questions and showed up exactly on time." },
+  { date: "Jun 29, 2026", service: "Plumbing", text: "Nikita came prepared, was organized and professional. I will use him again!" },
+  { date: "Jun 25, 2026", service: "General Mounting", text: "Nikita was great. He hung up some blinds for us. He was fast, efficient and punctual. He took down our old blinds and left the room spotless. Highly recommend!" },
+  { date: "Jun 25, 2026", service: "Furniture Assembly", text: "He built my kids playhouse so quick and efficient!" },
+  { date: "Jun 19, 2026", service: "Plumbing", text: "On time and got the job done as promised. Would hire again." },
+  { date: "Jun 18, 2026", service: "General Mounting", text: "Another outstanding experience! After doing such a great job hanging my shelves, I had him come back to install a large mirror. As before, the work was meticulous, professional, and completed with great care. He's reliable, communicates well, and makes sure everything is done right. I've already discussed a future project with him because I wouldn't hesitate to hire him again. Highly recommend!" },
+  { date: "Jun 16, 2026", service: "Furniture Assembly", text: "Very quick and clean!" },
+  { date: "Jun 16, 2026", service: "General Mounting", text: "Nikita did an excellent job. He arrived on time, was very respectful and professional, and worked extremely efficiently. He completed five tasks within an hour and cleaned up afterward, which I really appreciated. He was organized, polite, and got everything done without any issues. I would definitely hire him again and highly recommend him." },
   { date: "Jun 13, 2026", service: "Light Carpentry", text: "Amazing job. Super efficient, knowledgeable, and worked with great attention to detail. Everything was done perfectly. Highly recommend this Tasker. Beyond 5 stars rating!" },
   { date: "Jun 10, 2026", service: "General Mounting", text: "Nikita was willing to try doing something new: setting up my patio sail shades on pre-existing mounts, and it worked out well. He was a joy to work with." },
   { date: "Jun 2, 2026", service: "Sealing & Caulking", text: "Nick was very professional and precise on what we needed for our shower. Thank you." },
@@ -44,6 +69,8 @@ const serviceColors = {
   "Light Carpentry": "bg-green-100 text-green-800",
   "Sealing & Caulking": "bg-zinc-100 text-zinc-700",
   "Furniture Assembly": "bg-pink-100 text-pink-800",
+  "TV Mounting": "bg-red-100 text-red-800",
+  "Heavy Lifting & Loading": "bg-teal-100 text-teal-800",
 };
 
 const GoogleIcon = () => (
@@ -75,7 +102,7 @@ export default function ReviewsPage() {
       <section className="max-w-7xl mx-auto px-5 pb-12">
         <div className="grid grid-cols-3 gap-3 md:gap-5">
           {[
-            { num: "85+", label: "Happy clients" },
+            { num: "125+", label: "Happy clients" },
             { num: "5.0", label: "Avg rating" },
             { num: "100%", label: "5-star" },
           ].map((s) => (
