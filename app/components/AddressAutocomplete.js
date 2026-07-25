@@ -33,6 +33,14 @@ export default function AddressAutocomplete({
     if (required) el.setAttribute('required', '');
     el.style.width = '100%';
     el.style.display = 'block';
+    // Match the site's light design instead of Google's default dark theme.
+    // These are officially supported host-level style properties for
+    // gmp-place-autocomplete (they work despite the closed shadow root).
+    el.style.setProperty('color-scheme', 'light');
+    el.style.setProperty('background-color', '#fdfaf5');
+    el.style.border = '2px solid transparent';
+    el.style.borderRadius = '9999px';
+    el.style.padding = '2px';
 
     containerRef.current.innerHTML = '';
     containerRef.current.appendChild(el);
@@ -72,20 +80,20 @@ export default function AddressAutocomplete({
 
   return (
     <>
+      <style>{`
+        gmp-place-autocomplete {
+          transition: border-color 0.2s ease;
+        }
+        gmp-place-autocomplete:focus-within {
+          border-color: #c8763a !important;
+        }
+      `}</style>
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY}&loading=async&libraries=places&v=beta`}
         strategy="afterInteractive"
         onReady={() => setScriptReady(true)}
       />
-      <div
-        ref={containerRef}
-        className={className}
-        style={{
-          border: '1px solid #d9c9b8',
-          borderRadius: '8px',
-          padding: '2px',
-        }}
-      />
+      <div ref={containerRef} className={className} style={{ width: '100%' }} />
     </>
   );
 }
