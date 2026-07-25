@@ -254,18 +254,18 @@ export default function Home() {
         <div data-reveal className="flex items-end justify-between mt-3 mb-10 flex-wrap gap-4">
           <div>
             <p className="text-orange-500 font-black uppercase tracking-widest">Reviews</p>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9] mt-3">85 reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9] mt-3">125 reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
           </div>
           <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 hover:shadow-lg transition duration-300">See all →</a>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { text: "Nikita was responsive, communicative, professional, skilled and quick. He did a quality job. I would book him again in a heartbeat.", service: "Electrical", date: "Mar 7, 2026" },
-            { text: "He arrived on time, communicated clearly, and did a great job replacing my faucet. Everything completed efficiently and professionally. Highly recommend.", service: "Plumbing", date: "Mar 23, 2026" },
-            { text: "Amazing job. Super efficient, knowledgeable, and worked with great attention to detail. Everything was done perfectly. Beyond 5 stars!", service: "Light Carpentry", date: "Jun 13, 2026" },
-            { text: "Nikita did an amazing job hanging up my artwork and lights, super precise and quick! He also replaced my bathroom exhaust fan. Highly recommend!", service: "General Mounting", date: "Mar 18, 2026" },
-            { text: "Five stars for speed! Our disposal died and Nikita had the new one installed and tested before I could even finish my coffee. Truly efficient.", service: "Plumbing", date: "Apr 1, 2026" },
-            { text: "I had a wonderful experience with Nikita! He showed up on time, kept things clean and explained everything before and after the job. Would definitely call him again.", service: "Electrical", date: "Mar 29, 2026" },
+            { text: "This is the 2nd time Nikita did such an outstanding job on a challenging task. He came up with an excellent rescue plan for our shelves and made sure they could safely hold the weight. The shelves look stunning.", service: "General Mounting", date: "Jul 17, 2026" },
+            { text: "Nikita showed up on time/early and worked hard. He completed 3 separate sink faucets and changed a hose bib in just over 2 hours. Great communication. Would definitely hire him again!", service: "Plumbing", date: "Jul 10, 2026" },
+            { text: "Nikita's attention to detail is flawless. He completed numerous tasks for me and all were done perfectly. He left his work area clean and I would highly recommend.", service: "Electrical", date: "Jul 24, 2026" },
+            { text: "Sooo great! Installed 2 of my TVs perfectly and was so efficient. Luckily he was available same day and came on time. Thank you again!", service: "TV Mounting", date: "Jul 9, 2026" },
+            { text: "I've hired many handymen and technicians over the years and Nikita is in the top five for skills and professionalism.", service: "General Mounting", date: "Jul 24, 2026" },
+            { text: "Thank you for your help unloading my truck! It took less time than expected and you were great! Thank you!", service: "Heavy Lifting & Loading", date: "Jul 4, 2026" },
           ].map((review, i) => (
             <div key={i} data-reveal style={{ transitionDelay: `${i * 60}ms` }}
               className="bg-white rounded-[24px] p-6 border border-black/10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-400 flex flex-col">
