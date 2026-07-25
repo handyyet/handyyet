@@ -7,9 +7,9 @@ export const metadata = {
 };
 
 const projects = [
-  { img: "/images/project-1.jpg", title: "Custom Wall Build", text: "Decorative wall panel, lit shelving, and custom cabinets installed." },
-  { img: "/images/project-2.jpg", title: "Fountain Repair", text: "Waterproofing and full repaint of an outdoor fountain." },
-  { img: "/images/project-3.jpg", title: "Garbage Disposal Switch", text: "In-sink button installed for garbage disposal control." },
+  { img: "/images/work-shower-fixture.jpg", title: "Shower Valve & Fixture Install", text: "Replaced the shower valve and installed a new brass handset — clean, finished result." },
+  { img: "/images/work-ceiling-fan.jpg", title: "Ceiling Fan Installation", text: "Wired and mounted a new ceiling fan from a bare junction box." },
+  { img: "/images/work-closet-shelving.jpg", title: "Custom Closet Shelving", text: "Built and installed a full 4-shelf system in a custom nook." },
   { img: "/images/project-4.jpg", title: "Backyard Cleaning", text: "Power washed and sealed outdoor surfaces with protective coating." },
   { img: "/images/project-5.jpg", title: "Faucet Replacement", text: "New faucet installed with drain assembly." },
   { img: "/images/project-6.jpeg", title: "Chandelier Swap", text: "Old chandelier replaced with new fixture on a 20-foot ceiling." },

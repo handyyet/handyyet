@@ -179,22 +179,19 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0026,transparent_35%)]" />
         <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <p className="anim-fade-up text-orange-500 font-black uppercase tracking-widest" style={{ animationDelay: "0ms" }}>
-              Meet Your Handyman
-            </p>
-            <h1 className="anim-fade-up font-black tracking-tight mt-3" style={{ animationDelay: "60ms" }}>
-              {/* Mobile: single line, scales with viewport */}
-              <span className="sm:hidden block text-[7vw] leading-[0.95] whitespace-nowrap">
+            <h1 className="anim-fade-up font-black tracking-tight" style={{ animationDelay: "0ms" }}>
+              {/* Mobile: single line, scales with viewport, tighter tracking to fit bigger size */}
+              <span className="sm:hidden block text-[8vw] leading-[0.95] tracking-tighter whitespace-nowrap">
                 Snap. Solve. <span className="text-orange-500">Repair.</span>
               </span>
               {/* Tablet/desktop: original stacked display size */}
-              <span className="hidden sm:block text-6xl md:text-8xl leading-[0.9]">
+              <span className="hidden sm:block text-7xl md:text-9xl leading-[0.9]">
                 Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span>
               </span>
             </h1>
             <p className="anim-fade-up mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed"
               style={{ animationDelay: "120ms" }}>
-              Hi, I'm Nikita — your Huntington Beach handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup.
+              Hi, I'm Nikita — a handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup.
             </p>
           </div>
           <div className="relative anim-scale-in flex flex-col items-center" style={{ animationDelay: "180ms" }}>
@@ -212,15 +209,15 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {[
-            { img: "/images/project-1.jpg", title: "Custom Wall Build", text: "Decorative wall panel, lit shelving, and custom cabinets installed." },
-            { img: "/images/project-2.jpg", title: "Fountain Repair", text: "Waterproofing and full repaint of an outdoor fountain." },
-            { img: "/images/project-3.jpg", title: "Garbage Disposal Switch", text: "In-sink button installed for garbage disposal control." },
+            { img: "/images/work-shower-fixture.jpg", title: "Shower Valve & Fixture Install", text: "Replaced the shower valve and installed a new brass handset — clean, finished result." },
+            { img: "/images/work-ceiling-fan.jpg", title: "Ceiling Fan Installation", text: "Wired and mounted a new ceiling fan from a bare junction box." },
+            { img: "/images/work-closet-shelving.jpg", title: "Custom Closet Shelving", text: "Built and installed a full 4-shelf system in a custom nook." },
           ].map((item, i) => (
             <div key={item.img} data-reveal data-scale style={{ transitionDelay: `${i * 80}ms` }}
               className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-500 h-full group">
               <div className="overflow-hidden">
                 <img src={item.img} alt={item.title}
-                  className="w-full h-80 object-cover bg-zinc-200 group-hover:scale-105 transition duration-700" />
+                  className="w-full aspect-[1360/1010] object-cover bg-zinc-200 group-hover:scale-105 transition duration-700" />
               </div>
               <div className="p-6">
                 <h3 className="text-2xl font-black">{item.title}</h3>
