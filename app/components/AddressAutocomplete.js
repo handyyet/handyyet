@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 
 /**
@@ -9,12 +9,9 @@ import Script from 'next/script';
  * Usage:
  * <AddressAutocomplete
  *   value={address}
- *   onSelect={(addr) => setAddress(addr)}
+ *   onChange={(formattedAddress) => setAddress(formattedAddress)}
  *   placeholder="Enter your address"
  * />
- *
- * addr shape passed to onSelect:
- * { formatted, street, city, state, zip }
  */
 export default function AddressAutocomplete({
   value,
@@ -26,71 +23,59 @@ export default function AddressAutocomplete({
   const containerRef = useRef(null);
   const elementRef = useRef(null);
   const prevValueRef = useRef(value);
+  const [scriptReady, setScriptReady] = useState(false);
 
+  function buildWidget() {
+    if (!containerRef.current) return;
+
+    const el = document.createElement('gmp-place-autocomplete');
+    el.setAttribute('placeholder', placeholder);
+    if (required) el.setAttribute('required', '');
+    el.style.width = '100%';
+    el.style.display = 'block';
+
+    containerRef.current.innerHTML = '';
+    containerRef.current.appendChild(el);
+    elementRef.current = el;
+
+    el.addEventListener('gmp-select', async ({ placePrediction }) => {
+      const place = placePrediction.toPlace();
+      await place.fetchFields({ fields: ['formattedAddress'] });
+      onChange?.(place.formattedAddress || '');
+    });
+  }
+
+  // Mount the widget once the Google Maps script has actually finished loading.
   useEffect(() => {
+    if (!scriptReady) return;
     let cancelled = false;
 
-    async function mount() {
-      if (!window.google?.maps?.importLibrary) return;
-      await window.google.maps.importLibrary('places');
-      if (cancelled || !containerRef.current) return;
+    window.google.maps.importLibrary('places').then(() => {
+      if (!cancelled && !elementRef.current) buildWidget();
+    });
 
-      const el = document.createElement('gmp-place-autocomplete');
-      el.setAttribute('placeholder', placeholder);
-      if (required) el.setAttribute('required', '');
-      el.style.width = '100%';
-      el.style.display = 'block';
-
-      containerRef.current.innerHTML = '';
-      containerRef.current.appendChild(el);
-      elementRef.current = el;
-
-      el.addEventListener('gmp-select', async ({ placePrediction }) => {
-        const place = placePrediction.toPlace();
-        await place.fetchFields({ fields: ['formattedAddress'] });
-        onChange?.(place.formattedAddress || '');
-      });
-    }
-
-    if (!elementRef.current) mount();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [scriptReady]);
 
-  // The web component has no simple value setter, so when the parent
-  // resets the field (e.g. after a successful submit clears the form),
-  // rebuild the widget to clear its visible text.
+  // Rebuild the widget when the parent clears the field (e.g. after form reset).
   useEffect(() => {
     const wasCleared = prevValueRef.current && !value;
     prevValueRef.current = value;
-    if (!wasCleared || !window.google?.maps?.importLibrary) return;
+    if (!wasCleared || !scriptReady) return;
 
     window.google.maps.importLibrary('places').then(() => {
-      if (!containerRef.current) return;
-      const el = document.createElement('gmp-place-autocomplete');
-      el.setAttribute('placeholder', placeholder);
-      if (required) el.setAttribute('required', '');
-      el.style.width = '100%';
-      el.style.display = 'block';
-
-      containerRef.current.innerHTML = '';
-      containerRef.current.appendChild(el);
-      elementRef.current = el;
-
-      el.addEventListener('gmp-select', async ({ placePrediction }) => {
-        const place = placePrediction.toPlace();
-        await place.fetchFields({ fields: ['formattedAddress'] });
-        onChange?.(place.formattedAddress || '');
-      });
+      buildWidget();
     });
-  }, [value]);
+  }, [value, scriptReady]);
 
   return (
     <>
       <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&loading=async&libraries=places&v=beta`}
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY}&loading=async&libraries=places&v=beta`}
         strategy="afterInteractive"
+        onReady={() => setScriptReady(true)}
       />
       <div
         ref={containerRef}
