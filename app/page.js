@@ -179,43 +179,27 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0026,transparent_35%)]" />
         <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <h1 className="anim-fade-up text-[11vw] sm:text-6xl md:text-8xl font-black tracking-tight leading-[0.95] whitespace-nowrap"
-              style={{ animationDelay: "0ms" }}>
-              Snap. Solve. <span className="text-orange-500">Repair.</span>
+            <p className="anim-fade-up text-orange-500 font-black uppercase tracking-widest" style={{ animationDelay: "0ms" }}>
+              Meet Your Handyman
+            </p>
+            <h1 className="anim-fade-up font-black tracking-tight mt-3" style={{ animationDelay: "60ms" }}>
+              {/* Mobile: single line, scales with viewport */}
+              <span className="sm:hidden block text-[7vw] leading-[0.95] whitespace-nowrap">
+                Snap. Solve. <span className="text-orange-500">Repair.</span>
+              </span>
+              {/* Tablet/desktop: original stacked display size */}
+              <span className="hidden sm:block text-6xl md:text-8xl leading-[0.9]">
+                Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span>
+              </span>
             </h1>
             <p className="anim-fade-up mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed"
               style={{ animationDelay: "120ms" }}>
-              Huntington Beach handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup. Send photos and get a fast estimate.
+              Hi, I'm Nikita — your Huntington Beach handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup.
             </p>
           </div>
           <div className="relative anim-scale-in flex flex-col items-center" style={{ animationDelay: "180ms" }}>
             <img src="/images/nikita-portrait.png" alt="Nikita, owner and handyman at HandyYet"
               className="w-72 h-72 md:w-96 md:h-96 rounded-full object-cover shadow-2xl" />
-          </div>
-        </div>
-      </section>
-
-      {/* ─── MEET YOUR HANDYMAN ─── */}
-      <section className="max-w-4xl mx-auto px-5 py-20 text-center">
-        <div data-reveal>
-          <p className="text-orange-500 font-black uppercase tracking-widest">Meet Your Handyman</p>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight mt-2">Hi, I'm Nikita.</h2>
-        </div>
-        <div data-reveal data-scale className="mt-10 flex justify-center">
-          <img src="/images/nikita-work-portrait.png" alt="Nikita, owner of HandyYet, on a job site"
-            className="w-56 h-56 md:w-72 md:h-72 object-cover" />
-        </div>
-        <div data-reveal className="mt-8">
-          <p className="text-lg text-zinc-600 leading-relaxed max-w-2xl mx-auto">
-            I run HandyYet with one goal: every job done right, with clear communication and no surprises along the way.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3 justify-center">
-            {["125+ five-star reviews", "Based in Huntington Beach"].map((item) => (
-              <span key={item}
-                className="bg-orange-50 text-orange-700 font-black text-sm px-4 py-2 rounded-full border border-orange-200">
-                {item}
-              </span>
-            ))}
           </div>
         </div>
       </section>
