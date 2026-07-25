@@ -192,10 +192,42 @@ export default function Home() {
               <a href="/services" className="bg-white border border-black/10 px-8 py-5 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 hover:shadow-lg transition duration-300">View Services</a>
             </div>
           </div>
-          <div className="relative anim-scale-in" style={{ animationDelay: "180ms" }}>
-            <div className="bg-white rounded-[44px] p-3 shadow-2xl border border-black/10 rotate-1 hover:rotate-0 hover:scale-[1.01] transition duration-500">
-              <img src="/images/hero.jpg" alt="HandyYet handyman project in Huntington Beach"
-                className="rounded-[36px] w-full h-[520px] object-cover bg-zinc-200" />
+          <div className="relative anim-scale-in flex flex-col items-center" style={{ animationDelay: "180ms" }}>
+            <div className="relative">
+              <img src="/images/nikita-portrait.png" alt="Nikita, owner and handyman at HandyYet"
+                className="w-72 h-72 md:w-96 md:h-96 rounded-full object-cover shadow-2xl" />
+              <div className="absolute -bottom-3 -left-3 bg-white rounded-full px-5 py-3 shadow-xl border border-black/10 flex items-center gap-2">
+                <span className="text-orange-500 font-black text-lg">★ 5.0</span>
+                <span className="text-zinc-500 font-bold text-sm">125 reviews</span>
+              </div>
+            </div>
+            <div className="mt-8 bg-white rounded-2xl px-7 py-5 border border-black/10 shadow-lg text-center max-w-sm">
+              <p className="font-black text-lg">Hi, I'm Nikita 👋</p>
+              <p className="text-zinc-500 text-sm mt-1 leading-relaxed">I'm the one who shows up — every job done personally, no subcontractors.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MEET YOUR HANDYMAN ─── */}
+      <section className="max-w-7xl mx-auto px-5 py-20">
+        <div data-reveal
+          className="bg-white rounded-[40px] border border-black/10 shadow-sm p-8 md:p-14 grid md:grid-cols-[auto_1fr] gap-10 items-center">
+          <img src="/images/nikita-portrait.png" alt="Nikita, owner of HandyYet"
+            className="w-40 h-40 md:w-56 md:h-56 rounded-full object-cover border-4 border-orange-500 mx-auto md:mx-0" />
+          <div>
+            <p className="text-orange-500 font-black uppercase tracking-widest">Meet Your Handyman</p>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight mt-2">Hi, I'm Nikita.</h2>
+            <p className="mt-5 text-lg text-zinc-600 leading-relaxed max-w-2xl">
+              I'm the person who shows up at your door — not a random contractor from a call center. Every job on HandyYet is done by me personally, from TV mounts to plumbing fixes, with the same care I'd want in my own home.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {["125+ five-star reviews", "Based in Huntington Beach", "Same person, every time"].map((item) => (
+                <span key={item}
+                  className="bg-orange-50 text-orange-700 font-black text-sm px-4 py-2 rounded-full border border-orange-200">
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
         </div>
