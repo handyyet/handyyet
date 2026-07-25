@@ -5,12 +5,16 @@ import Script from 'next/script';
 
 /**
  * Reusable address autocomplete field.
+ * Renders as a plain <input> styled like the rest of the form, with a
+ * custom suggestions dropdown positioned directly below it (no shadow DOM,
+ * no Google-hosted overlay — fully ours, so it behaves the same on mobile
+ * and desktop and matches the site's design).
  *
  * Usage:
  * <AddressAutocomplete
  *   value={address}
  *   onChange={(formattedAddress) => setAddress(formattedAddress)}
- *   placeholder="Enter your address"
+ *   placeholder="Street address"
  * />
  */
 export default function AddressAutocomplete({
@@ -20,80 +24,164 @@ export default function AddressAutocomplete({
   required = false,
   className = '',
 }) {
-  const containerRef = useRef(null);
-  const elementRef = useRef(null);
-  const prevValueRef = useRef(value);
   const [scriptReady, setScriptReady] = useState(false);
+  const [inputValue, setInputValue] = useState(value || '');
+  const [suggestions, setSuggestions] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
-  function buildWidget() {
-    if (!containerRef.current) return;
+  const sessionTokenRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const debounceRef = useRef(null);
 
-    const el = document.createElement('gmp-place-autocomplete');
-    el.setAttribute('placeholder', placeholder);
-    if (required) el.setAttribute('required', '');
-    el.style.width = '100%';
-    el.style.display = 'block';
-    // Match the site's light design instead of Google's default dark theme.
-    // These are officially supported host-level style properties for
-    // gmp-place-autocomplete (they work despite the closed shadow root).
-    el.style.setProperty('color-scheme', 'light');
-    el.style.setProperty('background-color', '#fdfaf5');
-    el.style.border = '2px solid transparent';
-    el.style.borderRadius = '9999px';
-    el.style.padding = '2px';
+  // Keep the visible text in sync if the parent clears/sets the value externally
+  useEffect(() => {
+    setInputValue(value || '');
+  }, [value]);
 
-    containerRef.current.innerHTML = '';
-    containerRef.current.appendChild(el);
-    elementRef.current = el;
+  // Close the dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
-    el.addEventListener('gmp-select', async ({ placePrediction }) => {
-      const place = placePrediction.toPlace();
-      await place.fetchFields({ fields: ['formattedAddress'] });
-      onChange?.(place.formattedAddress || '');
-    });
+  async function fetchSuggestions(query) {
+    if (!query || !window.google?.maps?.importLibrary) {
+      setSuggestions([]);
+      return;
+    }
+    const { AutocompleteSuggestion, AutocompleteSessionToken } =
+      await window.google.maps.importLibrary('places');
+
+    if (!sessionTokenRef.current) {
+      sessionTokenRef.current = new AutocompleteSessionToken();
+    }
+
+    try {
+      const { suggestions: results } =
+        await AutocompleteSuggestion.fetchAutocompleteSuggestions({
+          input: query,
+          sessionToken: sessionTokenRef.current,
+          includedRegionCodes: ['us'],
+        });
+      setSuggestions(results || []);
+      setOpen((results || []).length > 0);
+      setActiveIndex(-1);
+    } catch (err) {
+      console.error('Address autocomplete error:', err);
+      setSuggestions([]);
+    }
   }
 
-  // Mount the widget once the Google Maps script has actually finished loading.
-  useEffect(() => {
-    if (!scriptReady) return;
-    let cancelled = false;
+  function handleInputChange(e) {
+    const query = e.target.value;
+    setInputValue(query);
+    onChange?.(query);
 
-    window.google.maps.importLibrary('places').then(() => {
-      if (!cancelled && !elementRef.current) buildWidget();
-    });
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => fetchSuggestions(query), 200);
+  }
 
-    return () => {
-      cancelled = true;
-    };
-  }, [scriptReady]);
+  async function selectSuggestion(suggestion) {
+    const place = suggestion.placePrediction.toPlace();
+    await place.fetchFields({ fields: ['formattedAddress'] });
+    const formatted = place.formattedAddress || suggestion.placePrediction.text.text;
+    setInputValue(formatted);
+    onChange?.(formatted);
+    setSuggestions([]);
+    setOpen(false);
+    sessionTokenRef.current = null; // session ends once a place is selected
+  }
 
-  // Rebuild the widget when the parent clears the field (e.g. after form reset).
-  useEffect(() => {
-    const wasCleared = prevValueRef.current && !value;
-    prevValueRef.current = value;
-    if (!wasCleared || !scriptReady) return;
-
-    window.google.maps.importLibrary('places').then(() => {
-      buildWidget();
-    });
-  }, [value, scriptReady]);
+  function handleKeyDown(e) {
+    if (!open || suggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((i) => Math.min(i + 1, suggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((i) => Math.max(i - 1, 0));
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault();
+      selectSuggestion(suggestions[activeIndex]);
+    } else if (e.key === 'Escape') {
+      setOpen(false);
+    }
+  }
 
   return (
-    <>
-      <style>{`
-        gmp-place-autocomplete {
-          transition: border-color 0.2s ease;
-        }
-        gmp-place-autocomplete:focus-within {
-          border-color: #c8763a !important;
-        }
-      `}</style>
+    <div ref={wrapperRef} style={{ position: 'relative', width: '100%' }}>
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY}&loading=async&libraries=places&v=beta`}
         strategy="afterInteractive"
         onReady={() => setScriptReady(true)}
       />
-      <div ref={containerRef} className={className} style={{ width: '100%' }} />
-    </>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        onFocus={() => suggestions.length > 0 && setOpen(true)}
+        placeholder={placeholder}
+        required={required}
+        autoComplete="off"
+        disabled={!scriptReady}
+        className={className}
+      />
+
+      {open && suggestions.length > 0 && (
+        <ul
+          role="listbox"
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 6px)',
+            left: 0,
+            right: 0,
+            zIndex: 50,
+            background: '#fdfaf5',
+            border: '1px solid #e8ddd0',
+            borderRadius: '16px',
+            boxShadow: '0 12px 24px -8px rgba(0,0,0,0.15)',
+            listStyle: 'none',
+            margin: 0,
+            padding: '6px',
+            maxHeight: '260px',
+            overflowY: 'auto',
+          }}
+        >
+          {suggestions.map((s, i) => (
+            <li
+              key={s.placePrediction.placeId}
+              role="option"
+              aria-selected={i === activeIndex}
+              onMouseDown={(e) => {
+                e.preventDefault(); // keep focus, avoid blur before click registers
+                selectSuggestion(s);
+              }}
+              onMouseEnter={() => setActiveIndex(i)}
+              style={{
+                padding: '10px 12px',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                fontSize: '15px',
+                color: '#18181b',
+                background: i === activeIndex ? 'rgba(200,118,58,0.12)' : 'transparent',
+              }}
+            >
+              {s.placePrediction.text.text}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
