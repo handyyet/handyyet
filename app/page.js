@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import AddressAutocomplete from "./components/AddressAutocomplete";
 import BookingCalendar from "./components/BookingCalendar";
 import ScrollReveal from "./components/ScrollReveal";
+import HeroFeedReel from '../components/HeroFeedReel';
 import SmartButton from "./components/SmartButton";
 
 import { useRef, useState, useEffect } from "react";
@@ -193,10 +194,7 @@ export default function Home() {
               style={{ animationDelay: "120ms" }}>
               Hi, I'm Nikita — a handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup.
             </p>
-          </div>
-          <div className="relative anim-scale-in flex flex-col items-center" style={{ animationDelay: "180ms" }}>
-            <img src="/images/nikita-portrait.png" alt="Nikita, owner and handyman at HandyYet"
-              className="w-72 h-72 md:w-96 md:h-96 rounded-full object-cover shadow-2xl" />
+            <HeroFeedReel />
           </div>
         </div>
       </section>
