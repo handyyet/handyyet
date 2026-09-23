@@ -19,7 +19,7 @@ const ITEMS = [
 // Which tiles get "tapped", in order
 const TAPS = [0, 3, 6, 9];
 
-const AVATAR = '/images/nikita.jpg';
+const AVATAR = '/images/nikita-portrait.png';
 const BEFORE_MS = 1800;
 const AFTER_MS = 2600;
 const HEADER = 64;

@@ -194,6 +194,8 @@ export default function Home() {
               style={{ animationDelay: "120ms" }}>
               Hi, I'm Nikita — a handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup.
             </p>
+          </div>
+          <div className="anim-fade-up flex justify-center lg:justify-end" style={{ animationDelay: "240ms" }}>
             <HeroFeedReel />
           </div>
         </div>
