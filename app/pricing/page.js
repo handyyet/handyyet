@@ -1,0 +1,31 @@
+import { pricing } from "../../lib/services";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
+export const metadata = {
+  title: "Pricing | HandyYet",
+  description: "Simple starting prices for HandyYet handyman services in Orange County: small fixes, standard jobs, and multi-task visits.",
+};
+
+export default function PricingPage() {
+  return (
+    <main className="min-h-screen bg-[#f6f3ee] text-zinc-950">
+      <Navbar />
+      <section className="max-w-7xl mx-auto px-5 pt-36 pb-20">
+        <p className="text-orange-500 font-black uppercase tracking-widest">Pricing</p>
+        <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9] mt-4">Simple starting prices.</h1>
+        <div className="grid md:grid-cols-3 gap-5 mt-14">
+          {pricing.map((item) => (
+            <div key={item.title} className="bg-white rounded-[32px] p-8 border border-black/10 shadow-sm">
+              <h2 className="text-2xl font-black">{item.title}</h2>
+              <p className="text-5xl font-black text-orange-500 mt-5">{item.price}</p>
+              <p className="mt-5 text-zinc-500">{item.text}</p>
+            </div>
+          ))}
+        </div>
+        <a href="/#quote" className="inline-flex mt-10 bg-orange-500 px-8 py-5 rounded-full font-black">Get Quote</a>
+      </section>
+      <Footer />
+    </main>
+  );
+}

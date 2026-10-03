@@ -4,29 +4,24 @@ import { useEffect, useRef, useState } from 'react';
 // Files: public/reel/<slug>-after.jpg, <slug>-before.jpg (if pair), thumb/<slug>.jpg
 const ITEMS = [
   { slug: 'tv-wall', caption: 'Slat wall + TV mount', pair: true },
-  { slug: 'garden-lights', caption: 'Garden lighting' },
+  { slug: 'pool-night', caption: 'Backyard lighting' },
   { slug: 'closet', caption: 'Closet system assembly' },
   { slug: 'bath-floor', caption: 'Bathroom floor + baseboards', pair: true },
   { slug: 'front-lights', caption: 'Landscape lighting' },
-  { slug: 'shelves', caption: 'Floating shelves' },
-  { slug: 'mirror-sconces', caption: 'Mirror + wall sconces', pair: true },
-  { slug: 'pool-night', caption: 'Backyard lighting' },
   { slug: 'window-trim', caption: 'Exterior trim repair', pair: true },
-  { slug: 'chimney-cap', caption: 'Chimney cap install', pair: true },
-  { slug: 'wall-repair', caption: 'Drywall + baseboard repair', pair: true },
   { slug: 'pool-lighting-box', caption: 'Lighting transformer install', pair: true },
-  { slug: 'door-floor', caption: 'Water-damaged floor repair', pair: true },
+  { slug: 'wall-repair', caption: 'Drywall + baseboard repair', pair: true },
   { slug: 'vent', caption: 'Vent register replacement', pair: true },
+  { slug: 'door-floor', caption: 'Water-damaged floor repair', pair: true },
   { slug: 'toilet-floor', caption: 'Half bath flooring' },
+  { slug: 'window-sill', caption: 'Window return paint' },
 ];
 // Which tiles get "tapped", in order
-const TAPS = [0, 3, 6, 9, 12];
-// Feed is rendered twice so it never looks empty
-const FEED = [...ITEMS, ...ITEMS];
+const TAPS = [0, 3, 6, 9];
 
-const AVATAR = '/images/nikita-portrait.png'; // your photo; falls back to HY badge if missing
-const BEFORE_MS = 1500; // show 'before'
-const AFTER_MS = 3200;  // wipe (1.2s) + hold on 'after'
+const AVATAR = '/images/nikita.jpg';
+const BEFORE_MS = 1800;
+const AFTER_MS = 2600;
 const HEADER = 64;
 const GAP = 2;
 const BRONZE = '#c8763a';
@@ -40,7 +35,6 @@ export default function HeroFeedReel() {
   const [tap, setTap] = useState(null);
   const [open, setOpen] = useState(null); // { i, x, y, stage: 'before'|'after', closing }
   const [reduced, setReduced] = useState(false);
-  const [avatarOk, setAvatarOk] = useState(true);
 
   useEffect(() => {
     setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -105,11 +99,7 @@ export default function HeroFeedReel() {
     <div className="phone" aria-label="Recent HandyYet jobs">
       <div className="screen" ref={screenRef}>
         <header className="profile">
-          {avatarOk ? (
-            <img className="avatar" src={AVATAR} alt="" onError={() => setAvatarOk(false)} />
-          ) : (
-            <span className="avatar badge" aria-hidden="true">HY</span>
-          )}
+          <img src={AVATAR} alt="Nikita, HandyYet" />
           <div>
             <strong>HandyYet</strong>
             <span>Handyman in Huntington Beach</span>
@@ -118,9 +108,9 @@ export default function HeroFeedReel() {
 
         <div className="viewport">
           <div className="grid" style={{ transform: `translateY(${-scroll}px)` }}>
-            {FEED.map((it, i) => (
-              <div className="tile" key={`${it.slug}-${i}`}>
-                <img src={`/reel/thumb/${it.slug}.jpg`} alt={i < ITEMS.length ? it.caption : ''} loading={i < 12 ? 'eager' : 'lazy'} />
+            {ITEMS.map((it, i) => (
+              <div className="tile" key={it.slug}>
+                <img src={`/reel/thumb/${it.slug}.jpg`} alt={it.caption} loading={i < 9 ? 'eager' : 'lazy'} />
                 {it.pair && (
                   <svg className="multi" viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="#fff" strokeWidth="2" />
@@ -140,22 +130,20 @@ export default function HeroFeedReel() {
             style={{ transformOrigin: `${open.x}px ${open.y}px` }}
           >
             <div className="media">
-              {item.pair ? (
-                <>
-                  <img className="layer" src={src(item.slug, 'before')} alt={`${item.caption}, before`} />
-                  <img
-                    className={`layer top ${open.stage === 'after' ? 'wipe' : ''}`}
-                    src={src(item.slug, 'after')}
-                    alt={`${item.caption}, after`}
-                  />
-                  {open.stage === 'after' && <span className="divider" />}
-                  <span className="pill right">Before</span>
-                  <span className={`pill left ${open.stage === 'after' ? 'show' : ''}`}>After</span>
-                </>
-              ) : (
-                <img className="layer" src={src(item.slug, 'after')} alt={item.caption} />
+              <div className={`track ${open.stage === 'after' ? 'show-after' : ''} ${item.pair ? '' : 'single'}`}>
+                {item.pair && <img src={src(item.slug, 'before')} alt={`${item.caption}, before`} />}
+                <img src={src(item.slug, 'after')} alt={`${item.caption}, after`} />
+              </div>
+              {item.pair && (
+                <span className="pill">{open.stage === 'after' ? 'After' : 'Before'}</span>
               )}
             </div>
+            {item.pair && (
+              <div className="dots">
+                <i className={open.stage === 'before' ? 'on' : ''} />
+                <i className={open.stage === 'after' ? 'on' : ''} />
+              </div>
+            )}
             <p className="caption">{item.caption}</p>
           </div>
         )}
@@ -164,7 +152,7 @@ export default function HeroFeedReel() {
       <style jsx>{`
         .phone {
           width: 100%;
-          max-width: 360px;
+          max-width: 290px;
           margin: 0 auto;
           padding: 10px;
           background: ${CREAM};
@@ -174,7 +162,7 @@ export default function HeroFeedReel() {
         }
         .screen {
           position: relative;
-          aspect-ratio: 9 / 18;
+          aspect-ratio: 9 / 19;
           border-radius: 30px;
           overflow: hidden;
           background: #fff;
@@ -191,13 +179,9 @@ export default function HeroFeedReel() {
           z-index: 2;
           border-bottom: 1px solid #f0e6da;
         }
-        .avatar {
-          width: 38px; height: 38px; border-radius: 50%; flex: none;
+        .profile img {
+          width: 38px; height: 38px; border-radius: 50%;
           object-fit: cover; border: 2px solid ${BRONZE};
-        }
-        .badge {
-          display: grid; place-items: center; background: ${CREAM};
-          font-size: 13px; font-weight: 800; color: ${BRONZE}; letter-spacing: -0.02em;
         }
         .profile div { display: flex; flex-direction: column; line-height: 1.2; }
         .profile strong { font-size: 14px; color: #18181b; }
@@ -230,40 +214,28 @@ export default function HeroFeedReel() {
         }
         .post.closing { animation: shrink .35s ease-in forwards; }
         .media { position: relative; width: 100%; aspect-ratio: 4 / 5; overflow: hidden; }
-        .layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-        .top { clip-path: inset(0 100% 0 0); }
-        .top.wipe { animation: wipe 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
-        @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
-        .divider {
-          position: absolute; top: 0; bottom: 0; left: 0; width: 3px; margin-left: -1.5px;
-          background: #fff; box-shadow: 0 0 10px rgba(0,0,0,.35); z-index: 2;
-          animation: sweep 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        .track {
+          display: flex; width: 200%; height: 100%;
+          transition: transform .5s cubic-bezier(0.3, 0.8, 0.3, 1);
         }
-        .divider::after {
-          content: ''; position: absolute; top: 50%; left: 50%;
-          width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
-          background: #fff; border: 2px solid ${BRONZE}; box-shadow: 0 2px 8px rgba(0,0,0,.25);
-        }
-        @keyframes sweep {
-          0% { left: 0; opacity: 1; }
-          92% { left: 100%; opacity: 1; }
-          100% { left: 100%; opacity: 0; }
-        }
-        .pill.right { right: 10px; }
-        .pill.left { left: 10px; opacity: 0; transition: opacity .3s ease .6s; }
-        .pill.left.show { opacity: 1; }
+        .track.single { width: 100%; }
+        .track.show-after:not(.single) { transform: translateX(-50%); }
+        .track img { width: 100%; height: 100%; object-fit: cover; display: block; flex: 1 1 0; min-width: 0; }
         .pill {
-          position: absolute; top: 10px; z-index: 3;
+          position: absolute; top: 10px; left: 10px;
           padding: 3px 10px; border-radius: 999px;
           background: #fff; border: 2px solid ${BRONZE};
           font-size: 11px; font-weight: 700; color: #18181b;
           box-shadow: 0 2px 6px rgba(0,0,0,.15);
         }
-                .caption { margin: 12px 14px 0; font-size: 14px; font-weight: 600; color: #3f3f46; text-align: center; }
+        .dots { display: flex; gap: 5px; justify-content: center; padding-top: 10px; }
+        .dots i { width: 6px; height: 6px; border-radius: 50%; background: #e4d6c6; }
+        .dots i.on { background: ${BRONZE}; }
+        .caption { margin: 8px 14px 0; font-size: 13px; color: #3f3f46; text-align: center; }
         @keyframes grow { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes shrink { from { transform: scale(1); opacity: 1; } to { transform: scale(0.3); opacity: 0; } }
-        @media (max-width: 1023px) { .phone { max-width: 300px; margin-top: 32px; } }
-        @media (prefers-reduced-motion: reduce) { .grid { transition: none; } .top.wipe, .divider { animation-duration: 1ms; } }
+        @media (max-width: 768px) { .phone { max-width: 250px; margin-top: 28px; } }
+        @media (prefers-reduced-motion: reduce) { .grid, .track { transition: none; } }
       `}</style>
     </div>
   );
