@@ -80,13 +80,16 @@ export default function HeroFeedReel() {
     const viewH = size.h - HEADER;
 
     (async () => {
-      await wait(1800); // give the first photos time to load
+      await wait(400); // start almost immediately
       while (!cancelled) {
         for (const i of TAPS) {
           // never open a post with a missing photo
           const it = ITEMS[i];
-          const ok = loadedRef.current[`${it.slug}-after`] && (!it.pair || loadedRef.current[`${it.slug}-before`]);
-          if (!ok) continue;
+          const isOk = () => loadedRef.current[`${it.slug}-after`] && (!it.pair || loadedRef.current[`${it.slug}-before`]);
+          // wait up to 2.5s for this post's photos, then skip it if still missing
+          for (let t = 0; t < 25 && !isOk() && !cancelled; t++) await wait(100);
+          if (cancelled) return;
+          if (!isOk()) continue;
           const row = Math.floor(i / 3);
           const col = i % 3;
           const target = Math.max(0, row * rowH - viewH * 0.35);
@@ -288,7 +291,7 @@ export default function HeroFeedReel() {
                 .caption { margin: 12px 14px 0; font-size: 14px; font-weight: 600; color: #3f3f46; text-align: center; }
         @keyframes grow { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes shrink { from { transform: scale(1); opacity: 1; } to { transform: scale(0.3); opacity: 0; } }
-        @media (max-width: 1023px) { .phone { max-width: 300px; margin-top: 32px; } }
+        @media (max-width: 1023px) { .phone { max-width: 300px; margin-top: 0; } }
         @media (prefers-reduced-motion: reduce) { .grid { transition: none; } .top.wipe, .divider { animation-duration: 1ms; } }
       `}</style>
     </div>

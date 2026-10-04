@@ -176,9 +176,9 @@ export default function Home() {
       <Navbar />
 
       {/* ─── HERO ─── */}
-      <section className="relative pt-36 md:pt-44 pb-20">
+      <section className="relative pt-28 md:pt-40 pb-12 md:pb-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0026,transparent_35%)]" />
-        <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
+        <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-6 lg:gap-14 items-center">
           <div>
             <h1 className="anim-fade-up font-black tracking-tight" style={{ animationDelay: "0ms" }}>
               {/* Mobile: single line, scales with viewport, tighter tracking to fit bigger size */}
@@ -190,12 +190,8 @@ export default function Home() {
                 Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span>
               </span>
             </h1>
-            <p className="anim-fade-up mt-8 text-xl md:text-2xl text-zinc-600 max-w-xl leading-relaxed"
-              style={{ animationDelay: "120ms" }}>
-              Hi, I'm Nikita — a handyman for TV mounting, furniture assembly, plumbing, electrical, and smart home setup.
-            </p>
           </div>
-          <div className="anim-fade-up flex justify-center lg:justify-end" style={{ animationDelay: "240ms" }}>
+          <div className="anim-fade-up flex justify-center lg:justify-end" style={{ animationDelay: "0ms" }}>
             <HeroFeedReel />
           </div>
         </div>
