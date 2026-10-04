@@ -6,6 +6,7 @@ import AddressAutocomplete from "./components/AddressAutocomplete";
 import BookingCalendar from "./components/BookingCalendar";
 import ScrollReveal from "./components/ScrollReveal";
 import HeroFeedReel from '../components/HeroFeedReel';
+import ServicesShowcase from '../components/ServicesShowcase';
 import SmartButton from "./components/SmartButton";
 
 import { useRef, useState, useEffect } from "react";
@@ -233,18 +234,8 @@ export default function Home() {
           <p className="text-orange-500 font-black uppercase tracking-widest">Services</p>
           <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 mb-12">One call.<br />Many fixes.</h2>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {services.map((service, i) => (
-            <div key={service.slug} data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
-              <a href={`/services/${service.slug}`}
-                className="group bg-white rounded-[32px] p-7 border border-black/10 hover:-translate-y-3 hover:shadow-2xl hover:border-orange-200 transition duration-400 block h-full">
-                <h3 className="text-2xl font-black mt-1">{service.title}</h3>
-                <p className="mt-3 text-zinc-500 leading-relaxed">{service.short}</p>
-                <p className="mt-5 text-orange-500 font-black">{service.price}</p>
-                <div className="mt-6 font-black text-orange-500 group-hover:translate-x-2 transition duration-300">Learn more →</div>
-              </a>
-            </div>
-          ))}
+        <div data-reveal>
+          <ServicesShowcase services={services} />
         </div>
       </section>
 
