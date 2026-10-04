@@ -6,21 +6,30 @@ const ITEMS = [
   { slug: 'tv-wall', caption: 'Slat wall + TV mount', pair: true },
   { slug: 'garden-lights', caption: 'Garden lighting' },
   { slug: 'closet', caption: 'Closet system assembly' },
-  { slug: 'bath-floor', caption: 'Bathroom floor + baseboards', pair: true },
+  { slug: 'kitchen-pendants', caption: 'Kitchen pendant lights', pair: true },
   { slug: 'front-lights', caption: 'Landscape lighting' },
   { slug: 'shelves', caption: 'Floating shelves' },
-  { slug: 'mirror-sconces', caption: 'Mirror + wall sconces', pair: true },
+  { slug: 'bath-floor', caption: 'Bathroom floor + baseboards', pair: true },
   { slug: 'pool-night', caption: 'Backyard lighting' },
+  { slug: 'mirror-sconces', caption: 'Mirror + wall sconces', pair: true },
+  { slug: 'smart-toilet', caption: 'Smart toilet install', pair: true },
+  { slug: 'washer-repair', caption: 'Washer repair' },
   { slug: 'window-trim', caption: 'Exterior trim repair', pair: true },
-  { slug: 'chimney-cap', caption: 'Chimney cap install', pair: true },
+  { slug: 'tv-wiring', caption: 'TV mount + in-wall wiring', pair: true },
+  { slug: 'smart-toilet-open', caption: 'Smart toilet setup' },
   { slug: 'wall-repair', caption: 'Drywall + baseboard repair', pair: true },
+  { slug: 'chimney-cap', caption: 'Chimney cap install', pair: true },
   { slug: 'pool-lighting-box', caption: 'Lighting transformer install', pair: true },
-  { slug: 'door-floor', caption: 'Water-damaged floor repair', pair: true },
-  { slug: 'vent', caption: 'Vent register replacement', pair: true },
+  { slug: 'door-lock', caption: 'Patio door lock repair' },
+  { slug: 'window-shade', caption: 'Blackout roller shade', pair: true },
   { slug: 'toilet-floor', caption: 'Half bath flooring' },
+  { slug: 'vent', caption: 'Vent register replacement', pair: true },
+  { slug: 'door-floor', caption: 'Water-damaged floor repair', pair: true },
+  { slug: 'toilet-flange', caption: 'Toilet flange + wax ring' },
+  { slug: 'ceiling-vent', caption: 'Ceiling vent + crack repair' },
 ];
-// Which tiles get "tapped", in order
-const TAPS = [0, 3, 6, 9, 12];
+// Which tiles get "tapped", in order (first tile of each row)
+const TAPS = [0, 3, 6, 9, 12, 15, 18, 21];
 // Feed is rendered twice so it never looks empty
 const FEED = [...ITEMS, ...ITEMS];
 
@@ -35,12 +44,14 @@ const src = (slug, kind) => `/reel/${slug}-${kind}.jpg`;
 
 export default function HeroFeedReel() {
   const screenRef = useRef(null);
+  const loadedRef = useRef({}); // 'slug-kind' -> true once the image actually loaded
   const [size, setSize] = useState({ w: 264, h: 560 });
   const [scroll, setScroll] = useState(0);
   const [tap, setTap] = useState(null);
   const [open, setOpen] = useState(null); // { i, x, y, stage: 'before'|'after', closing }
   const [reduced, setReduced] = useState(false);
   const [avatarOk, setAvatarOk] = useState(true);
+  const [badBefore, setBadBefore] = useState({}); // slugs whose 'before' failed to load
 
   useEffect(() => {
     setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -48,9 +59,14 @@ export default function HeroFeedReel() {
     if (!el) return;
     const ro = new ResizeObserver(() => setSize({ w: el.clientWidth, h: el.clientHeight }));
     ro.observe(el);
-    // preload tapped pairs
+    // preload tapped pairs and remember which ones really loaded
     TAPS.forEach((i) => {
-      ['before', 'after'].forEach((k) => { const im = new Image(); im.src = src(ITEMS[i].slug, k); });
+      const kinds = ITEMS[i].pair ? ['before', 'after'] : ['after'];
+      kinds.forEach((k) => {
+        const im = new Image();
+        im.onload = () => { loadedRef.current[`${ITEMS[i].slug}-${k}`] = true; };
+        im.src = src(ITEMS[i].slug, k);
+      });
     });
     return () => ro.disconnect();
   }, []);
@@ -64,9 +80,13 @@ export default function HeroFeedReel() {
     const viewH = size.h - HEADER;
 
     (async () => {
-      await wait(900);
+      await wait(1800); // give the first photos time to load
       while (!cancelled) {
         for (const i of TAPS) {
+          // never open a post with a missing photo
+          const it = ITEMS[i];
+          const ok = loadedRef.current[`${it.slug}-after`] && (!it.pair || loadedRef.current[`${it.slug}-before`]);
+          if (!ok) continue;
           const row = Math.floor(i / 3);
           const col = i % 3;
           const target = Math.max(0, row * rowH - viewH * 0.35);
@@ -140,16 +160,21 @@ export default function HeroFeedReel() {
             style={{ transformOrigin: `${open.x}px ${open.y}px` }}
           >
             <div className="media">
-              {item.pair ? (
+              {item.pair && !badBefore[item.slug] ? (
                 <>
-                  <img className="layer" src={src(item.slug, 'before')} alt={`${item.caption}, before`} />
+                  <img
+                    className="layer"
+                    src={src(item.slug, 'before')}
+                    alt=""
+                    onError={() => setBadBefore((b) => ({ ...b, [item.slug]: true }))}
+                  />
                   <img
                     className={`layer top ${open.stage === 'after' ? 'wipe' : ''}`}
                     src={src(item.slug, 'after')}
                     alt={`${item.caption}, after`}
                   />
                   {open.stage === 'after' && <span className="divider" />}
-                  <span className="pill right">Before</span>
+                  <span className={`pill right ${open.stage === 'after' ? 'hide' : ''}`}>Before</span>
                   <span className={`pill left ${open.stage === 'after' ? 'show' : ''}`}>After</span>
                 </>
               ) : (
@@ -249,7 +274,8 @@ export default function HeroFeedReel() {
           92% { left: 100%; opacity: 1; }
           100% { left: 100%; opacity: 0; }
         }
-        .pill.right { right: 10px; }
+        .pill.right { right: 10px; transition: opacity .25s ease .85s; }
+        .pill.right.hide { opacity: 0; }
         .pill.left { left: 10px; opacity: 0; transition: opacity .3s ease .6s; }
         .pill.left.show { opacity: 1; }
         .pill {
