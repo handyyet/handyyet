@@ -127,6 +127,7 @@ const localBusinessSchema = {
   },
   sameAs: [
     "https://www.yelp.com/biz/handyyet-huntington-beach",
+    "https://www.instagram.com/handyyet/",
   ],
 };
 

@@ -24,7 +24,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Yelp + Google icons */}
+          {/* Yelp + Google + Instagram icons */}
           <div className="flex items-center gap-3">
             <a href="https://m.yelp.com/biz/handyyet-huntington-beach"
               target="_blank" rel="noopener noreferrer"
@@ -32,6 +32,14 @@ export default function Footer() {
             <a href="https://maps.app.goo.gl/RfHEGR8dPZKsyz8d6?g_st=ic" target="_blank" rel="noopener noreferrer"
               className="w-10 h-10 bg-white border border-black/10 rounded-full flex items-center justify-center hover:shadow-md transition shadow-sm">
               <GoogleIcon />
+            </a>
+            <a href="https://www.instagram.com/handyyet/" target="_blank" rel="noopener noreferrer" aria-label="HandyYet on Instagram"
+              className="w-10 h-10 bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285AEB_90%)] rounded-full flex items-center justify-center hover:brightness-110 transition shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none" />
+            </svg>
             </a>
           </div>
         </div>
