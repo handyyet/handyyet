@@ -208,7 +208,7 @@ export default function Home() {
             { img: "/images/work-tv-mount-wiring.jpg", title: "TV Mounting + In-Wall Wiring", text: "Mounted a large TV flush to the wall with power and cables run inside the wall. No cords in sight." },
             { img: "/images/work-smart-toilet.jpg", title: "Smart Toilet Installation", text: "Removed the old toilet, prepped the flange and installed a new tankless smart toilet." },
             { img: "/images/work-mirror-sconces.jpg", title: "Vanity Mirror + Wall Sconces", text: "Leveled and hung a new mirror and installed two wall sconces on new electrical boxes." },
-            { img: "/images/work-kitchen-pendants.jpg", title: "Kitchen Pendant Lights", text: "Added two new pendant lights over the counter to match the existing fixture." },
+            { img: "/images/work-kitchen-pendants.jpg", title: "Kitchen Pendant Lights", text: "Replaced recessed can lights over the counter with three pendant lights." },
             { img: "/images/work-slat-wall-tv.jpg", title: "Slat Accent Wall + TV Mount", text: "Installed a full-height wood slat wall around the vents and mounted the TV on top." },
             { img: "/images/work-shower-fixture.jpg", title: "Shower Cartridge Replacement", text: "Replaced a worn cartridge and restored cold water supply to the shower." },
           ].map((item, i) => (
