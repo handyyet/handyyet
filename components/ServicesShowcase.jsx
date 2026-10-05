@@ -1,13 +1,14 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-// Example 2-hour visits: [task, price if booked as a separate service]
+// Example visits, alternating 3 hrs / 2 hrs.
+// Prices on the left = typical cost of hiring a separate pro for each job (trip fee + minimum).
 const VISITS = [
-  [['Mount TV', 80], ['Install smart lock', 65], ['Replace kitchen faucet', 80], ['Swap light fixture', 70]],
-  [['Assemble dresser', 70], ['Hang floating shelves', 80], ['Set up video doorbell', 65], ['Replace outlets', 70]],
-  [['Replace ceiling fan', 70], ['Fix running toilet', 80], ['Mount mirror', 80], ['Install smart thermostat', 65]],
+  { hours: 3, items: [['Mount TV', 150], ['Install smart lock', 120], ['Replace kitchen faucet', 180], ['Swap light fixture', 140]] },
+  { hours: 2, items: [['Assemble dresser', 120], ['Hang floating shelves', 130], ['Set up video doorbell', 110]] },
+  { hours: 3, items: [['Replace ceiling fan', 180], ['Fix running toilet', 150], ['Mount mirror', 120], ['Install smart thermostat', 130]] },
+  { hours: 2, items: [['Patch drywall hole', 150], ['Replace outlets', 130], ['Assemble desk', 110]] },
 ];
-const VISIT_HOURS = 3;
 const HOURLY = 65;
 const TAGS = ['Electrical', 'Plumbing', 'Smart Home', 'Mounting', 'Assembly', 'Repairs'];
 const STEP_MS = 900;
@@ -31,7 +32,7 @@ export default function ServicesShowcase({ services = [] }) {
   }, []);
 
   useEffect(() => {
-    if (reduced) { setDone(VISITS[0].length); return; }
+    if (reduced) { setDone(VISITS[0].items.length + 1); return; }
     if (!active) return;
     let cancelled = false;
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -41,11 +42,11 @@ export default function ServicesShowcase({ services = [] }) {
         setVisit(v);
         setDone(0);
         await wait(500);
-        for (let i = 1; i <= VISITS[v].length && !cancelled; i++) {
+        for (let i = 1; i <= VISITS[v].items.length && !cancelled; i++) {
           setDone(i);
           await wait(STEP_MS);
         }
-        setDone(VISITS[v].length + 1); // total appears, gets crossed out, one-visit price pops
+        setDone(VISITS[v].items.length + 1); // total appears, gets crossed out, one-visit price pops
         await wait(1200);
         await wait(HOLD_MS);
         v = (v + 1) % VISITS.length;
@@ -55,7 +56,8 @@ export default function ServicesShowcase({ services = [] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, reduced]);
 
-  const items = VISITS[visit];
+  const items = VISITS[visit].items;
+  const hours = VISITS[visit].hours;
   const allDone = done >= items.length;
   const showDeal = done > items.length;
   const separate = items.reduce((sum, [, price]) => sum + price, 0);
@@ -66,8 +68,8 @@ export default function ServicesShowcase({ services = [] }) {
       <div className="ticket" aria-hidden="true">
         <div className="ticket-head">
           <span className="dot" />
-          <span>Example visit</span>
-          <span className="count">{Math.min(done, items.length)}/{items.length} done</span>
+          <span>Your to-do list</span>
+          <span className="count">Other companies</span>
         </div>
         <ul key={visit}>
           {items.map(([t, price], i) => (
@@ -82,12 +84,12 @@ export default function ServicesShowcase({ services = [] }) {
         </ul>
         <div className={`total ${allDone ? 'show' : ''}`}>
           <div className="total-row">
-            <span className="total-label">Booked separately</span>
+            <span className="total-label">Other companies total</span>
             <span className={`old ${showDeal ? 'struck' : ''}`}>${separate}</span>
           </div>
           <div className={`deal ${showDeal ? 'show' : ''}`}>
-            <span>One visit · {VISIT_HOURS} hrs</span>
-            <strong>${VISIT_HOURS * HOURLY}</strong>
+            <span>Handy<span className="yet">Yet</span> · one visit · {hours} hrs</span>
+            <strong>${hours * HOURLY}</strong>
           </div>
         </div>
       </div>
@@ -126,7 +128,8 @@ export default function ServicesShowcase({ services = [] }) {
 
         /* ticket */
         .ticket {
-          position: relative; background: #fff; border: 2px solid ${BRONZE}; border-radius: 28px;
+          position: relative; display: flex; flex-direction: column; min-height: 440px;
+          background: #fff; border: 2px solid ${BRONZE}; border-radius: 28px;
           padding: 22px; box-shadow: 0 16px 40px -18px rgba(120, 70, 30, 0.35);
         }
         .ticket-head {
@@ -135,7 +138,8 @@ export default function ServicesShowcase({ services = [] }) {
         }
         .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid ${BRONZE}; animation: pulse 1.6s ease-in-out infinite; }
         @keyframes pulse { 50% { transform: scale(1.35); opacity: .5; } }
-        .count { margin-left: auto; font-size: 13px; color: #71717a; font-variant-numeric: tabular-nums; }
+        .count { margin-left: auto; font-size: 12px; font-weight: 800; color: #71717a; text-transform: uppercase; letter-spacing: .04em; }
+        .yet { color: ${BRONZE}; }
         ul { list-style: none; margin: 0; padding: 0; }
         li {
           display: flex; align-items: center; gap: 14px; padding: 14px 4px;
@@ -155,7 +159,7 @@ export default function ServicesShowcase({ services = [] }) {
         li.checked .label { color: #a1a1aa; text-decoration: line-through; text-decoration-color: ${BRONZE}; }
         .item-price { margin-left: auto; font-weight: 800; color: #52525b; font-variant-numeric: tabular-nums; transition: color .3s; }
         li.checked .item-price { color: #a1a1aa; }
-        .total { margin-top: 14px; padding-top: 14px; border-top: 2px dashed #e7d8c8; min-height: 92px;
+        .total { margin-top: auto; padding-top: 14px; border-top: 2px dashed #e7d8c8; min-height: 92px;
           opacity: .35; transition: opacity .4s; }
         .total.show { opacity: 1; }
         .total-row { display: flex; align-items: center; font-weight: 800; color: #52525b; }
