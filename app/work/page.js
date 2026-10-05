@@ -11,7 +11,8 @@ const projects = [
   { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dated 5-blade fan for a modern 3-blade wood propeller fan." },
   { img: "/images/work-ceiling-box-replacement.jpg", title: "Fan-Rated Ceiling Box Upgrade", text: "Replaced a standard light-fixture box with a fan-rated box so the ceiling can safely support the new fan." },
   { img: "/images/work-smart-lock-replacement.jpg", title: "Smart Lock Replacement", text: "Replaced a worn smart lock with a new keypad smart lock on the front door." },
-  { img: "/images/work-maytag-suspension-rods.jpg", title: "Washer Suspension Rod Replacement", text: "Replaced worn suspension rods on a Maytag top-load washer.", top: true },
+  { img: "/images/work-maytag-suspension-rods.jpg", title: "Washer Suspension Rod Replacement", text: "Replaced worn suspension rods on a Maytag top-load washer." },
+  { img: "/images/work-fridge-water-valve.jpg", title: "Refrigerator Water Valve Replacement", text: "Replaced the worn water inlet valve that feeds the ice maker and water dispenser." },
   { img: "/images/work-smart-toilet-install.jpg", title: "Smart Toilet Installation", text: "Installed a new tankless smart toilet on the existing flange." },
   { img: "/images/work-tv-mount-outlet-relocation.jpg", title: "TV Mount & In-Wall Wiring", text: "Mounted the TV and ran power and cables in-wall for a clean, wire-free look." },
   { img: "/images/work-drywall-baseboard-repair.jpg", title: "Drywall & Baseboard Repair", text: "Replaced damaged lower drywall, matched the texture and paint, and reinstalled the baseboard." },
@@ -42,7 +43,7 @@ export default function WorkPage() {
             <div key={project.title} className="bg-white rounded-[32px] overflow-hidden border border-black/10 shadow-sm">
               <img
                 src={project.img}
-                className={`h-80 w-full object-cover bg-zinc-200 ${project.top ? "object-top" : ""}`}
+                className="h-80 w-full object-cover bg-zinc-200"
                 alt={project.title}
                 loading="lazy"
               />
