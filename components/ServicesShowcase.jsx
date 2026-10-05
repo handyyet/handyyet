@@ -7,7 +7,7 @@ const VISITS = [
   [['Assemble dresser', 70], ['Hang floating shelves', 80], ['Set up video doorbell', 65], ['Replace outlets', 70]],
   [['Replace ceiling fan', 70], ['Fix running toilet', 80], ['Mount mirror', 80], ['Install smart thermostat', 65]],
 ];
-const VISIT_HOURS = 2;
+const VISIT_HOURS = 3;
 const HOURLY = 65;
 const TAGS = ['Electrical', 'Plumbing', 'Smart Home', 'Mounting', 'Assembly', 'Repairs'];
 const STEP_MS = 900;
