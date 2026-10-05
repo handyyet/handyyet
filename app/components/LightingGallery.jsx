@@ -10,16 +10,6 @@ const photos = [
   { src: "/images/lighting-backyard-garden.jpg", title: "Backyard Garden & Pool" },
 ];
 
-// Clickable areas over the 2x2 collage (percent of the collage image)
-const TILE_W = 49.26;
-const TILE_H = 42.13;
-const hotspots = [
-  { i: 0, left: 0.5, top: 14.6 },
-  { i: 1, left: 50.25, top: 14.6 },
-  { i: 2, left: 0.5, top: 57.3 },
-  { i: 3, left: 50.25, top: 57.3 },
-];
-
 const BTN =
   "flex items-center justify-center rounded-full bg-white border-2 border-[#c8763a] text-zinc-950 font-black shadow-[0_10px_24px_-8px_rgba(200,118,58,0.45)] hover:bg-[#c8763a] hover:text-white transition";
 
@@ -49,41 +39,31 @@ export default function LightingGallery() {
 
   return (
     <>
-      <div className="grid md:grid-cols-[2fr_1fr] gap-5 mt-8 items-start">
-        {/* Collage with 4 clickable tiles */}
-        <figure className="relative bg-white rounded-[28px] overflow-hidden border border-black/10 shadow-sm">
-          <img
-            src="/images/work-landscape-lighting.jpg"
-            alt="Landscape lighting replacement: front yard, pool, garden beds and side yard"
-            loading="lazy"
-            className="w-full h-auto block"
-          />
-          {hotspots.map((h) => (
+      <div className="grid grid-cols-2 md:grid-cols-3 md:grid-rows-2 gap-3 md:gap-5 mt-8">
+        {photos.map((p, i) => {
+          const feature = i === photos.length - 1;
+          return (
             <button
-              key={h.i}
+              key={p.src}
               type="button"
-              onClick={() => setOpen(h.i)}
-              aria-label={`View ${photos[h.i].title} full size`}
-              className="absolute cursor-zoom-in rounded-sm transition hover:bg-white/10 hover:ring-4 hover:ring-[#c8763a]/70 focus-visible:ring-4 focus-visible:ring-[#c8763a] outline-none"
-              style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${TILE_W}%`, height: `${TILE_H}%` }}
-            />
-          ))}
-        </figure>
-
-        {/* Backyard garden */}
-        <button
-          type="button"
-          onClick={() => setOpen(4)}
-          aria-label="View Backyard Garden & Pool full size"
-          className="group bg-white rounded-[28px] overflow-hidden border border-black/10 shadow-sm cursor-zoom-in text-left"
-        >
-          <img
-            src="/images/work-garden-lighting.jpg"
-            alt="Backyard garden and pool landscape lighting replacement"
-            loading="lazy"
-            className="w-full h-auto block transition duration-300 group-hover:scale-[1.02]"
-          />
-        </button>
+              onClick={() => setOpen(i)}
+              aria-label={`View ${p.title} full size`}
+              className={`group relative overflow-hidden rounded-[20px] md:rounded-[28px] border border-black/10 shadow-sm bg-zinc-200 cursor-zoom-in outline-none focus-visible:ring-4 focus-visible:ring-[#c8763a] ${
+                feature ? "col-span-2 md:col-span-1 md:col-start-3 md:row-start-1 md:row-span-2 aspect-[4/3] md:aspect-auto" : "aspect-[4/3]"
+              }`}
+            >
+              <img
+                src={p.src}
+                alt={`Landscape lighting replacement: ${p.title}`}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-[1.04]"
+              />
+              <span className="absolute left-3 bottom-3 md:left-4 md:bottom-4 bg-white border-2 border-[#c8763a] text-zinc-950 text-xs md:text-sm font-black px-3 py-1 rounded-full shadow-[0_6px_16px_-6px_rgba(0,0,0,0.4)]">
+                {p.title}
+              </span>
+            </button>
+          );
+        })}
       </div>
       <p className="text-zinc-500 text-sm mt-4">Tap any photo to view full size.</p>
 
