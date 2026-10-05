@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import LightingGallery from "../components/LightingGallery";
 
 export const metadata = {
   title: "Our Work | HandyYet",
@@ -7,13 +8,13 @@ export const metadata = {
 };
 
 const projects = [
-  { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dated 5-blade fan for a modern 3-blade wood propeller fan.", wide: true },
-  { img: "/images/work-ceiling-box-replacement.jpg", title: "Ceiling Box Replacement", text: "Removed the old ceiling box and installed a new metal box with a secure mounting bracket.", wide: true },
-  { img: "/images/work-smart-lock-replacement.jpg", title: "Smart Lock Replacement", text: "Replaced a worn smart lock with a new keypad smart lock on the front door.", wide: true },
+  { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dated 5-blade fan for a modern 3-blade wood propeller fan." },
+  { img: "/images/work-ceiling-box-replacement.jpg", title: "Fan-Rated Ceiling Box Upgrade", text: "Replaced a standard light-fixture box with a fan-rated box so the ceiling can safely support the new fan." },
+  { img: "/images/work-smart-lock-replacement.jpg", title: "Smart Lock Replacement", text: "Replaced a worn smart lock with a new keypad smart lock on the front door." },
   { img: "/images/work-maytag-suspension-rods.jpg", title: "Washer Suspension Rod Replacement", text: "Replaced worn suspension rods on a Maytag top-load washer.", top: true },
-  { img: "/images/work-smart-toilet-install.jpg", title: "Smart Toilet Installation", text: "Installed a new tankless smart toilet on the existing flange.", wide: true },
-  { img: "/images/work-tv-mount-outlet-relocation.jpg", title: "TV Mount & In-Wall Wiring", text: "Mounted the TV and ran power and cables in-wall for a clean, wire-free look.", wide: true },
-  { img: "/images/work-drywall-baseboard-repair.jpg", title: "Drywall & Baseboard Repair", text: "Replaced damaged lower drywall, matched the texture and paint, and reinstalled the baseboard.", wide: true },
+  { img: "/images/work-smart-toilet-install.jpg", title: "Smart Toilet Installation", text: "Installed a new tankless smart toilet on the existing flange." },
+  { img: "/images/work-tv-mount-outlet-relocation.jpg", title: "TV Mount & In-Wall Wiring", text: "Mounted the TV and ran power and cables in-wall for a clean, wire-free look." },
+  { img: "/images/work-drywall-baseboard-repair.jpg", title: "Drywall & Baseboard Repair", text: "Replaced damaged lower drywall, matched the texture and paint, and reinstalled the baseboard." },
   { img: "/images/work-shower-fixture.jpg", title: "Shower Cartridge Replacement", text: "Replaced a worn cartridge and restored cold water supply to the shower." },
   { img: "/images/work-ceiling-fan.jpg", title: "Ceiling Fan Installation", text: "Installed a new ceiling fan onto the existing wiring." },
   { img: "/images/work-closet-shelving.jpg", title: "Custom Closet Shelving", text: "Built and installed a full 4-shelf system in a custom nook." },
@@ -29,11 +30,6 @@ const projects = [
   { img: "/images/work-playhouse.jpg", title: "Kids Playhouse Assembly", text: "Assembled a wooden kids' playhouse from the box in the backyard." },
 ];
 
-const lighting = [
-  { img: "/images/work-landscape-lighting.jpg", title: "Landscape lighting replacement: front yard, pool, garden beds and side yard" },
-  { img: "/images/work-garden-lighting.jpg", title: "Backyard garden and pool landscape lighting replacement" },
-];
-
 export default function WorkPage() {
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950">
@@ -46,7 +42,7 @@ export default function WorkPage() {
             <div key={project.title} className="bg-white rounded-[32px] overflow-hidden border border-black/10 shadow-sm">
               <img
                 src={project.img}
-                className={project.wide ? "w-full aspect-[16/9] object-contain bg-[#fdfaf5]" : `h-80 w-full object-cover bg-zinc-200 ${project.top ? "object-top" : ""}`}
+                className={`h-80 w-full object-cover bg-zinc-200 ${project.top ? "object-top" : ""}`}
                 alt={project.title}
                 loading="lazy"
               />
@@ -67,16 +63,7 @@ export default function WorkPage() {
           <p className="text-zinc-500 text-lg mt-3 max-w-2xl">
             Complete lighting system replacements: front yards, backyards, pools and gardens.
           </p>
-          <div className="grid md:grid-cols-[2fr_1fr] gap-5 mt-8 items-start">
-            {lighting.map((item) => (
-              <figure
-                key={item.img}
-                className="bg-white rounded-[28px] overflow-hidden border border-black/10 shadow-sm"
-              >
-                <img src={item.img} alt={item.title} loading="lazy" className="w-full h-auto block" />
-              </figure>
-            ))}
-          </div>
+          <LightingGallery />
         </div>
       </section>
 
