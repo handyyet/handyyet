@@ -1,15 +1,17 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-// Example visits: each set = one real-looking visit with mixed jobs
+// Example 2-hour visits: [task, price if booked as a separate service]
 const VISITS = [
-  ['Mount 65" TV + hide cables', 'Fix 3 leaky faucets', 'Install smart lock', 'Hang floating shelves'],
-  ['Replace ceiling fan', 'Assemble dresser', 'Set up video doorbell', 'Patch drywall hole'],
-  ['Install pendant lights', 'Replace toilet', 'Mount mirror + sconces', 'Swap outlets to USB'],
+  [['Mount TV', 80], ['Install smart lock', 65], ['Replace kitchen faucet', 80], ['Swap light fixture', 70]],
+  [['Assemble dresser', 70], ['Hang floating shelves', 80], ['Set up video doorbell', 65], ['Replace outlets', 70]],
+  [['Replace ceiling fan', 70], ['Fix running toilet', 80], ['Mount mirror', 80], ['Install smart thermostat', 65]],
 ];
+const VISIT_HOURS = 2;
+const HOURLY = 65;
 const TAGS = ['Electrical', 'Plumbing', 'Smart Home', 'Mounting', 'Assembly', 'Repairs'];
 const STEP_MS = 900;
-const HOLD_MS = 2200;
+const HOLD_MS = 3200;
 const BRONZE = '#c8763a';
 const CREAM = '#fdfaf5';
 
@@ -43,6 +45,8 @@ export default function ServicesShowcase({ services = [] }) {
           setDone(i);
           await wait(STEP_MS);
         }
+        setDone(VISITS[v].length + 1); // total appears, gets crossed out, one-visit price pops
+        await wait(1200);
         await wait(HOLD_MS);
         v = (v + 1) % VISITS.length;
       }
@@ -53,6 +57,8 @@ export default function ServicesShowcase({ services = [] }) {
 
   const items = VISITS[visit];
   const allDone = done >= items.length;
+  const showDeal = done > items.length;
+  const separate = items.reduce((sum, [, price]) => sum + price, 0);
 
   return (
     <div ref={rootRef} className="showcase">
@@ -60,26 +66,36 @@ export default function ServicesShowcase({ services = [] }) {
       <div className="ticket" aria-hidden="true">
         <div className="ticket-head">
           <span className="dot" />
-          <span>One visit</span>
+          <span>Example visit</span>
           <span className="count">{Math.min(done, items.length)}/{items.length} done</span>
         </div>
         <ul key={visit}>
-          {items.map((t, i) => (
+          {items.map(([t, price], i) => (
             <li key={t} className={i < done ? 'checked' : ''} style={{ animationDelay: `${i * 80}ms` }}>
               <span className="box">
                 <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
               </span>
               <span className="label">{t}</span>
+              <span className="item-price">${price}</span>
             </li>
           ))}
         </ul>
-        <div className={`stamp ${allDone ? 'show' : ''}`}>All done in one visit</div>
+        <div className={`total ${allDone ? 'show' : ''}`}>
+          <div className="total-row">
+            <span className="total-label">Booked separately</span>
+            <span className={`old ${showDeal ? 'struck' : ''}`}>${separate}</span>
+          </div>
+          <div className={`deal ${showDeal ? 'show' : ''}`}>
+            <span>One visit · {VISIT_HOURS} hrs</span>
+            <strong>${VISIT_HOURS * HOURLY}</strong>
+          </div>
+        </div>
       </div>
 
       {/* Right: pitch + all services */}
       <div className="pitch">
         <p className="lead">
-          Don't book five different pros. Make one list and I'll handle it in a single visit.
+          Don't book five different pros. Make one list and I'll handle it in a single visit at ${HOURLY}/hr.
         </p>
         <div className="tags">
           {TAGS.map((t, i) => (
@@ -111,8 +127,7 @@ export default function ServicesShowcase({ services = [] }) {
         /* ticket */
         .ticket {
           position: relative; background: #fff; border: 2px solid ${BRONZE}; border-radius: 28px;
-          padding: 22px 22px 70px; box-shadow: 0 16px 40px -18px rgba(120, 70, 30, 0.35);
-          min-height: 330px;
+          padding: 22px; box-shadow: 0 16px 40px -18px rgba(120, 70, 30, 0.35);
         }
         .ticket-head {
           display: flex; align-items: center; gap: 10px; font-weight: 900; color: #18181b;
@@ -138,13 +153,26 @@ export default function ServicesShowcase({ services = [] }) {
         li.checked .box { border-color: ${BRONZE}; background: ${BRONZE}; }
         li.checked .box svg { stroke-dashoffset: 0; }
         li.checked .label { color: #a1a1aa; text-decoration: line-through; text-decoration-color: ${BRONZE}; }
-        .stamp {
-          position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%) scale(.85) rotate(-3deg);
-          padding: 8px 18px; border-radius: 999px; border: 2px solid ${BRONZE}; background: #fff;
-          font-weight: 900; color: #18181b; white-space: nowrap; opacity: 0;
-          transition: opacity .3s, transform .45s cubic-bezier(.34,1.56,.64,1);
-        }
-        .stamp.show { opacity: 1; transform: translateX(-50%) scale(1) rotate(-3deg); }
+        .item-price { margin-left: auto; font-weight: 800; color: #52525b; font-variant-numeric: tabular-nums; transition: color .3s; }
+        li.checked .item-price { color: #a1a1aa; }
+        .total { margin-top: 14px; padding-top: 14px; border-top: 2px dashed #e7d8c8; min-height: 92px;
+          opacity: .35; transition: opacity .4s; }
+        .total.show { opacity: 1; }
+        .total-row { display: flex; align-items: center; font-weight: 800; color: #52525b; }
+        .total-label { font-size: 14px; }
+        .old { position: relative; margin-left: auto; font-size: 22px; font-weight: 900; color: #3f3f46;
+          font-variant-numeric: tabular-nums; transition: color .4s; }
+        .old::after { content: ''; position: absolute; left: -4px; right: -4px; top: 52%; height: 3px;
+          background: ${BRONZE}; border-radius: 2px; transform: scaleX(0); transform-origin: left;
+          transition: transform .45s cubic-bezier(.65,0,.35,1); }
+        .old.struck { color: #a1a1aa; }
+        .old.struck::after { transform: scaleX(1); }
+        .deal { display: flex; align-items: center; justify-content: space-between; margin-top: 10px;
+          padding: 10px 16px; border: 2px solid ${BRONZE}; border-radius: 999px; background: #fff;
+          font-weight: 900; color: #18181b; opacity: 0; transform: scale(.9);
+          transition: opacity .3s .35s, transform .5s cubic-bezier(.34,1.56,.64,1) .35s; }
+        .deal.show { opacity: 1; transform: scale(1); }
+        .deal strong { font-size: 26px; color: ${BRONZE}; font-variant-numeric: tabular-nums; }
 
         /* pitch */
         .pitch { display: flex; flex-direction: column; justify-content: center; }
