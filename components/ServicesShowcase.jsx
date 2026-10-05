@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 // Prices on the left = typical cost of hiring a separate pro for each job (trip fee + minimum).
 const VISITS = [
   { hours: 3, items: [['Mount TV', 150], ['Install smart lock', 120], ['Replace kitchen faucet', 180], ['Swap light fixture', 140]] },
-  { hours: 2, items: [['Assemble dresser', 120], ['Hang floating shelves', 130], ['Set up video doorbell', 110]] },
+  { hours: 2, items: [['Assemble dresser', 120], ['Hang floating shelves', 130], ['Set up video doorbell', 110], ['Hang curtain rod', 90]] },
   { hours: 3, items: [['Replace ceiling fan', 180], ['Fix running toilet', 150], ['Mount mirror', 120], ['Install smart thermostat', 130]] },
-  { hours: 2, items: [['Patch drywall hole', 150], ['Replace outlets', 130], ['Assemble desk', 110]] },
+  { hours: 2, items: [['Patch drywall hole', 150], ['Replace outlets', 130], ['Assemble desk', 110], ['Re-caulk bathtub', 90]] },
 ];
 const HOURLY = 65;
 const TAGS = ['Electrical', 'Plumbing', 'Smart Home', 'Mounting', 'Assembly', 'Repairs'];
@@ -88,8 +88,14 @@ export default function ServicesShowcase({ services = [] }) {
             <span className={`old ${showDeal ? 'struck' : ''}`}>${separate}</span>
           </div>
           <div className={`deal ${showDeal ? 'show' : ''}`}>
-            <span>Handy<span className="yet">Yet</span> · one visit · {hours} hrs</span>
-            <strong>${hours * HOURLY}</strong>
+            <div className="deal-left">
+              <span className="brand">Handy<span className="yet">Yet</span></span>
+              <span className="sub">One visit · {hours} hrs</span>
+            </div>
+            <div className="deal-right">
+              <strong>${hours * HOURLY}</strong>
+              <span className="save">Save ${separate - hours * HOURLY}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -128,7 +134,7 @@ export default function ServicesShowcase({ services = [] }) {
 
         /* ticket */
         .ticket {
-          position: relative; display: flex; flex-direction: column; min-height: 440px;
+          position: relative; display: flex; flex-direction: column;
           background: #fff; border: 2px solid ${BRONZE}; border-radius: 28px;
           padding: 22px; box-shadow: 0 16px 40px -18px rgba(120, 70, 30, 0.35);
         }
@@ -171,12 +177,22 @@ export default function ServicesShowcase({ services = [] }) {
           transition: transform .45s cubic-bezier(.65,0,.35,1); }
         .old.struck { color: #a1a1aa; }
         .old.struck::after { transform: scaleX(1); }
-        .deal { display: flex; align-items: center; justify-content: space-between; margin-top: 10px;
-          padding: 10px 16px; border: 2px solid ${BRONZE}; border-radius: 999px; background: #fff;
-          font-weight: 900; color: #18181b; opacity: 0; transform: scale(.9);
-          transition: opacity .3s .35s, transform .5s cubic-bezier(.34,1.56,.64,1) .35s; }
-        .deal.show { opacity: 1; transform: scale(1); }
-        .deal strong { font-size: 26px; color: ${BRONZE}; font-variant-numeric: tabular-nums; }
+        .deal { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px;
+          padding: 14px 18px; border: 2px solid ${BRONZE}; border-radius: 22px;
+          background: linear-gradient(135deg, #fff 0%, ${CREAM} 100%);
+          box-shadow: 0 12px 28px -14px ${BRONZE}aa;
+          opacity: 0; transform: translateY(8px) scale(.96);
+          transition: opacity .3s .35s, transform .55s cubic-bezier(.34,1.56,.64,1) .35s; }
+        .deal.show { opacity: 1; transform: none; }
+        .deal-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .brand { font-size: 20px; font-weight: 900; color: #18181b; letter-spacing: -0.02em; line-height: 1.1; }
+        .sub { font-size: 13px; font-weight: 700; color: #71717a; white-space: nowrap; }
+        .deal-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .deal strong { font-size: 32px; line-height: 1; font-weight: 900; color: ${BRONZE}; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+        .save { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; color: ${BRONZE};
+          padding: 3px 8px; border-radius: 999px; border: 1.5px solid ${BRONZE}66; background: #fff; white-space: nowrap;
+          opacity: 0; transform: scale(.6); transition: opacity .25s .8s, transform .45s cubic-bezier(.34,1.56,.64,1) .8s; }
+        .deal.show .save { opacity: 1; transform: scale(1); }
 
         /* pitch */
         .pitch { display: flex; flex-direction: column; justify-content: center; }
