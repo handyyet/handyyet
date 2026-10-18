@@ -34,11 +34,23 @@ function PhotoModal({ image, serviceTitle, onClose }) {
       >
         {/* Photo */}
         <div className="relative">
-          <img
-            src={image.src}
-            alt={image.title}
-            className="w-full h-64 object-cover"
-          />
+          {image.backImage ? (
+            <div className="grid grid-cols-2 gap-1 h-64">
+              <img src={image.src} alt={image.title} className="w-full h-full object-cover" />
+              <div className="relative">
+                <img src={image.backImage} alt={`${image.title}, second job`} className="w-full h-full object-cover" />
+                <span className="absolute bottom-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                  Repeat client
+                </span>
+              </div>
+            </div>
+          ) : (
+            <img
+              src={image.src}
+              alt={image.title}
+              className="w-full h-64 object-cover"
+            />
+          )}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-9 h-9 bg-white/90 text-zinc-950 rounded-full font-black text-lg flex items-center justify-center backdrop-blur-sm shadow-sm"
@@ -144,13 +156,21 @@ function FlipCard({ image, serviceTitle }) {
               WebkitBackfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
             }}
-            className="absolute inset-0 rounded-[24px] bg-white border-2 border-[#c8763a] flex flex-col justify-between p-6"
+            className={`absolute inset-0 rounded-[24px] bg-white border-2 border-[#c8763a] flex flex-col justify-between overflow-hidden ${image.backImage ? "p-0" : "p-6"}`}
           >
-            <div>
+            {image.backImage && (
+              <div className="relative h-[40%] shrink-0">
+                <img src={image.backImage} alt={`${image.title}, second job`} className="w-full h-full object-cover" />
+                <span className="absolute top-2.5 left-2.5 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                  Repeat client
+                </span>
+              </div>
+            )}
+            <div className={image.backImage ? "px-5 pt-3" : ""}>
               <p className="text-[#a85f2a] font-black text-base leading-snug">{image.title}</p>
-              <p className="text-zinc-600 text-sm mt-2 leading-relaxed">{image.desc}</p>
+              <p className={`text-zinc-600 mt-2 leading-relaxed ${image.backImage ? "text-xs" : "text-sm"}`}>{image.desc}</p>
             </div>
-            <div className="mt-2 inline-block border-2 border-[#c8763a] text-[#a85f2a] bg-[#fdf3ea] text-sm font-black px-3 py-1.5 rounded-full w-fit">
+            <div className={`mt-2 inline-block border-2 border-[#c8763a] text-[#a85f2a] bg-[#fdf3ea] text-sm font-black px-3 py-1.5 rounded-full w-fit ${image.backImage ? "mx-5 mb-4" : ""}`}>
               {image.price}
             </div>
           </div>
