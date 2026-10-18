@@ -34,7 +34,18 @@ function PhotoModal({ image, serviceTitle, onClose }) {
       >
         {/* Photo */}
         <div className="relative">
-          {image.backImage ? (
+          {image.before ? (
+            <div className="grid grid-cols-2 gap-1 h-64">
+              {[["Before", image.before], ["After", image.src]].map(([label, src]) => (
+                <div key={label} className="relative">
+                  <img src={src} alt={`${image.title}, ${label.toLowerCase()}`} className="w-full h-full object-cover" />
+                  <span className="absolute bottom-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : image.backImage ? (
             <div className="grid grid-cols-2 gap-1 h-64">
               <img src={image.src} alt={image.title} className="w-full h-full object-cover" />
               <div className="relative">
@@ -97,6 +108,38 @@ function FlipCard({ image, serviceTitle }) {
   }
 
   const isTouchDevice = typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+
+  // Before/after card: shows AFTER, hover reveals BEFORE (desktop); tap opens modal (mobile)
+  if (image.before) {
+    return (
+      <>
+        {modalOpen && <PhotoModal image={image} serviceTitle={serviceTitle} onClose={() => setModalOpen(false)} />}
+        <div
+          className="group relative h-44 md:h-72 w-full cursor-pointer rounded-[24px] overflow-hidden border border-black/10 bg-zinc-200"
+          onClick={() => setModalOpen(true)}
+        >
+          <img src={image.src} alt={`${image.title}, after`} className="absolute inset-0 w-full h-full object-cover" />
+          <img
+            src={image.before}
+            alt={`${image.title}, before`}
+            className="absolute inset-0 w-full h-full object-cover opacity-0 md:group-hover:opacity-100 transition-opacity duration-500"
+          />
+          <span className="absolute top-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+            <span className="md:group-hover:hidden">After</span>
+            <span className="hidden md:group-hover:inline">Before</span>
+          </span>
+          <div className="absolute bottom-3 right-3 bg-white/90 text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm shadow-sm md:group-hover:hidden">
+            <span className="md:hidden">Tap for before</span>
+            <span className="hidden md:inline">Hover for before</span>
+          </div>
+          <div className="absolute inset-x-3 bottom-3 hidden md:group-hover:flex items-center justify-between gap-2 bg-white/95 rounded-2xl px-3 py-2 shadow-sm">
+            <span className="text-[#a85f2a] font-black text-xs leading-tight">{image.title}</span>
+            <span className="border-2 border-[#c8763a] text-[#a85f2a] bg-[#fdf3ea] text-xs font-black px-2.5 py-1 rounded-full whitespace-nowrap">{image.price}</span>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   const handleClick = () => {
     if (isTouchDevice) {
