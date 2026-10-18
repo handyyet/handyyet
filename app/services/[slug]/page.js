@@ -327,7 +327,7 @@ export default function ServicePage() {
               <h2 className="text-4xl md:text-6xl font-black tracking-tight text-zinc-950 mt-2">Ready to book?</h2>
               <p className="mt-3 text-zinc-500 text-lg">Send photos — we'll reply with a quote fast.</p>
               <div className="flex flex-wrap gap-3 mt-5">
-                {["No phone calls", "Fast response", isHandyman ? "$65/hr — no surprises" : "Fair pricing"].map(f => (
+                {["No phone calls", "Fast response", isHandyman ? "$90/hr — no surprises" : "Fair pricing"].map(f => (
                   <span key={f} className="bg-[#fdf3ea] border border-[#c8763a]/40 text-[#a85f2a] text-sm font-bold px-4 py-2 rounded-full">{f}</span>
                 ))}
               </div>

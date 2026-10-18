@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 // Example visits, alternating 3 hrs / 2 hrs.
 // Prices on the left = typical cost of hiring a separate pro for each job (trip fee + minimum).
 const VISITS = [
-  { hours: 3, items: [['Mount TV', 150], ['Install smart lock', 120], ['Replace kitchen faucet', 180], ['Swap light fixture', 140]] },
-  { hours: 2, items: [['Assemble dresser', 120], ['Hang floating shelves', 130], ['Set up video doorbell', 110], ['Hang curtain rod', 90]] },
-  { hours: 3, items: [['Replace ceiling fan', 180], ['Fix running toilet', 150], ['Mount mirror', 120], ['Install smart thermostat', 130]] },
-  { hours: 2, items: [['Patch drywall hole', 150], ['Replace outlets', 130], ['Assemble desk', 110], ['Re-caulk bathtub', 90]] },
+  { hours: 3, items: [['Mount TV', 200], ['Install smart lock', 150], ['Replace kitchen faucet', 220], ['Swap light fixture', 150]] },
+  { hours: 2, items: [['Assemble dresser', 140], ['Hang floating shelves', 150], ['Set up video doorbell', 140], ['Hang curtain rod', 120]] },
+  { hours: 3, items: [['Replace ceiling fan', 220], ['Fix running toilet', 180], ['Mount mirror', 150], ['Install smart thermostat', 150]] },
+  { hours: 2, items: [['Patch drywall hole', 220], ['Replace outlets', 160], ['Assemble desk', 130], ['Re-caulk bathtub', 140]] },
 ];
-const HOURLY = 65;
+const HOURLY = 90;
 const TAGS = ['Electrical', 'Plumbing', 'Smart Home', 'Mounting', 'Assembly', 'Repairs'];
 const STEP_MS = 900;
 const HOLD_MS = 3200;
