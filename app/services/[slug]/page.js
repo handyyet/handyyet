@@ -102,7 +102,7 @@ function FlipCard({ image, serviceTitle }) {
       <img
         src={image.src}
         alt="Work photo"
-        className="rounded-[24px] h-44 md:h-72 w-full object-cover object-center bg-zinc-200 border border-black/10"
+        className="rounded-[24px] h-44 md:h-auto md:aspect-[4/5] w-full object-cover object-center bg-zinc-200 border border-black/10"
       />
     );
   }
@@ -115,7 +115,7 @@ function FlipCard({ image, serviceTitle }) {
       <>
         {modalOpen && <PhotoModal image={image} serviceTitle={serviceTitle} onClose={() => setModalOpen(false)} />}
         <div
-          className="group relative h-44 md:h-72 w-full cursor-pointer rounded-[24px] overflow-hidden border border-black/10 bg-zinc-200"
+          className="group relative h-44 md:h-auto md:aspect-[4/5] w-full cursor-pointer rounded-[24px] overflow-hidden border border-black/10 bg-zinc-200"
           onClick={() => setModalOpen(true)}
         >
           <img src={image.src} alt={`${image.title}, after`} className="absolute inset-0 w-full h-full object-cover" />
@@ -154,7 +154,7 @@ function FlipCard({ image, serviceTitle }) {
       {modalOpen && <PhotoModal image={image} serviceTitle={serviceTitle} onClose={() => setModalOpen(false)} />}
 
       <div
-        className="h-44 md:h-72 w-full cursor-pointer"
+        className="h-44 md:h-auto md:aspect-[4/5] w-full cursor-pointer"
         style={{ perspective: "1000px" }}
         onClick={handleClick}
         onMouseEnter={() => {
