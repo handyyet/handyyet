@@ -1,6 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
 
+const InstagramIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={`${className} shrink-0`} aria-hidden="true">
+    <defs>
+      <radialGradient id="igGrad" cx="30%" cy="107%" r="150%">
+        <stop offset="0%" stopColor="#fdf497" />
+        <stop offset="5%" stopColor="#fdf497" />
+        <stop offset="45%" stopColor="#fd5949" />
+        <stop offset="60%" stopColor="#d6249f" />
+        <stop offset="90%" stopColor="#285AEB" />
+      </radialGradient>
+    </defs>
+    <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#igGrad)" />
+    <rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="white" strokeWidth="1.8" />
+    <circle cx="12" cy="12" r="3.2" fill="none" stroke="white" strokeWidth="1.8" />
+    <circle cx="16.3" cy="7.7" r="1" fill="white" />
+  </svg>
+);
+
 const GoogleIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-5 h-5 shrink-0">
     <path fill="#4285F4" d="M24 9.5c3.1 0 5.8 1.1 8 2.9l6-6C34.5 3.1 29.6 1 24 1 14.8 1 7 6.7 3.7 14.6l7 5.4C12.4 13.8 17.7 9.5 24 9.5z"/>
@@ -88,12 +106,8 @@ export default function Navbar() {
           </a>
           <a href="https://www.instagram.com/handyyet/" target="_blank" rel="noopener noreferrer"
             onClick={() => setOpen(false)}
-            className="flex items-center justify-center gap-2 bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285AEB_90%)] text-white rounded-full py-4 text-center font-black text-base hover:brightness-110 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none" />
-            </svg>
+            className="flex items-center justify-center gap-2 bg-white border border-black/10 rounded-full py-4 text-center font-black text-base hover:shadow-md transition">
+            <InstagramIcon />
             Follow on Instagram
           </a>
           <div className="flex flex-col items-center gap-1 pt-2">
