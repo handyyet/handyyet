@@ -118,18 +118,18 @@ function FlipCard({ image, serviceTitle }) {
           className="group relative h-44 md:h-auto md:aspect-[4/5] w-full cursor-pointer rounded-[24px] overflow-hidden border border-black/10 bg-zinc-200"
           onClick={() => setModalOpen(true)}
         >
-          <img src={image.src} alt={`${image.title}, after`} className="absolute inset-0 w-full h-full object-cover" />
+          <img src={image.cover || image.src} alt={`${image.title}, after`} className="absolute inset-0 w-full h-full object-cover" />
           <img
             src={image.before}
             alt={`${image.title}, before`}
             className="absolute inset-0 w-full h-full object-cover opacity-0 md:group-hover:opacity-100 transition-opacity duration-500"
           />
-          <span className="absolute top-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+          <span className={`absolute top-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm ${image.cover ? "hidden md:group-hover:inline-block" : ""}`}>
             <span className="md:group-hover:hidden">{image.labels?.[0] || "After"}</span>
             <span className="hidden md:group-hover:inline">{image.labels?.[1] || "Before"}</span>
           </span>
           <div className="absolute bottom-3 right-3 bg-white/90 text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm shadow-sm md:group-hover:hidden">
-            <span className="md:hidden">Tap for {(image.labels?.[1] || "before").toLowerCase()}</span>
+            <span className="md:hidden">{image.cover ? "Tap for info" : `Tap for ${(image.labels?.[1] || "before").toLowerCase()}`}</span>
             <span className="hidden md:inline">Hover for {(image.labels?.[1] || "before").toLowerCase()}</span>
           </div>
           <div className="absolute inset-x-3 bottom-3 hidden md:group-hover:flex items-center justify-between gap-2 bg-white/95 rounded-2xl px-3 py-2 shadow-sm">
