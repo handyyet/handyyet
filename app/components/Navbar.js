@@ -86,6 +86,16 @@ export default function Navbar() {
             <GoogleIcon />
             Leave a Google Review
           </a>
+          <a href="https://www.instagram.com/handyyet/" target="_blank" rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center gap-2 bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285AEB_90%)] text-white rounded-full py-4 text-center font-black text-base hover:brightness-110 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none" />
+            </svg>
+            Follow on Instagram
+          </a>
           <div className="flex flex-col items-center gap-1 pt-2">
             <a href="tel:+19498283959" className="font-bold text-zinc-600">(949) 828-3959</a>
             <a href="mailto:support@handyyet.com" className="text-zinc-400 font-bold text-sm">support@handyyet.com</a>
