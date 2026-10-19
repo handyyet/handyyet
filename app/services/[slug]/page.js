@@ -35,9 +35,9 @@ function PhotoModal({ image, serviceTitle, onClose }) {
         {/* Photo */}
         <div className="relative">
           {image.before ? (
-            <div className="grid grid-cols-2 gap-1 h-64">
+            <div className="grid grid-cols-2 gap-1 h-64 overflow-hidden">
               {[["Before", image.before], ["After", image.src]].map(([label, src]) => (
-                <div key={label} className="relative">
+                <div key={label} className="relative h-full overflow-hidden">
                   <img src={src} alt={`${image.title}, ${label.toLowerCase()}`} className="w-full h-full object-cover" />
                   <span className="absolute bottom-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
                     {label}
@@ -46,9 +46,9 @@ function PhotoModal({ image, serviceTitle, onClose }) {
               ))}
             </div>
           ) : image.backImage ? (
-            <div className="grid grid-cols-2 gap-1 h-64">
+            <div className="grid grid-cols-2 gap-1 h-64 overflow-hidden">
               <img src={image.src} alt={image.title} className="w-full h-full object-cover" />
-              <div className="relative">
+              <div className="relative h-full overflow-hidden">
                 <img src={image.backImage} alt={`${image.title}, second job`} className="w-full h-full object-cover" />
                 <span className="absolute bottom-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
                   Repeat client
@@ -70,7 +70,7 @@ function PhotoModal({ image, serviceTitle, onClose }) {
           </button>
         </div>
         {/* Info */}
-        <div className="p-7">
+        <div className="px-7 pt-8 pb-7">
           <p className="text-orange-500 font-black text-xl leading-snug">{image.title}</p>
           <p className="text-zinc-600 mt-3 leading-relaxed">{image.desc}</p>
           <div className="mt-5 flex items-center justify-between">

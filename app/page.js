@@ -244,7 +244,7 @@ export default function Home() {
         <div data-reveal className="flex items-end justify-between mt-3 mb-10 flex-wrap gap-4">
           <div>
             <p className="text-orange-500 font-black uppercase tracking-widest">Reviews</p>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9] mt-3">125 reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9] mt-3">220+ reviews.<br /><span className="text-orange-500">All 5 stars.</span></h2>
           </div>
           <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 hover:shadow-lg transition duration-300">See all →</a>
         </div>
