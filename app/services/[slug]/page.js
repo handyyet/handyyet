@@ -36,7 +36,7 @@ function PhotoModal({ image, serviceTitle, onClose }) {
         <div className="relative">
           {image.before ? (
             <div className="grid grid-cols-2 gap-1 h-64 overflow-hidden">
-              {[["Before", image.before], ["After", image.src]].map(([label, src]) => (
+              {[[image.labels?.[1] || "Before", image.before], [image.labels?.[0] || "After", image.src]].map(([label, src]) => (
                 <div key={label} className="relative h-full overflow-hidden">
                   <img src={src} alt={`${image.title}, ${label.toLowerCase()}`} className="w-full h-full object-cover" />
                   <span className="absolute bottom-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
@@ -125,12 +125,12 @@ function FlipCard({ image, serviceTitle }) {
             className="absolute inset-0 w-full h-full object-cover opacity-0 md:group-hover:opacity-100 transition-opacity duration-500"
           />
           <span className="absolute top-3 left-3 bg-white border-2 border-[#c8763a] text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
-            <span className="md:group-hover:hidden">After</span>
-            <span className="hidden md:group-hover:inline">Before</span>
+            <span className="md:group-hover:hidden">{image.labels?.[0] || "After"}</span>
+            <span className="hidden md:group-hover:inline">{image.labels?.[1] || "Before"}</span>
           </span>
           <div className="absolute bottom-3 right-3 bg-white/90 text-zinc-950 text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-sm shadow-sm md:group-hover:hidden">
-            <span className="md:hidden">Tap for before</span>
-            <span className="hidden md:inline">Hover for before</span>
+            <span className="md:hidden">Tap for {(image.labels?.[1] || "before").toLowerCase()}</span>
+            <span className="hidden md:inline">Hover for {(image.labels?.[1] || "before").toLowerCase()}</span>
           </div>
           <div className="absolute inset-x-3 bottom-3 hidden md:group-hover:flex items-center justify-between gap-2 bg-white/95 rounded-2xl px-3 py-2 shadow-sm">
             <span className="text-[#a85f2a] font-black text-xs leading-tight">{image.title}</span>
