@@ -1,11 +1,12 @@
 "use client";
 
+import ScrollStory from '../components/ScrollStory';
+import DragReveal from '../components/DragReveal';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AddressAutocomplete from "./components/AddressAutocomplete";
 import BookingCalendar from "./components/BookingCalendar";
 import ScrollReveal from "./components/ScrollReveal";
-import HeroFeedReel from '../components/HeroFeedReel';
 import ServicesShowcase from '../components/ServicesShowcase';
 import SmartButton from "./components/SmartButton";
 
@@ -171,7 +172,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f6f3ee] text-zinc-950 overflow-hidden">
+    <main className="min-h-screen bg-[#f6f3ee] text-zinc-950 overflow-x-clip">
       {showModal && <ThankYouModal onClose={() => { setShowModal(false); setStatus(""); }} />}
 
       <Navbar />
@@ -179,7 +180,7 @@ export default function Home() {
       {/* ─── HERO ─── */}
       <section className="relative pt-28 md:pt-40 pb-12 md:pb-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0026,transparent_35%)]" />
-        <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-6 lg:gap-14 items-center">
+        <div className="relative max-w-7xl mx-auto px-5 items-center">
           <div>
             <h1 className="anim-fade-up font-black tracking-tight" style={{ animationDelay: "0ms" }}>
               {/* Mobile: single line, scales with viewport, tighter tracking to fit bigger size */}
@@ -192,12 +193,12 @@ export default function Home() {
               </span>
             </h1>
           </div>
-          <div className="anim-fade-up flex justify-center lg:justify-end" style={{ animationDelay: "0ms" }}>
-            <HeroFeedReel />
-          </div>
         </div>
       </section>
-
+<ScrollStory />
+<section className="max-w-7xl mx-auto px-5 py-20">
+  <DragReveal />
+</section>
       {/* ─── RECENT WORK (before services) ─── */}
       <section id="work" className="max-w-7xl mx-auto px-5 py-20">
         <div data-reveal>
