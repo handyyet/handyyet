@@ -42,11 +42,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Yelp + Google + Instagram icons */}
+          {/* Google + Instagram icons */}
           <div className="flex items-center gap-3">
-            <a href="https://m.yelp.com/biz/handyyet-huntington-beach"
-              target="_blank" rel="noopener noreferrer"
-              className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-black text-sm hover:bg-red-600 transition shadow-sm">Y</a>
             <a href="https://maps.app.goo.gl/RfHEGR8dPZKsyz8d6?g_st=ic" target="_blank" rel="noopener noreferrer"
               className="w-10 h-10 bg-white border border-black/10 rounded-full flex items-center justify-center hover:shadow-md transition shadow-sm">
               <GoogleIcon />

@@ -211,14 +211,6 @@ export default function ReviewsPage() {
             <GoogleIcon />
             Leave a Google Review
           </a>
-          <a href="https://www.yelp.com/writeareview/biz/7asHGqucJQSljXn1dF2RTw?review_origin=mobile-site-biz-details-action-button&return_url=https://m.yelp.com/biz/handyyet-huntington-beach"
-            target="_blank" rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 bg-[#FF1A1A] text-white rounded-full px-8 py-4 font-black hover:shadow-lg hover:-translate-y-0.5 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="white">
-              <path d="M12.28 2.25c-.38-.01-.7.28-.75.66L10.4 9.7a.77.77 0 0 0 1.2.78l5.18-3.7a.77.77 0 0 0-.1-1.33 9.2 9.2 0 0 0-4.4-1.2zM7.1 7.93a.77.77 0 0 0-.96.28 9.2 9.2 0 0 0-1.4 4.3.77.77 0 0 0 .97.79l6.14-1.93a.77.77 0 0 0 .12-1.43L7.1 7.93zm10.5 2.75-5.7 2.96a.77.77 0 0 0 .17 1.44l6.3 1.2a.77.77 0 0 0 .85-.97 9.2 9.2 0 0 0-1.62-4.63zM9.4 15.05l-5.52 2.9a.77.77 0 0 0 .13 1.42 9.2 9.2 0 0 0 4.56.63.77.77 0 0 0 .62-1.06l-1.7-3.84a.77.77 0 0 0-.09-.05zm5.36.93a.77.77 0 0 0-1.1.62l-.47 6.35a.77.77 0 0 0 1.06.77 9.2 9.2 0 0 0 3.76-2.77.77.77 0 0 0-.27-1.2l-3-1.77z"/>
-            </svg>
-            Leave a Yelp Review
-          </a>
           <a href="https://www.instagram.com/handyyet/" target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-center gap-3 bg-white border border-black/10 rounded-full px-8 py-4 font-black text-zinc-950 hover:shadow-lg hover:-translate-y-0.5 transition">
             <InstagramIcon />
