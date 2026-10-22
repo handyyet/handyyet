@@ -1,5 +1,6 @@
 "use client";
 
+import GoogleReviews from "../components/GoogleReviews";
 import ScrollStory from '../components/ScrollStory';
 import DragReveal from '../components/DragReveal';
 import Navbar from "./components/Navbar";
@@ -207,12 +208,12 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {[
-            { img: "/images/work-tv-mount-wiring.jpg", title: "TV Mounting + In-Wall Wiring", text: "Mounted a large TV flush to the wall with power and cables run inside the wall. No cords in sight." },
+            { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dead 6-blade fan for a modern 3-blade wood fan with remote." },
             { img: "/images/work-smart-toilet.jpg", title: "Smart Toilet Installation", text: "Removed the old toilet, prepped the flange and installed a new tankless smart toilet." },
             { img: "/images/work-mirror-sconces.jpg", title: "Vanity Mirror + Wall Sconces", text: "Leveled and hung a new mirror and installed two wall sconces on new electrical boxes." },
             { img: "/images/work-kitchen-pendants.jpg", title: "Kitchen Pendant Lights", text: "Replaced recessed can lights over the counter with three pendant lights." },
             { img: "/images/work-slat-wall-tv.jpg", title: "Slat Accent Wall + TV Mount", text: "Installed a full-height wood slat wall around the vents and mounted the TV on top." },
-            { img: "/images/work-shower-fixture.jpg", title: "Shower Cartridge Replacement", text: "Replaced a worn cartridge and restored cold water supply to the shower." },
+            { img: "/images/work-drywall-baseboard-repair.jpg", title: "Drywall + Baseboard Repair", text: "Replaced water-damaged drywall, matched the texture and paint, and reinstalled the baseboard." },
           ].map((item, i) => (
             <div key={item.img} data-reveal data-scale style={{ transitionDelay: `${i * 80}ms` }}
               className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-500 h-full group">
@@ -249,26 +250,7 @@ export default function Home() {
           </div>
           <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 hover:shadow-lg transition duration-300">See all →</a>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[
-            { text: "This is the 2nd time Nikita did such an outstanding job on a challenging task. He came up with an excellent rescue plan for our shelves and made sure they could safely hold the weight. The shelves look stunning.", service: "General Mounting", date: "Jul 17, 2026" },
-            { text: "Nikita showed up on time/early and worked hard. He completed 3 separate sink faucets and changed a hose bib in just over 2 hours. Great communication. Would definitely hire him again!", service: "Plumbing", date: "Jul 10, 2026" },
-            { text: "Nikita's attention to detail is flawless. He completed numerous tasks for me and all were done perfectly. He left his work area clean and I would highly recommend.", service: "Electrical", date: "Jul 24, 2026" },
-            { text: "Sooo great! Installed 2 of my TVs perfectly and was so efficient. Luckily he was available same day and came on time. Thank you again!", service: "TV Mounting", date: "Jul 9, 2026" },
-            { text: "I've hired many handymen and technicians over the years and Nikita is in the top five for skills and professionalism.", service: "General Mounting", date: "Jul 24, 2026" },
-            { text: "Thank you for your help unloading my truck! It took less time than expected and you were great! Thank you!", service: "Heavy Lifting & Loading", date: "Jul 4, 2026" },
-          ].map((review, i) => (
-            <div key={i} data-reveal style={{ transitionDelay: `${i * 60}ms` }}
-              className="bg-white rounded-[24px] p-6 border border-black/10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-400 flex flex-col">
-              <div className="flex items-center justify-between gap-3 flex-wrap">
-                <span className="text-xs font-black bg-orange-100 text-orange-700 px-3 py-1 rounded-full">{review.service}</span>
-                <span className="text-zinc-400 text-xs font-bold">{review.date}</span>
-              </div>
-              <p className="text-orange-500 mt-4 tracking-wider">★★★★★</p>
-              <p className="mt-3 text-zinc-700 leading-snug text-[15px] flex-1">"{review.text}"</p>
-            </div>
-          ))}
-        </div>
+        <GoogleReviews />
       </section>
 
       {/* ─── QUOTE ─── */}
