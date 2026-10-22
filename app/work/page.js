@@ -4,10 +4,13 @@ import LightingGallery from "../components/LightingGallery";
 
 export const metadata = {
   title: "Our Work | HandyYet",
-  description: "Recent handyman work completed by HandyYet in Orange County: landscape lighting, ceiling fans, smart locks, TV mounting, plumbing, appliance and drywall repairs.",
+  description: "Recent handyman work completed by HandyYet in Orange County: fountain resurfacing, chandeliers, landscape lighting, ceiling fans, smart locks, TV mounting, plumbing, appliance and drywall repairs.",
 };
 
 const projects = [
+  { img: "/images/work-fountain-resurfacing.jpg", title: "Fountain Pool Resurfacing", text: "Scraped off the peeling old coating, patched the surface, and recoated the whole fountain with waterproof pool paint." },
+  { img: "/images/work-foyer-chandelier.jpg", title: "Foyer Chandelier Install", text: "Took down the old fixture 20 ft up and hung a new spiral pendant chandelier over the two-story entry." },
+  { img: "/images/work-office-slat-wall.jpg", title: "Office Slat Wall + Shelf Lighting", text: "Installed a wood slat accent wall and a floating shelf with LED under-lighting in a home office." },
   { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dated 5-blade fan for a modern 3-blade wood propeller fan." },
   { img: "/images/work-ceiling-box-replacement.jpg", title: "Fan-Rated Ceiling Box Upgrade", text: "Replaced a standard light-fixture box with a fan-rated box so the ceiling can safely support the new fan." },
   { img: "/images/work-smart-lock-replacement.jpg", title: "Smart Lock Replacement", text: "Replaced a worn smart lock with a new keypad smart lock on the front door." },
@@ -43,7 +46,7 @@ export default function WorkPage() {
             <div key={project.title} className="bg-white rounded-[32px] overflow-hidden border border-black/10 shadow-sm">
               <img
                 src={project.img}
-                className="h-80 w-full object-cover bg-zinc-200"
+                className="w-full aspect-[1360/1010] object-cover bg-zinc-200"
                 alt={project.title}
                 loading="lazy"
               />

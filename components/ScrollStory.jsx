@@ -1,39 +1,43 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-// Scroll-driven before → after story. Uses photos already in public/reel/.
+// Scroll-driven before → after story. Photos: public/reel/story-<slug>-before|after.jpg
 const STEPS = [
-  { slug: 'bath-floor', title: 'Old floor out.', after: 'New tile in.', note: 'Bathroom floor + baseboards' },
-  { slug: 'tv-wall', title: 'Bare wall?', after: 'Now it’s the TV wall.', note: 'Slat wall + TV mount' },
-  { slug: 'kitchen-pendants', title: 'Dark counter.', after: 'Three new pendants.', note: 'Kitchen lighting' },
-  { slug: 'smart-toilet', title: 'Old toilet.', after: 'Smart toilet, same day.', note: 'Plumbing' },
-  { slug: 'door-floor', title: 'Water damage.', after: 'Like it never happened.', note: 'Floor repair' },
+  { slug: 'fountain', title: 'Peeling, faded fountain.', after: 'Resurfaced. Bright blue.', note: 'Fountain pool resurfacing' },
+  { slug: 'chandelier', title: 'Old fixture, 20 ft up.', after: 'New spiral chandelier.', note: 'Foyer chandelier install' },
+  { slug: 'office', title: 'Plain office corner.', after: 'Slat wall + lit shelf.', note: 'Accent wall + shelf lighting' },
+  { slug: 'tv', title: 'Holes in the wall?', after: 'TV up. No cords.', note: 'TV mount + in-wall power' },
+  { slug: 'disposal', title: 'Rusty disposal.', after: 'New 3/4 HP unit.', note: 'Garbage disposal replacement' },
+  { slug: 'toilet', title: 'Broken flange.', after: 'New TOTO, sealed tight.', note: 'Toilet replacement' },
+  { slug: 'transformer', title: 'Open wires.', after: 'Clean and safe.', note: 'Pool lighting transformer' },
 ];
 const BRONZE = '#c8763a';
 const CREAM = '#fdfaf5';
-const img = (slug, kind) => `/reel/${slug}-${kind}.jpg`;
+const img = (slug, kind) => `/reel/story-${slug}-${kind}.jpg`;
 
 export default function ScrollStory() {
   const wrapRef = useRef(null);
   const [p, setP] = useState(0); // 0..STEPS.length
 
+  // Live, smoothed progress: the target follows the scroll, the shown value glides to it every frame
   useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const el = wrapRef.current;
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        const total = el.offsetHeight - window.innerHeight;
-        const done = Math.min(Math.max(-r.top / total, 0), 1);
-        setP(done * STEPS.length);
-      });
+    let raf = 0, target = 0, shown = 0;
+    const read = () => {
+      const el = wrapRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight;
+      target = Math.min(Math.max(-r.top / total, 0), 1) * STEPS.length;
     };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
+    const tick = () => {
+      read();
+      shown += (target - shown) * 0.12;
+      if (Math.abs(target - shown) < 0.0005) shown = target;
+      setP(shown);
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   const i = Math.min(Math.floor(p), STEPS.length - 1);
@@ -41,10 +45,10 @@ export default function ScrollStory() {
   // hold "before" for the first 20%, wipe 20%→80%, hold "after" for the last 20%
   const wipe = Math.min(Math.max((local - 0.2) / 0.6, 0), 1);
   const step = STEPS[i];
-  const pct = Math.round(wipe * 100);
+  const pct = Math.floor(wipe * 100);
 
   return (
-    <section ref={wrapRef} className="story" style={{ height: `${STEPS.length * 120 + 100}vh` }} aria-label="Before and after, scroll to fix">
+    <section ref={wrapRef} className="story" style={{ height: `${STEPS.length * 80 + 100}vh` }} aria-label="Before and after, scroll to fix">
       <div className="sticky">
         <div className="text">
           <p className="hint">Scroll to fix it</p>
