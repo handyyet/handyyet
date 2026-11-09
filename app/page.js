@@ -1,6 +1,7 @@
 "use client";
 
 import GoogleReviews from "../components/GoogleReviews";
+import HolidayBanner from "../components/HolidayBanner";
 import ScrollStory from '../components/ScrollStory';
 import DragReveal from '../components/DragReveal';
 import Navbar from "./components/Navbar";
@@ -196,7 +197,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-<ScrollStory />
+<HolidayBanner />
+      <ScrollStory />
 <section className="max-w-7xl mx-auto px-5 py-20">
   <DragReveal />
 </section>
