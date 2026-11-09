@@ -291,8 +291,13 @@ export default function ServicePage() {
           </div>
         </div>
         <div className="bg-white rounded-[36px] p-2.5 shadow-2xl border border-black/10">
-          <img src={service.heroImage} alt={service.title}
-            className="rounded-[28px] w-full h-[380px] md:h-[480px] object-cover object-center bg-zinc-200" />
+          {service.heroVideo ? (
+            <video src={service.heroVideo} poster={service.heroImage} autoPlay muted loop playsInline
+              className="rounded-[28px] w-full h-[380px] md:h-[480px] object-cover object-center bg-zinc-200" />
+          ) : (
+            <img src={service.heroImage} alt={service.title}
+              className="rounded-[28px] w-full h-[380px] md:h-[480px] object-cover object-center bg-zinc-200" />
+          )}
         </div>
       </section>
 
