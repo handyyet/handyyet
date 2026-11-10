@@ -78,25 +78,30 @@ export default function ScrollStory() {
 
       <style jsx>{`
         .story { position: relative; }
+        /* Mobile: text on top, photo fills the space left between the navbar and the bottom quote button */
         .sticky {
-          position: sticky; top: 0; height: 100vh; display: grid; align-items: center;
-          grid-template-columns: 1fr; gap: 20px; padding: 84px 20px 24px; max-width: 1200px; margin: 0 auto;
+          position: sticky; top: 0; height: 100vh; height: 100svh; display: grid;
+          grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); align-content: start;
+          gap: 14px; padding: 76px 20px 104px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;
         }
-        @media (min-width: 900px) { .sticky { grid-template-columns: 1fr 1fr; gap: 56px; padding: 80px 32px; } }
-        .hint { margin: 0 0 10px; font-weight: 900; color: ${BRONZE}; font-size: 14px; }
-        .headline { margin: 0; font-size: clamp(32px, 6vw, 72px); line-height: 1; font-weight: 900; letter-spacing: -0.03em; min-height: 2em; animation: rise .4s cubic-bezier(.22,1,.36,1); }
+        @media (min-width: 900px) {
+          .sticky { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; align-items: center; align-content: center; gap: 56px; padding: 80px 32px; }
+        }
+        .hint { margin: 0 0 6px; font-weight: 900; color: ${BRONZE}; font-size: 14px; }
+        .headline { margin: 0; font-size: clamp(28px, 7.5vw, 72px); line-height: 1.05; font-weight: 900; letter-spacing: -0.03em; min-height: 2.1em; animation: rise .4s cubic-bezier(.22,1,.36,1); }
         @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-        .note { margin: 14px 0 0; color: #71717a; font-weight: 700; }
-        .dots { display: flex; gap: 6px; margin-top: 18px; }
+        .note { margin: 6px 0 0; color: #71717a; font-weight: 700; }
+        .dots { display: flex; gap: 6px; margin-top: 12px; }
+        @media (min-width: 900px) { .hint { margin-bottom: 10px; } .note { margin-top: 14px; } .dots { margin-top: 18px; } }
         .dots i { width: 22px; height: 4px; border-radius: 4px; background: #e4d6c6; transition: background .3s; }
         .dots i.past { background: ${BRONZE}88; }
         .dots i.on { background: ${BRONZE}; }
         .frame {
-          position: relative; width: 100%; max-width: 520px; justify-self: center; aspect-ratio: 4 / 5; max-height: 62vh;
+          position: relative; height: 100%; width: auto; max-width: 100%; justify-self: center; align-self: start; aspect-ratio: 4 / 5;
           border-radius: 28px; overflow: hidden; border: 2px solid ${BRONZE}; background: ${CREAM};
           box-shadow: 0 30px 60px -30px rgba(120,70,30,.45);
         }
-        @media (min-width: 900px) { .frame { max-height: 78vh; } }
+        @media (min-width: 900px) { .frame { height: auto; width: 100%; max-width: 520px; max-height: 78vh; align-self: center; } }
         .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .4s; }
         .slide.show { opacity: 1; }
         .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
