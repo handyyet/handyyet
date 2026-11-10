@@ -4,12 +4,20 @@ import LightingGallery from "../components/LightingGallery";
 
 export const metadata = {
   title: "Our Work | HandyYet",
-  description: "Recent handyman work completed by HandyYet in Orange County: fountain resurfacing, chandeliers, landscape lighting, ceiling fans, smart locks, TV mounting, plumbing, appliance and drywall repairs.",
+  description: "Recent handyman work completed by HandyYet in Orange County: recessed lighting, LED mirrors, sink and flooring, fountain resurfacing, landscape lighting, ceiling fans, smart locks, TV mounting, plumbing, appliance and drywall repairs.",
 };
 
 const projects = [
+  { img: "/images/work-undermount-sink.jpg", title: "Bathroom Sink Replacement", text: "Replaced a cracked undermount sink under a marble vanity top, resealed and reconnected the drain." },
+  { img: "/images/work-led-mirror.jpg", title: "LED Backlit Mirror Install", text: "Removed the old 4-bulb vanity light and framed mirror, then mounted and wired a large LED backlit mirror." },
+  { img: "/images/work-recessed-lights.jpg", title: "Recessed Lighting Install", text: "Replaced old ceiling fixtures with slim LED recessed lights across the living room and kitchen." },
+  { img: "/images/work-bathroom-vinyl-floor.jpg", title: "Bathroom Vinyl Flooring", text: "Pulled the old carpet and installed waterproof vinyl plank flooring in the bathroom." },
+  { img: "/images/work-toilet-reset-floor.jpg", title: "Toilet Pull & Reset on New Floor", text: "Removed the toilet, laid new vinyl flooring underneath, and reset it with a fresh wax seal." },
+  { img: "/images/work-metal-door-awning.jpg", title: "Metal Door Awning Install", text: "Mounted a standing-seam metal awning with steel brackets over the front entry." },
+  { img: "/images/work-exterior-sconce.jpg", title: "Exterior Sconce Repair", text: "Traced the dead circuit with a circuit tracer, fixed the wiring and remounted the outdoor wall sconce." },
+  { img: "/images/work-nest-thermostat.jpg", title: "Nest Thermostat Install", text: "Wired and set up a Google Nest thermostat with a clean trim plate over the old wall marks." },
+  { img: "/images/work-new-outlet.jpg", title: "New Outlet Added", text: "Cut in an old-work box and added a new outlet where the wall had none." },
   { img: "/images/work-fountain-resurfacing.jpg", title: "Fountain Pool Resurfacing", text: "Scraped off the peeling old coating, patched the surface, and recoated the whole fountain with waterproof pool paint." },
-  { img: "/images/work-foyer-chandelier.jpg", title: "Foyer Chandelier Install", text: "Took down the old fixture 20 ft up and hung a new spiral pendant chandelier over the two-story entry." },
   { img: "/images/work-office-slat-wall.jpg", title: "Office Slat Wall + Shelf Lighting", text: "Installed a wood slat accent wall and a floating shelf with LED under-lighting in a home office." },
   { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dated 5-blade fan for a modern 3-blade wood propeller fan." },
   { img: "/images/work-ceiling-box-replacement.jpg", title: "Fan-Rated Ceiling Box Upgrade", text: "Replaced a standard light-fixture box with a fan-rated box so the ceiling can safely support the new fan." },
@@ -28,7 +36,6 @@ const projects = [
   { img: "/images/work-kitchen-faucet.jpg", title: "Kitchen Faucet Replacement", text: "Replaced the old pull-down faucet with a modern matte black kitchen faucet." },
   { img: "/images/work-storage-shed.jpg", title: "Storage Shed Assembly", text: "Cleared the site and assembled a new outdoor storage shed." },
   { img: "/images/work-garbage-disposal.jpg", title: "Garbage Disposal Replacement", text: "Swapped out an old garbage disposal for a new unit under the sink." },
-  { img: "/images/work-picture-hanging.jpg", title: "Picture Hanging", text: "Used a laser level to hang a large framed piece perfectly straight." },
   { img: "/images/work-shower-head.jpg", title: "Shower Head Upgrade", text: "Upgraded a fixed shower head to a dual rain and handheld combo." },
   { img: "/images/work-bathroom-faucet.jpg", title: "Bathroom Faucet Replacement", text: "Replaced an old two-handle faucet with a modern single-handle matte black fixture." },
   { img: "/images/work-playhouse.jpg", title: "Kids Playhouse Assembly", text: "Assembled a wooden kids' playhouse from the box in the backyard." },
