@@ -19,6 +19,27 @@ const img = (slug, kind) => `/reel/story-${slug}-${kind}.jpg`;
 export default function ScrollStory() {
   const wrapRef = useRef(null);
   const [p, setP] = useState(0); // 0..STEPS.length
+  const stageRef = useRef(null);
+  const [box, setBox] = useState(null); // mobile: exact 4:5 frame size that fits the free space
+
+  // Mobile: measure the space between the text and the bottom button, fit a 4:5 photo into it
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const fit = () => {
+      if (window.innerWidth >= 900) { setBox(null); return; }
+      const { width, height } = el.getBoundingClientRect();
+      if (!width || !height) return;
+      let h = height - 4, w = (h * 4) / 5;
+      if (w > width) { w = width; h = (w * 5) / 4; }
+      setBox({ w: Math.floor(w), h: Math.floor(h) });
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    window.addEventListener('resize', fit);
+    return () => { ro.disconnect(); window.removeEventListener('resize', fit); };
+  }, []);
 
   // Live, smoothed progress: the target follows the scroll, the shown value glides to it every frame
   useEffect(() => {
@@ -60,7 +81,8 @@ export default function ScrollStory() {
           </div>
         </div>
 
-        <div className="frame">
+        <div className="stage" ref={stageRef}>
+        <div className="frame" style={box ? { width: box.w, height: box.h } : undefined}>
           {STEPS.map((s, k) => (
             <div key={s.slug} className={`slide ${k === i ? 'show' : ''}`}>
               <img src={img(s.slug, 'before')} alt={`${s.note}, before`} />
@@ -73,6 +95,7 @@ export default function ScrollStory() {
           ))}
           <div className="bar" style={{ top: `${wipe * 100}%`, opacity: wipe > 0 && wipe < 1 ? 1 : 0 }} />
           <span className="pill">{pct < 100 ? `${pct}% fixed` : 'Done ✓'}</span>
+        </div>
         </div>
       </div>
 
@@ -97,11 +120,13 @@ export default function ScrollStory() {
         .dots i.past { background: ${BRONZE}88; }
         .dots i.on { background: ${BRONZE}; }
         .frame {
-          position: relative; height: 100%; width: auto; max-width: 100%; justify-self: center; align-self: start; aspect-ratio: 4 / 5;
+          position: relative; width: 100%; max-width: 520px; aspect-ratio: 4 / 5;
           border-radius: 28px; overflow: hidden; border: 2px solid ${BRONZE}; background: ${CREAM};
           box-shadow: 0 30px 60px -30px rgba(120,70,30,.45);
         }
-        @media (min-width: 900px) { .frame { height: auto; width: 100%; max-width: 520px; max-height: 78vh; align-self: center; } }
+        @media (min-width: 900px) { .frame { max-height: 78vh; } }
+        .stage { min-height: 0; display: flex; justify-content: center; align-items: flex-start; }
+        @media (min-width: 900px) { .stage { align-items: center; } }
         .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .4s; }
         .slide.show { opacity: 1; }
         .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
