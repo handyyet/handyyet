@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 
 // Seasonal promo for holiday / permanent lights. Shows Nov 1 – Dec 24, hides itself the rest of the year.
-const BOOK_BY = 'Dec 1';
 const BRONZE = '#c8763a';
 
 export default function HolidayBanner() {
@@ -14,8 +13,6 @@ export default function HolidayBanner() {
   }, []);
   if (!show) return null;
 
-  const early = new Date() < new Date(new Date().getFullYear(), 11, 1);
-
   return (
     <section className="max-w-7xl mx-auto px-5 py-8">
       <a href="/services/holiday-lights" className="hb group">
@@ -25,7 +22,7 @@ export default function HolidayBanner() {
         <div className="copy">
           <p className="kicker">Holiday season</p>
           <h2>
-            {early ? <>Book your holiday lights<br />before {BOOK_BY}.</> : <>Lights up<br />before the holidays.</>}
+            Holiday lights,<br />done for you.
           </h2>
           <p className="sub">
             Christmas string lights and permanent RGB eave lights, installed clean and set up on your phone. Change colors for every holiday.
