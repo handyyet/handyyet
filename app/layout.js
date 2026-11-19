@@ -8,7 +8,7 @@ icons: { icon: "/icon.PNG", apple: "/icon.PNG" },
     template: "%s | HandyYet – Handyman Orange County",
   },
   description:
-    "HandyYet provides fast, affordable handyman services in Huntington Beach and Orange County, CA. TV mounting, furniture assembly, plumbing, electrical, smart home setup, and small home repairs. Call (949) 828-3959.",
+    "HandyYet provides fast, affordable, insured handyman services in Huntington Beach and Orange County, CA. TV mounting, furniture assembly, plumbing, electrical, smart home setup, and small home repairs. Call (949) 828-3959.",
 
   keywords: [
     "handyman Huntington Beach",
@@ -28,7 +28,7 @@ verification: {
   openGraph: {
     title: "HandyYet | Handyman Services in Huntington Beach & Orange County",
     description:
-      "Fast, affordable handyman services in Huntington Beach & Orange County, CA. TV mounting, plumbing, electrical, assembly, and more. Book online or call (949) 828-3959.",
+      "Fast, affordable, insured handyman services in Huntington Beach & Orange County, CA. TV mounting, plumbing, electrical, assembly, and more. Book online or call (949) 828-3959.",
     url: "https://handyyet.com",
     siteName: "HandyYet",
     locale: "en_US",
@@ -47,7 +47,7 @@ verification: {
     card: "summary_large_image",
     title: "HandyYet | Handyman in Huntington Beach & Orange County",
     description:
-      "Fast, affordable handyman in Huntington Beach & Orange County. TV mounting, plumbing, electrical, and more.",
+      "Fast, affordable, insured handyman in Huntington Beach & Orange County. TV mounting, plumbing, electrical, and more.",
     images: ["https://handyyet.com/images/og-image.jpg"],
   },
 
@@ -71,7 +71,7 @@ const localBusinessSchema = {
   "@type": "LocalBusiness",
   name: "HandyYet",
   description:
-    "Fast, affordable handyman services in Huntington Beach and Orange County, CA.",
+    "Fast, affordable, insured handyman services in Huntington Beach and Orange County, CA.",
   url: "https://handyyet.com",
   telephone: "+1-949-828-3959",
   email: "hello@handyyet.com",

@@ -194,6 +194,18 @@ export default function Home() {
                 Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span>
               </span>
             </h1>
+            {/* Trust badges */}
+            <div className="anim-fade-up mt-6 flex flex-wrap gap-2" style={{ animationDelay: "120ms" }}>
+              <span className="inline-flex items-center gap-2 rounded-full border-2 border-[#c8763a] bg-white px-4 py-2 text-sm font-black text-zinc-950 shadow-sm">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#c8763a" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z" /><path d="M9 12l2 2 4-4" />
+                </svg>
+                Insured handyman
+              </span>
+              <span className="inline-flex items-center rounded-full border-2 border-[#c8763a]/40 bg-white px-4 py-2 text-sm font-bold text-zinc-700">
+                Huntington Beach &amp; Orange County
+              </span>
+            </div>
           </div>
         </div>
       </section>

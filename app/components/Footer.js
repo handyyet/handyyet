@@ -38,7 +38,7 @@ export default function Footer() {
               <span className="hidden md:block text-zinc-300">·</span>
               <a href="mailto:hello@handyyet.com" className="text-zinc-500 font-bold text-sm hover:text-zinc-950 transition">hello@handyyet.com</a>
               <span className="hidden md:block text-zinc-300">·</span>
-              <span className="text-zinc-400 text-sm">Orange County, CA</span>
+              <span className="text-zinc-400 text-sm">Orange County, CA · Insured</span>
             </div>
           </div>
 
@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-black/08 mt-8 pt-6 text-center">
-          <p className="text-zinc-400 text-sm">© 2026 HandyYet LLC. Snap. Solve. Repair.</p>
+          <p className="text-zinc-400 text-sm">© 2026 HandyYet LLC · Insured handyman. Snap. Solve. Repair.</p>
         </div>
       </div>
     </footer>
