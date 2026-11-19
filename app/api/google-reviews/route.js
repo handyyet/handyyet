@@ -8,15 +8,22 @@ const KEY = process.env.GOOGLE_PLACES_SERVER_KEY || process.env.NEXT_PUBLIC_GOOG
 
 async function findPlaceId() {
   if (process.env.GOOGLE_PLACE_ID) return { id: process.env.GOOGLE_PLACE_ID };
-  const r = await fetch('https://places.googleapis.com/v1/places:searchText', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': KEY, 'X-Goog-FieldMask': 'places.id,places.displayName' },
-    body: JSON.stringify({ textQuery: 'HandyYet handyman Huntington Beach CA' }),
-    next: { revalidate: 86400 },
-  });
-  const j = await r.json();
-  if (j.error) return { error: `searchText: ${j.error.status} ${j.error.message}` };
-  return { id: j.places?.[0]?.id, name: j.places?.[0]?.displayName?.text };
+  // Try a few spellings; Google's text search is picky about the exact profile name
+  const queries = ['HandyYet', 'HandyYet Huntington Beach', 'HandyYet handyman Huntington Beach CA', 'Handy Yet handyman Orange County'];
+  let lastError = null;
+  for (const q of queries) {
+    const r = await fetch('https://places.googleapis.com/v1/places:searchText', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': KEY, 'X-Goog-FieldMask': 'places.id,places.displayName' },
+      body: JSON.stringify({ textQuery: q, locationBias: { circle: { center: { latitude: 33.66, longitude: -117.99 }, radius: 50000 } } }),
+      next: { revalidate: 86400 },
+    });
+    const j = await r.json();
+    if (j.error) { lastError = `searchText: ${j.error.status} ${j.error.message}`; continue; }
+    const hit = (j.places || []).find((p) => /handy\s*yet/i.test(p.displayName?.text || ''));
+    if (hit) return { id: hit.id, name: hit.displayName.text };
+  }
+  return lastError ? { error: lastError } : {};
 }
 
 export async function GET() {

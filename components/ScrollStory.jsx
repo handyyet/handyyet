@@ -30,8 +30,10 @@ export default function ScrollStory() {
       if (window.innerWidth >= 900) { setBox(null); return; }
       const { width, height } = el.getBoundingClientRect();
       if (!width || !height) return;
-      let h = height - 4, w = (h * 4) / 5;
-      if (w > width) { w = width; h = (w * 5) / 4; }
+      // Use the full width when the screen is short (Android, small iPhones): the frame may go
+      // from 4:5 up to square, the photo inside stays cover-cropped, nothing is cut off by the screen.
+      let h = height - 4, w = Math.min(width, h);
+      if (w < (h * 4) / 5) h = (w * 5) / 4;
       setBox({ w: Math.floor(w), h: Math.floor(h) });
     };
     fit();
