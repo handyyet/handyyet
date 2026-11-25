@@ -2,6 +2,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
+  metadataBase: new URL("https://handyyet.com"),
 icons: { icon: "/icon.PNG", apple: "/icon.PNG" },
   title: {
     default: "HandyYet | Handyman Services in Huntington Beach & Orange County",

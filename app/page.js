@@ -3,7 +3,6 @@
 import GoogleReviews from "../components/GoogleReviews";
 import HolidayBanner from "../components/HolidayBanner";
 import ScrollStory from '../components/ScrollStory';
-import DragReveal from '../components/DragReveal';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AddressAutocomplete from "./components/AddressAutocomplete";
@@ -11,6 +10,7 @@ import BookingCalendar from "./components/BookingCalendar";
 import ScrollReveal from "./components/ScrollReveal";
 import ServicesShowcase from '../components/ServicesShowcase';
 import SmartButton from "./components/SmartButton";
+import TrustBar from "./components/TrustBar";
 
 import { useRef, useState, useEffect } from "react";
 import { services, reviews, pricing } from "../lib/services";
@@ -21,6 +21,11 @@ const BTN_OUTLINE =
   "hover:bg-[#c8763a] hover:text-white hover:border-[#c8763a] " +
   "shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_24px_-8px_rgba(200,118,58,0.45)] " +
   "transition-all duration-300";
+
+// Main action: solid bronze (dark enough for white text)
+const BTN_PRIMARY =
+  "bg-[#b4662f] text-white border-2 border-[#b4662f] hover:bg-[#9a5524] hover:border-[#9a5524] " +
+  "hover:shadow-[0_10px_24px_-8px_rgba(200,118,58,0.6)] transition-all duration-300";
 
 // ─── Premium animation hook ────────────────────────────────────────────────────
 function usePremiumReveal() {
@@ -128,6 +133,19 @@ export default function Home() {
     if (s) setSelectedService(s);
   }, []);
 
+  // Short hero form: carry what they typed into the full form below, then jump there
+  const handleQuickStart = (e) => {
+    e.preventDefault();
+    const quick = e.currentTarget;
+    const full = document.querySelector("#quote form");
+    if (full) {
+      if (quick.quickIssue.value) full.issue.value = quick.quickIssue.value;
+      if (quick.quickPhone.value) full.phone.value = quick.quickPhone.value;
+    }
+    document.getElementById("quote")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => full?.name?.focus({ preventScroll: true }), 600);
+  };
+
   const handleQuoteSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -180,74 +198,151 @@ export default function Home() {
       <Navbar />
 
       {/* ─── HERO ─── */}
-      <section className="relative pt-28 md:pt-40 pb-12 md:pb-20">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0026,transparent_35%)]" />
-        <div className="relative max-w-7xl mx-auto px-5 items-center">
+      <section className="relative pt-24 md:pt-32 pb-10 md:pb-14">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#ff6a0020,transparent_40%)]" />
+        <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-center">
           <div>
-            <h1 className="anim-fade-up font-black tracking-tight" style={{ animationDelay: "0ms" }}>
-              {/* Mobile: single line, scales with viewport, tighter tracking to fit bigger size */}
-              <span className="sm:hidden block text-[8vw] leading-[0.95] tracking-tighter whitespace-nowrap">
-                Snap. Solve. <span className="text-orange-500">Repair.</span>
-              </span>
-              {/* Tablet/desktop: original stacked display size */}
-              <span className="hidden sm:block text-7xl md:text-9xl leading-[0.9]">
-                Snap.<br />Solve.<br /><span className="text-orange-500">Repair.</span>
-              </span>
+            <TrustBar className="anim-fade-up" />
+            <h1 className="anim-fade-up mt-6 font-black tracking-[-0.045em] text-[13vw] sm:text-7xl lg:text-[88px] leading-[0.92]" style={{ animationDelay: "80ms" }}>
+              Your whole fix-it list.<br /><span className="text-[#c8763a]">One visit.</span>
             </h1>
-            {/* Trust badges */}
-            <div className="anim-fade-up mt-6 flex flex-wrap gap-2" style={{ animationDelay: "120ms" }}>
-              <span className="inline-flex items-center gap-2 rounded-full border-2 border-[#c8763a] bg-white px-4 py-2 text-sm font-black text-zinc-950 shadow-sm">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#c8763a" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z" /><path d="M9 12l2 2 4-4" />
-                </svg>
-                Insured handyman
-              </span>
-              <span className="inline-flex items-center rounded-full border-2 border-[#c8763a]/40 bg-white px-4 py-2 text-sm font-bold text-zinc-700">
-                Huntington Beach &amp; Orange County
-              </span>
+            <p className="anim-fade-up mt-6 text-lg md:text-xl text-zinc-600 leading-relaxed max-w-xl" style={{ animationDelay: "160ms" }}>
+              Electrical, plumbing, TV mounting, assembly and repairs across Huntington Beach and Orange County. Send a photo, get a clear price, and Nikita shows up on time.
+            </p>
+            <div className="anim-fade-up mt-8 flex flex-col sm:flex-row gap-3" style={{ animationDelay: "240ms" }}>
+              <a href="#quote" className={`${BTN_PRIMARY} px-8 py-5 rounded-full font-black text-lg text-center`}>Send photos, get a quote</a>
+              <a href="tel:+19498283959" className={`${BTN_OUTLINE} px-8 py-5 rounded-full font-black text-lg text-center`}>Call (949) 828-3959</a>
             </div>
+            <dl className="anim-fade-up mt-9 grid grid-cols-3 gap-4 max-w-lg" style={{ animationDelay: "320ms" }}>
+              {[["220+", "five-star reviews"], ["$90/hr", "clear hourly rate"], ["8+ yrs", "repair experience"]].map(([v, l]) => (
+                <div key={l}>
+                  <dt className="sr-only">{l}</dt>
+                  <dd className="text-2xl md:text-3xl font-black tracking-tight">{v}</dd>
+                  <dd className="text-xs md:text-sm text-zinc-600 font-semibold">{l}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="anim-scale-in grid grid-cols-2 gap-3 md:gap-4" style={{ animationDelay: "120ms" }}>
+            <figure className="relative row-span-2 rounded-[28px] overflow-hidden border-2 border-[#c8763a] min-h-[340px] md:min-h-[480px]">
+              <img src="/reel/story-fountain-after.jpg" alt="Resurfaced backyard fountain pool in bright blue" className="absolute inset-0 w-full h-full object-cover" />
+              <figcaption className="absolute left-3 bottom-3 bg-white rounded-full px-3 py-1.5 text-xs md:text-sm font-black">Fountain resurfacing</figcaption>
+            </figure>
+            <figure className="relative rounded-[22px] overflow-hidden min-h-[160px] md:min-h-[232px]">
+              <img src="/reel/story-mirror-after.jpg" alt="Backlit LED mirror over a bathroom vanity" className="absolute inset-0 w-full h-full object-cover" />
+              <figcaption className="absolute left-3 bottom-3 bg-white rounded-full px-3 py-1.5 text-xs font-black">LED mirror</figcaption>
+            </figure>
+            <figure className="relative rounded-[22px] overflow-hidden min-h-[160px] md:min-h-[232px]">
+              <img src="/reel/story-lights-after.jpg" alt="Living room with new slim recessed lights" className="absolute inset-0 w-full h-full object-cover" />
+              <figcaption className="absolute left-3 bottom-3 bg-white rounded-full px-3 py-1.5 text-xs font-black">Recessed lights</figcaption>
+            </figure>
           </div>
         </div>
       </section>
+
+      {/* ─── QUICK QUOTE STRIP ─── */}
+      <section className="max-w-7xl mx-auto px-5 pb-12">
+        <form onSubmit={handleQuickStart}
+          className="bg-white border-2 border-[#c8763a] rounded-[28px] p-4 md:p-5 flex flex-col md:flex-row gap-3 md:items-end shadow-[0_24px_50px_-30px_rgba(120,70,30,.45)]">
+          <label className="flex-[2] flex flex-col gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-600">What needs fixing?
+            <input name="quickIssue" type="text" required placeholder="e.g. Mount a TV, fix a leaking faucet" className="input-premium normal-case tracking-normal font-medium text-base" />
+          </label>
+          <label className="flex-1 flex flex-col gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-600">Phone
+            <input name="quickPhone" type="tel" inputMode="numeric" maxLength="10" placeholder="10 digits"
+              onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 10); }}
+              className="input-premium normal-case tracking-normal font-medium text-base" />
+          </label>
+          <button type="submit" className={`${BTN_PRIMARY} px-8 py-4 rounded-full font-black text-base md:mb-[2px]`}>Get my price →</button>
+        </form>
+        <p className="mt-3 text-sm text-zinc-600 font-semibold text-center md:text-left">Usually a reply within the hour, 8am–8pm, Mon–Sat. No call center, no spam.</p>
+      </section>
+
 <HolidayBanner />
+
+      {/* ─── SERVICES + PRICES ─── */}
+      <section id="services" className="max-w-7xl mx-auto px-5 py-16 md:py-20">
+        <div data-reveal className="flex flex-wrap items-end justify-between gap-4 mb-10">
+          <div>
+            <p className="text-[#9a5524] font-black uppercase tracking-widest">Services &amp; starting prices</p>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 leading-[0.95]">Know the price<br />before I arrive.</h2>
+          </div>
+          <a href="/services" className="font-black text-[#9a5524] hover:text-zinc-950 transition">All services →</a>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {services.map((s, i) => (
+            <a key={s.slug} href={`/services/${s.slug}`} data-reveal style={{ transitionDelay: `${i * 50}ms` }}
+              className="group bg-white rounded-[24px] p-6 border border-[#ead9c6] hover:border-[#c8763a] hover:-translate-y-1 hover:shadow-xl transition duration-300 flex flex-col">
+              <h3 className="text-xl font-black">{s.title}</h3>
+              <p className="mt-2 text-zinc-600 leading-snug text-[15px] flex-1">{s.short}</p>
+              <div className="mt-5 flex items-center justify-between">
+                <span className="font-black text-[#9a5524]">{s.price}</span>
+                <span className="text-[#c8763a] font-black group-hover:translate-x-1 transition" aria-hidden="true">→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── HOW IT WORKS ─── */}
+      <section className="bg-[#efe3d4]/60">
+        <div className="max-w-7xl mx-auto px-5 py-16 md:py-20">
+          <h2 data-reveal className="text-4xl md:text-6xl font-black tracking-tight mb-10">Three steps. No surprises.</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              ["Snap", "Text or upload photos of everything on your list. One message is enough."],
+              ["Solve", "Get a clear price and a time slot. Parts are picked up before the visit."],
+              ["Repair", "Done in one visit, area cleaned up, photos of the finished work sent to you."],
+            ].map(([t, d], i) => (
+              <div key={t} data-reveal style={{ transitionDelay: `${i * 80}ms` }} className="bg-white rounded-[24px] p-7 border border-[#ead9c6]">
+                <div className="w-11 h-11 rounded-full border-2 border-[#c8763a] grid place-items-center font-black text-[#9a5524]">{i + 1}</div>
+                <h3 className="mt-5 text-2xl font-black">{t}</h3>
+                <p className="mt-2 text-zinc-600 leading-relaxed">{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <ScrollStory />
-<section className="max-w-7xl mx-auto px-5 py-20">
-  <DragReveal />
-</section>
-      {/* ─── RECENT WORK (before services) ─── */}
-      <section id="work" className="max-w-7xl mx-auto px-5 py-20">
-        <div data-reveal>
-          <p className="text-orange-500 font-black uppercase tracking-widest">Recent Work</p>
-          <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 mb-12">Real work.<br />Clean results.</h2>
+
+      {/* ─── RECENT WORK ─── */}
+      <section id="work" className="max-w-7xl mx-auto px-5 py-16 md:py-20">
+        <div data-reveal className="flex flex-wrap items-end justify-between gap-4 mb-10">
+          <div>
+            <p className="text-[#9a5524] font-black uppercase tracking-widest">Real jobs, real photos</p>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3">Before. After.</h2>
+          </div>
+          <a href="/work" className="font-black text-[#9a5524] hover:text-zinc-950 transition">See all work →</a>
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {[
+            { img: "/images/work-recessed-lights.jpg", title: "Recessed Lighting", text: "Old ceiling fixtures out, slim LED recessed lights in across the living room and kitchen." },
+            { img: "/images/work-led-mirror.jpg", title: "LED Backlit Mirror", text: "Removed the dated 4-bulb vanity light and mounted and wired a large backlit mirror." },
+            { img: "/images/work-metal-door-awning.jpg", title: "Metal Door Awning", text: "Standing-seam metal awning on steel brackets over the front entry." },
             { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dead 6-blade fan for a modern 3-blade wood fan with remote." },
             { img: "/images/work-smart-toilet.jpg", title: "Smart Toilet Installation", text: "Removed the old toilet, prepped the flange and installed a new tankless smart toilet." },
-            { img: "/images/work-mirror-sconces.jpg", title: "Vanity Mirror + Wall Sconces", text: "Leveled and hung a new mirror and installed two wall sconces on new electrical boxes." },
-            { img: "/images/work-kitchen-pendants.jpg", title: "Kitchen Pendant Lights", text: "Replaced recessed can lights over the counter with three pendant lights." },
-            { img: "/images/work-slat-wall-tv.jpg", title: "Slat Accent Wall + TV Mount", text: "Installed a full-height wood slat wall around the vents and mounted the TV on top." },
-            { img: "/images/work-drywall-baseboard-repair.jpg", title: "Drywall + Baseboard Repair", text: "Replaced water-damaged drywall, matched the texture and paint, and reinstalled the baseboard." },
+            { img: "/images/work-undermount-sink.jpg", title: "Bathroom Sink Replacement", text: "Replaced a cracked undermount sink under a marble top and reconnected the drain." },
           ].map((item, i) => (
             <div key={item.img} data-reveal data-scale style={{ transitionDelay: `${i * 80}ms` }}
-              className="bg-white rounded-[36px] overflow-hidden border border-black/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-500 h-full group">
+              className="bg-white rounded-[32px] overflow-hidden border border-[#ead9c6] shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-500 h-full group">
               <div className="overflow-hidden">
-                <img src={item.img} alt={item.title}
+                <img src={item.img} alt={item.title} loading="lazy"
                   className="w-full aspect-[1360/1010] object-cover bg-zinc-200 group-hover:scale-105 transition duration-700" />
               </div>
               <div className="p-6">
                 <h3 className="text-2xl font-black">{item.title}</h3>
-                <p className="mt-3 text-zinc-500">{item.text}</p>
+                <p className="mt-2 text-zinc-600">{item.text}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ─── SERVICES ─── */}
-      <section id="services" className="max-w-7xl mx-auto px-5 py-20">
+      {/* ─── ONE VISIT SAVINGS ─── */}
+      <section className="max-w-7xl mx-auto px-5 py-16 md:py-20">
         <div data-reveal>
-          <p className="text-orange-500 font-black uppercase tracking-widest">Services</p>
+          <p className="text-[#9a5524] font-black uppercase tracking-widest">Why one visit</p>
           <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 mb-12">One call.<br />Many fixes.</h2>
         </div>
         <div data-reveal>
@@ -265,6 +360,35 @@ export default function Home() {
           <a href="/reviews" className="bg-white border border-black/10 px-6 py-4 rounded-full font-black hover:bg-[#fdf3ea] hover:border-[#c8763a]/40 hover:shadow-lg transition duration-300">See all →</a>
         </div>
         <GoogleReviews />
+      </section>
+
+      {/* ─── WHY + AREA ─── */}
+      <section id="area" className="max-w-7xl mx-auto px-5 py-16 md:py-20 grid lg:grid-cols-2 gap-8">
+        <div data-reveal>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-[1]">Why homeowners call HandyYet</h2>
+          <ul className="mt-8 grid gap-4">
+            {[
+              ["Insured LLC.", "General liability coverage on every job."],
+              ["One person, start to finish.", "The person you text is the person who shows up."],
+              ["Many jobs, one trip.", "No separate trip fee for each small fix."],
+              ["Clean work.", "Floors covered, dust vacuumed, old parts hauled away."],
+            ].map(([b, t]) => (
+              <li key={b} className="flex gap-3 text-lg leading-snug">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#c8763a" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 mt-0.5"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                <span><strong className="font-black">{b}</strong> <span className="text-zinc-700">{t}</span></span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div data-reveal className="bg-white border-2 border-[#c8763a] rounded-[28px] p-7 md:p-9">
+          <h3 className="text-2xl font-black">Service area</h3>
+          <p className="mt-2 text-zinc-600">Based in Huntington Beach, serving Orange County and Long Beach.</p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {["Huntington Beach", "Newport Beach", "Costa Mesa", "Irvine", "Fountain Valley", "Westminster", "Garden Grove", "Long Beach"].map((c) => (
+              <span key={c} className="px-4 py-2 rounded-full border border-[#e2cdb6] font-bold text-sm">{c}</span>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ─── QUOTE ─── */}
@@ -360,7 +484,7 @@ export default function Home() {
         </div>
       </section>
 
-      <SmartButton />
+      <SmartButton quoteHref="#quote" />
       <Footer />
     </main>
   );

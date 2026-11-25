@@ -65,17 +65,26 @@ export default function Navbar() {
               <a key={l.href} href={l.href} className="font-semibold text-sm text-zinc-500 hover:text-zinc-950 transition-colors">{l.label}</a>
             ))}
           </div>
-          <div className="hidden md:flex items-center gap-3">
-            <a href="/booking" className={`${BTN_OUTLINE} px-5 py-2.5 rounded-full font-black text-sm`}>Book Now</a>
+          <div className="hidden md:flex items-center gap-4">
+            <a href="tel:+19498283959" className="font-black text-sm text-zinc-950 hover:text-[#9a5524] transition-colors">(949) 828-3959</a>
+            <a href="/booking" className={`${BTN_OUTLINE} px-5 py-2.5 rounded-full font-black text-sm`}>Get a Quote</a>
           </div>
 
-          {/* Burger */}
-          <button onClick={() => setOpen(!open)}
+          {/* Mobile: call + burger */}
+          <div className="md:hidden flex items-center gap-2">
+          <a href="tel:+19498283959" aria-label="Call HandyYet"
+            className="w-10 h-10 rounded-full bg-white border-2 border-[#c8763a] grid place-items-center shadow-sm">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#c8763a" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" />
+            </svg>
+          </a>
+          <button onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}
             className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px] rounded-full bg-white border border-black/10 shadow-sm">
             <span className={`block w-[18px] h-[2px] bg-zinc-950 rounded-full transition-all duration-300 ${open ? "rotate-45 translate-y-[7px]" : ""}`} />
             <span className={`block w-[18px] h-[2px] bg-zinc-950 rounded-full transition-all duration-300 ${open ? "opacity-0 scale-x-0" : ""}`} />
             <span className={`block w-[18px] h-[2px] bg-zinc-950 rounded-full transition-all duration-300 ${open ? "-rotate-45 -translate-y-[7px]" : ""}`} />
           </button>
+          </div>
         </div>
       </nav>
 
@@ -96,7 +105,7 @@ export default function Navbar() {
         <div className="px-5 pb-10 flex flex-col gap-3">
           <a href="/booking" onClick={() => setOpen(false)}
             className={`${BTN_OUTLINE} rounded-full py-5 text-center font-black text-xl`}>
-            Book Now →
+            Get a Quote →
           </a>
           <a href="https://g.page/r/Caqs8MHefRFaEBM/review" target="_blank" rel="noopener noreferrer"
             onClick={() => setOpen(false)}
@@ -112,7 +121,7 @@ export default function Navbar() {
           </a>
           <div className="flex flex-col items-center gap-1 pt-2">
             <a href="tel:+19498283959" className="font-bold text-zinc-600">(949) 828-3959</a>
-            <a href="mailto:support@handyyet.com" className="text-zinc-400 font-bold text-sm">support@handyyet.com</a>
+            <a href="mailto:hello@handyyet.com" className="text-zinc-500 font-bold text-sm">hello@handyyet.com</a>
           </div>
         </div>
       </div>

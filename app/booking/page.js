@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import AddressAutocomplete from "../components/AddressAutocomplete";
 import BookingCalendar from "../components/BookingCalendar";
 import SmartButton from "../components/SmartButton";
+import TrustBar from "../components/TrustBar";
 
 import { useRef, useState, useEffect } from "react";
 import { services } from "../../lib/services";
@@ -167,6 +168,7 @@ export default function BookingPage() {
         <p className="mt-6 text-lg text-zinc-600 max-w-xl leading-relaxed">
           Pick a date, describe the job, upload photos. We'll confirm your appointment and send a quote before arrival.
         </p>
+        <TrustBar className="mt-6" />
       </section>
 
       <section className="max-w-7xl mx-auto px-5 pb-24">
@@ -196,7 +198,7 @@ export default function BookingPage() {
           </div>
 
           {/* Right: form */}
-          <form onSubmit={handleSubmit} className="bg-white rounded-[40px] p-6 md:p-8 grid gap-4 shadow-2xl border border-black/10">
+          <form id="booking-form" onSubmit={handleSubmit} className="bg-white rounded-[40px] p-6 md:p-8 grid gap-4 shadow-2xl border border-black/10">
             <h2 className="text-2xl font-black">Your details</h2>
 
             <input name="name" type="text" placeholder="Full name" required className="input-premium" />
@@ -313,7 +315,7 @@ export default function BookingPage() {
         </div>
       </section>
 
-      <SmartButton />
+      <SmartButton quoteHref="#booking-form" />
       <Footer />
     </main>
   );
