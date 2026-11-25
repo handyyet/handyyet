@@ -9,21 +9,27 @@ const KEY = process.env.GOOGLE_PLACES_SERVER_KEY || process.env.NEXT_PUBLIC_GOOG
 async function findPlaceId() {
   if (process.env.GOOGLE_PLACE_ID) return { id: process.env.GOOGLE_PLACE_ID };
   // Try a few spellings; Google's text search is picky about the exact profile name
-  const queries = ['HandyYet', 'HandyYet Huntington Beach', 'HandyYet handyman Huntington Beach CA', 'Handy Yet handyman Orange County'];
+  // Phone number first: it is unique to the profile, names are not
+  const queries = ['+1 949-828-3959', '(949) 828-3959', 'HandyYet', 'HandyYet Huntington Beach', 'HandyYet handyman Huntington Beach CA', 'handyyet.com'];
   let lastError = null;
+  const seen = []; // what Google returned, shown in the error to help fix the lookup
   for (const q of queries) {
     const r = await fetch('https://places.googleapis.com/v1/places:searchText', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': KEY, 'X-Goog-FieldMask': 'places.id,places.displayName' },
+      headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': KEY, 'X-Goog-FieldMask': 'places.id,places.displayName,places.nationalPhoneNumber,places.websiteUri' },
       body: JSON.stringify({ textQuery: q, locationBias: { circle: { center: { latitude: 33.66, longitude: -117.99 }, radius: 50000 } } }),
       next: { revalidate: 86400 },
     });
     const j = await r.json();
     if (j.error) { lastError = `searchText: ${j.error.status} ${j.error.message}`; continue; }
-    const hit = (j.places || []).find((p) => /handy\s*yet/i.test(p.displayName?.text || ''));
+    const hit = (j.places || []).find((p) =>
+      /handy\s*yet/i.test(p.displayName?.text || '') ||
+      (p.nationalPhoneNumber || '').replace(/\D/g, '').endsWith('9498283959') ||
+      /handyyet\.com/i.test(p.websiteUri || ''));
     if (hit) return { id: hit.id, name: hit.displayName.text };
+    for (const p of (j.places || []).slice(0, 3)) seen.push(p.displayName?.text);
   }
-  return lastError ? { error: lastError } : {};
+  return lastError ? { error: lastError } : { seen: [...new Set(seen)].slice(0, 8) };
 }
 
 export async function GET() {
@@ -31,7 +37,7 @@ export async function GET() {
     if (!KEY) return Response.json({ reviews: [], error: 'GOOGLE_PLACES_SERVER_KEY is not set in Vercel' });
     const found = await findPlaceId();
     if (found.error) return Response.json({ reviews: [], error: found.error });
-    if (!found.id) return Response.json({ reviews: [], error: 'place not found' });
+    if (!found.id) return Response.json({ reviews: [], error: 'place not found', googleReturned: found.seen || [] });
     const r = await fetch(`https://places.googleapis.com/v1/places/${found.id}`, {
       headers: { 'X-Goog-Api-Key': KEY, 'X-Goog-FieldMask': 'rating,userRatingCount,googleMapsUri,reviews' },
       next: { revalidate: 21600 },
