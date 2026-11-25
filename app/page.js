@@ -70,7 +70,7 @@ function usePremiumReveal() {
 }
 
 // ─── Thank You Modal ───────────────────────────────────────────────────────────
-function ThankYouModal({ onClose }) {
+function ThankYouModal({ onClose, via = "text" }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
@@ -83,7 +83,7 @@ function ThankYouModal({ onClose }) {
         <div className="w-12 h-[3px] bg-orange-500 mx-auto mb-6 rounded-full" />
         <h2 className="text-3xl font-black tracking-tight">Thank you!</h2>
         <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
-          Your request has been received. We'll reach out via <span className="font-black text-zinc-950">text or email</span> shortly to confirm details and schedule your visit.
+          Your request has been received. We'll reach out via <span className="font-black text-zinc-950">{via === "email" ? "text or email" : "text"}</span> shortly to confirm details and schedule your visit.
         </p>
         <button onClick={onClose} className={`mt-8 w-full ${BTN_OUTLINE} rounded-full py-4 font-black text-lg`}>
           Got it →
@@ -293,7 +293,7 @@ export default function Home() {
           if (stripeData.url) { window.location.href = stripeData.url; return; }
         }
         setStatus("success");
-        setShowModal(true);
+        setShowModal(form.email.value.trim() ? "email" : "text");
         form.reset();
         setFilesCount(0);
         setSelectedService("General quote");
@@ -305,13 +305,13 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950 overflow-x-clip">
-      {showModal && <ThankYouModal onClose={() => { setShowModal(false); setStatus(""); }} />}
+      {showModal && <ThankYouModal via={showModal} onClose={() => { setShowModal(false); setStatus(""); }} />}
       {quick && (
         <QuickPhotoModal
           issue={quick.issue}
           phone={quick.phone}
           onClose={() => setQuick(null)}
-          onSent={() => { setQuick(null); setShowModal(true); document.querySelector("#quick-form")?.reset(); }}
+          onSent={() => { setQuick(null); setShowModal("text"); document.querySelector("#quick-form")?.reset(); }}
         />
       )}
 

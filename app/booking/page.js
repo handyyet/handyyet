@@ -39,7 +39,7 @@ async function compressImage(file) {
   });
 }
 
-function ThankYouModal({ onClose }) {
+function ThankYouModal({ onClose, via = "text" }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
@@ -58,7 +58,7 @@ function ThankYouModal({ onClose }) {
         <div className="w-12 h-[3px] bg-orange-500 mx-auto mb-6 rounded-full" />
         <h2 className="text-3xl font-black tracking-tight">Booking received!</h2>
         <p className="mt-4 text-zinc-600 leading-relaxed text-lg">
-          We'll confirm your appointment via <span className="font-black text-zinc-950">text or email</span> as soon as possible.
+          We'll confirm your appointment via <span className="font-black text-zinc-950">{via === "email" ? "text or email" : "text"}</span> as soon as possible.
         </p>
         <button
           onClick={onClose}
@@ -146,7 +146,7 @@ export default function BookingPage() {
       }
 
       setStatus("success");
-      setShowModal(true);
+      setShowModal(form.email.value.trim() ? "email" : "text");
       form.reset();
       setFilesCount(0);
       setSelectedService("General quote");
@@ -162,7 +162,7 @@ export default function BookingPage() {
 
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950">
-      {showModal && <ThankYouModal onClose={() => { setShowModal(false); setStatus(""); }} />}
+      {showModal && <ThankYouModal via={showModal} onClose={() => { setShowModal(false); setStatus(""); }} />}
 
       <Navbar />
 
