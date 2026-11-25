@@ -1,7 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CtaBand from "../components/CtaBand";
-import SmartButton from "../components/SmartButton";
 import LightingGallery from "../components/LightingGallery";
 
 export const metadata = {
@@ -82,7 +81,6 @@ export default function WorkPage() {
       </section>
 
       <CtaBand title="Want results like these?" />
-      <SmartButton />
       <Footer />
     </main>
   );

@@ -4,7 +4,6 @@ import { notFound, useParams } from "next/navigation";
 import { services } from "../../../lib/services";
 import Navbar from "../../components/Navbar";
 import TrustBar from "../../components/TrustBar";
-import SmartButton from "../../components/SmartButton";
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
 
@@ -415,7 +414,6 @@ export default function ServicePageClient() {
         </div>
       </section>
 
-      <SmartButton quoteHref={`/booking?service=${encodeURIComponent(service.title)}`} />
       <Footer />
     </main>
   );

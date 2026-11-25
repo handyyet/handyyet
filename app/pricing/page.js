@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import TrustBar from "../components/TrustBar";
 import CtaBand from "../components/CtaBand";
-import SmartButton from "../components/SmartButton";
 import { pricing, services } from "../../lib/services";
 
 export const metadata = {
@@ -41,7 +40,6 @@ export default function PricingPage() {
         </div>
       </section>
       <CtaBand />
-      <SmartButton />
       <Footer />
     </main>
   );

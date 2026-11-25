@@ -1,7 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CtaBand from "../components/CtaBand";
-import SmartButton from "../components/SmartButton";
 
 export const metadata = {
   title: "Reviews: 220+ Five-Star Jobs",
@@ -241,7 +240,6 @@ export default function ReviewsPage() {
       </section>
 
       <CtaBand title="Be the next five-star review." />
-      <SmartButton />
       <Footer />
     </main>
   );

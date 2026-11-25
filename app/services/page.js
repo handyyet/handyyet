@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import TrustBar from "../components/TrustBar";
 import CtaBand from "../components/CtaBand";
-import SmartButton from "../components/SmartButton";
 
 export const metadata = {
   title: "Handyman Services & Prices",
@@ -33,7 +32,6 @@ export default function ServicesPage() {
         </div>
       </section>
       <CtaBand title="Not sure which service? Just send photos." />
-      <SmartButton />
       <Footer />
     </main>
   );

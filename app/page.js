@@ -9,7 +9,6 @@ import AddressAutocomplete from "./components/AddressAutocomplete";
 import BookingCalendar from "./components/BookingCalendar";
 import ScrollReveal from "./components/ScrollReveal";
 import ServicesShowcase from '../components/ServicesShowcase';
-import SmartButton from "./components/SmartButton";
 import TrustBar from "./components/TrustBar";
 
 import { useRef, useState, useEffect } from "react";
@@ -604,7 +603,6 @@ export default function Home() {
         </div>
       </section>
 
-      <SmartButton quoteHref="#quote" />
       <Footer />
     </main>
   );

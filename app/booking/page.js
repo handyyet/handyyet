@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AddressAutocomplete from "../components/AddressAutocomplete";
 import BookingCalendar from "../components/BookingCalendar";
-import SmartButton from "../components/SmartButton";
 import TrustBar from "../components/TrustBar";
 
 import { useRef, useState, useEffect } from "react";
@@ -321,7 +320,6 @@ export default function BookingPage() {
         </div>
       </section>
 
-      <SmartButton quoteHref="#booking-form" />
       <Footer />
     </main>
   );

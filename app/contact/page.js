@@ -1,7 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import TrustBar from "../components/TrustBar";
-import SmartButton from "../components/SmartButton";
 
 export const metadata = {
   title: "Contact",
@@ -36,7 +35,6 @@ export default function ContactPage() {
           ))}
         </div>
       </section>
-      <SmartButton />
       <Footer />
     </main>
   );
