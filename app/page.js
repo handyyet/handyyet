@@ -113,7 +113,11 @@ function QuickPhotoModal({ issue, phone, onClose, onSent }) {
     return () => urls.forEach((u) => URL.revokeObjectURL(u));
   }, [files]);
 
-  const addFiles = (list) => setFiles((prev) => [...prev, ...Array.from(list || [])].slice(0, 10));
+  // Copy the picked files right away: clearing the input afterwards empties the live FileList (iOS Safari)
+  const addFiles = (list) => {
+    const picked = Array.from(list || []);
+    if (picked.length) setFiles((prev) => [...prev, ...picked].slice(0, 10));
+  };
   const removeFile = (i) => setFiles((prev) => prev.filter((_, k) => k !== i));
 
   const bookingHref = `/booking?${new URLSearchParams({ issue, phone }).toString()}`;
