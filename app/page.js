@@ -93,6 +93,123 @@ function ThankYouModal({ onClose }) {
   );
 }
 
+// ─── "Get my price" popup: add photos, send now, or go to the full booking form ───
+function QuickPhotoModal({ issue, phone, onClose, onSent }) {
+  const inputRef = useRef(null);
+  const [files, setFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
+  const [name, setName] = useState("");
+  const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
+  }, [onClose]);
+
+  useEffect(() => {
+    const urls = files.map((f) => URL.createObjectURL(f));
+    setPreviews(urls);
+    return () => urls.forEach((u) => URL.revokeObjectURL(u));
+  }, [files]);
+
+  const addFiles = (list) => setFiles((prev) => [...prev, ...Array.from(list || [])].slice(0, 10));
+  const removeFile = (i) => setFiles((prev) => prev.filter((_, k) => k !== i));
+
+  const bookingHref = `/booking?${new URLSearchParams({ issue, phone }).toString()}`;
+
+  const send = async () => {
+    setStatus("sending");
+    try {
+      const fd = new FormData();
+      fd.append("name", name || "Not provided");
+      fd.append("phone", phone);
+      fd.append("service", "General quote");
+      fd.append("issue", issue);
+      fd.append("paymentMethod", "Pay after service — any method");
+      const compressed = await Promise.all(files.map((f) => compressImage(f)));
+      compressed.forEach((f) => fd.append("photos", f));
+      const res = await fetch("/api/quote", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.success) onSent(); else setStatus("error");
+    } catch (err) { console.error(err); setStatus("error"); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center sm:px-5"
+      style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }} onClick={onClose}>
+      <div role="dialog" aria-modal="true" aria-labelledby="qp-title"
+        className="bg-white w-full sm:max-w-lg rounded-t-[32px] sm:rounded-[36px] p-6 md:p-8 shadow-2xl max-h-[92vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 id="qp-title" className="text-3xl font-black tracking-tight leading-tight">Add a couple of photos</h2>
+            <p className="mt-2 text-zinc-600 leading-relaxed">Photos let Nikita give you an exact price instead of a guess. Two or three are enough.</p>
+          </div>
+          <button type="button" onClick={onClose} aria-label="Close"
+            className="shrink-0 w-11 h-11 rounded-full border border-black/10 grid place-items-center text-xl font-black hover:bg-zinc-50">×</button>
+        </div>
+
+        {issue && (
+          <div className="mt-5 rounded-2xl bg-[#fdf3ea] px-4 py-3 text-sm">
+            <span className="font-black">Your request:</span> <span className="text-zinc-700">{issue}</span>
+          </div>
+        )}
+
+        <input ref={inputRef} type="file" accept="image/*" multiple className="sr-only" id="qp-photos"
+          onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
+        <label htmlFor="qp-photos"
+          className="mt-5 flex flex-col items-center justify-center gap-2 rounded-[24px] border-2 border-dashed border-[#c8763a] bg-[#fdfaf5] px-5 py-7 text-center cursor-pointer hover:bg-[#fdf3ea] transition">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#c8763a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="3" y="6" width="18" height="14" rx="3" /><circle cx="12" cy="13" r="3.5" /><path d="M8 6l1.5-2h5L16 6" />
+          </svg>
+          <span className="font-black text-lg">Take or upload photos</span>
+          <span className="text-sm text-zinc-600">Camera or photo library · up to 10</span>
+        </label>
+
+        {previews.length > 0 && (
+          <div className="mt-4 grid grid-cols-4 gap-2">
+            {previews.map((src, i) => (
+              <div key={src} className="relative aspect-square rounded-xl overflow-hidden bg-zinc-100">
+                <img src={src} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" />
+                <button type="button" onClick={() => removeFile(i)} aria-label={`Remove photo ${i + 1}`}
+                  className="absolute top-1 right-1 w-7 h-7 rounded-full bg-white/95 text-sm font-black grid place-items-center shadow">×</button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <label className="mt-5 flex flex-col gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-600">Your name (optional)
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="First name"
+            className="input-premium normal-case tracking-normal font-medium text-base" />
+        </label>
+
+        <button type="button" onClick={send} disabled={status === "sending"}
+          className="mt-6 w-full bg-[#b4662f] text-white border-2 border-[#b4662f] hover:bg-[#9a5524] hover:border-[#9a5524] transition rounded-full py-5 font-black text-lg disabled:opacity-60">
+          {status === "sending" ? "Sending…" : files.length ? `Send ${files.length} photo${files.length > 1 ? "s" : ""} & get my price` : "Continue without photos"}
+        </button>
+        {status === "error" && (
+          <p className="mt-3 text-center font-black text-red-700">Something went wrong. Please try again or call us.</p>
+        )}
+
+        <div className="mt-6 pt-5 border-t border-black/10 grid gap-3">
+          <a href={bookingHref}
+            className="flex items-center justify-between gap-3 rounded-2xl border-2 border-[#c8763a]/40 px-5 py-4 hover:border-[#c8763a] hover:bg-[#fdf3ea] transition">
+            <span><span className="block font-black">Add more details &amp; pick a time</span><span className="block text-sm text-zinc-600">Full booking form: address, date, payment</span></span>
+            <span className="font-black text-[#9a5524]" aria-hidden="true">→</span>
+          </a>
+          <a href="tel:+19498283959"
+            className="flex items-center justify-between gap-3 rounded-2xl border-2 border-[#c8763a]/40 px-5 py-4 hover:border-[#c8763a] hover:bg-[#fdf3ea] transition">
+            <span><span className="block font-black">Rather explain by phone?</span><span className="block text-sm text-zinc-600">Call (949) 828-3959, Mon–Sat 8am–8pm</span></span>
+            <span className="font-black text-[#9a5524]" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 async function compressImage(file) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -133,17 +250,12 @@ export default function Home() {
     if (s) setSelectedService(s);
   }, []);
 
-  // Short hero form: carry what they typed into the full form below, then jump there
+  // Short hero form: open the photo popup with what they typed
+  const [quick, setQuick] = useState(null); // { issue, phone } while the popup is open
   const handleQuickStart = (e) => {
     e.preventDefault();
-    const quick = e.currentTarget;
-    const full = document.querySelector("#quote form");
-    if (full) {
-      if (quick.quickIssue.value) full.issue.value = quick.quickIssue.value;
-      if (quick.quickPhone.value) full.phone.value = quick.quickPhone.value;
-    }
-    document.getElementById("quote")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setTimeout(() => full?.name?.focus({ preventScroll: true }), 600);
+    const f = e.currentTarget;
+    setQuick({ issue: f.quickIssue.value.trim(), phone: f.quickPhone.value.trim() });
   };
 
   const handleQuoteSubmit = async (e) => {
@@ -194,6 +306,14 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#f6f3ee] text-zinc-950 overflow-x-clip">
       {showModal && <ThankYouModal onClose={() => { setShowModal(false); setStatus(""); }} />}
+      {quick && (
+        <QuickPhotoModal
+          issue={quick.issue}
+          phone={quick.phone}
+          onClose={() => setQuick(null)}
+          onSent={() => { setQuick(null); setShowModal(true); document.querySelector("#quick-form")?.reset(); }}
+        />
+      )}
 
       <Navbar />
 
@@ -243,13 +363,13 @@ export default function Home() {
 
       {/* ─── QUICK QUOTE STRIP ─── */}
       <section className="max-w-7xl mx-auto px-5 pb-12">
-        <form onSubmit={handleQuickStart}
+        <form id="quick-form" onSubmit={handleQuickStart}
           className="bg-white border-2 border-[#c8763a] rounded-[28px] p-4 md:p-5 flex flex-col md:flex-row gap-3 md:items-end shadow-[0_24px_50px_-30px_rgba(120,70,30,.45)]">
           <label className="flex-[2] flex flex-col gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-600">What needs fixing?
             <input name="quickIssue" type="text" required placeholder="e.g. Mount a TV, fix a leaking faucet" className="input-premium normal-case tracking-normal font-medium text-base" />
           </label>
           <label className="flex-1 flex flex-col gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-600">Phone
-            <input name="quickPhone" type="tel" inputMode="numeric" maxLength="10" placeholder="10 digits"
+            <input name="quickPhone" type="tel" inputMode="numeric" maxLength="10" placeholder="10 digits" required pattern="[0-9]{10}"
               onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "").slice(0, 10); }}
               className="input-premium normal-case tracking-normal font-medium text-base" />
           </label>

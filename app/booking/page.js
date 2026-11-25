@@ -85,6 +85,12 @@ export default function BookingPage() {
     const params = new URLSearchParams(window.location.search);
     const s = params.get("service");
     if (s) setSelectedService(s);
+    // Carried over from the home page "Get my price" popup
+    const form = document.getElementById("booking-form");
+    const issue = params.get("issue");
+    const phone = params.get("phone");
+    if (form && issue) form.issue.value = issue;
+    if (form && phone) form.phone.value = phone.replace(/\D/g, "").slice(0, 10);
   }, []);
 
   const handleSubmit = async (e) => {
