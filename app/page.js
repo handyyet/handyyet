@@ -437,12 +437,12 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {[
-            { img: "/images/work-recessed-lights.jpg", title: "Recessed Lighting", text: "Old ceiling fixtures out, slim LED recessed lights in across the living room and kitchen." },
-            { img: "/images/work-led-mirror.jpg", title: "LED Backlit Mirror", text: "Removed the dated 4-bulb vanity light and mounted and wired a large backlit mirror." },
+            { img: "/images/work-undermount-sink.jpg", title: "Bathroom Sink Replacement", text: "Replaced a cracked undermount sink under a marble top and reconnected the drain." },
+            { img: "/images/work-bathroom-vinyl-floor.jpg", title: "Bathroom Vinyl Flooring", text: "Pulled the old carpet and installed waterproof vinyl plank flooring." },
             { img: "/images/work-metal-door-awning.jpg", title: "Metal Door Awning", text: "Standing-seam metal awning on steel brackets over the front entry." },
             { img: "/images/work-ceiling-fan-replacement.jpg", title: "Ceiling Fan Replacement", text: "Swapped a dead 6-blade fan for a modern 3-blade wood fan with remote." },
-            { img: "/images/work-smart-toilet.jpg", title: "Smart Toilet Installation", text: "Removed the old toilet, prepped the flange and installed a new tankless smart toilet." },
-            { img: "/images/work-undermount-sink.jpg", title: "Bathroom Sink Replacement", text: "Replaced a cracked undermount sink under a marble top and reconnected the drain." },
+            { img: "/images/work-exterior-sconce.jpg", title: "Exterior Sconce Repair", text: "Traced the dead circuit, fixed the wiring and remounted the outdoor wall sconce." },
+            { img: "/images/work-nest-thermostat.jpg", title: "Nest Thermostat Install", text: "Wired and set up a Google Nest thermostat with a clean trim plate." },
           ].map((item, i) => (
             <div key={item.img} data-reveal data-scale style={{ transitionDelay: `${i * 80}ms` }}
               className="bg-white rounded-[32px] overflow-hidden border border-[#ead9c6] shadow-sm hover:shadow-2xl hover:-translate-y-2 transition duration-500 h-full group">

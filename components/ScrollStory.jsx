@@ -3,14 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 
 // Scroll-driven before → after story. Photos: public/reel/story-<slug>-before|after.jpg
 const STEPS = [
-  { slug: 'fountain', title: 'Peeling, faded fountain.', after: 'Resurfaced. Bright blue.', note: 'Fountain pool resurfacing' },
-  { slug: 'lights', title: 'Holes in the ceiling.', after: 'Slim LED recessed lights.', note: 'Recessed lighting install' },
-  { slug: 'mirror', title: 'Dated light bar.', after: 'LED backlit mirror.', note: 'Vanity mirror + lighting upgrade' },
-  { slug: 'sink', title: 'Cracked sink.', after: 'New undermount bowl.', note: 'Bathroom sink replacement' },
   { slug: 'tv', title: 'Holes in the wall?', after: 'TV up. No cords.', note: 'TV mount + in-wall power' },
-  { slug: 'disposal', title: 'Rusty disposal.', after: 'New 3/4 HP unit.', note: 'Garbage disposal replacement' },
   { slug: 'toilet', title: 'Broken flange.', after: 'New TOTO, sealed tight.', note: 'Toilet replacement' },
-  { slug: 'transformer', title: 'Open wires.', after: 'Clean and safe.', note: 'Pool lighting transformer' },
 ];
 const BRONZE = '#c8763a';
 const CREAM = '#fdfaf5';
