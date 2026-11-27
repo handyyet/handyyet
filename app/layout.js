@@ -9,7 +9,7 @@ icons: { icon: "/icon.PNG", apple: "/icon.PNG" },
     template: "%s | HandyYet – Handyman Orange County",
   },
   description:
-    "HandyYet provides fast, affordable, insured handyman services in Huntington Beach and Orange County, CA. TV mounting, furniture assembly, plumbing, electrical, smart home setup, and small home repairs. Call (949) 828-3959.",
+    "HandyYet provides fast, affordable, insured handyman services in Huntington Beach and Orange County, CA. TV mounting, furniture assembly, plumbing, electrical, smart home setup and repairs for homes, retail stores and offices. Call (949) 828-3959.",
 
   keywords: [
     "handyman Huntington Beach",

@@ -330,7 +330,7 @@ export default function Home() {
               Your whole fix-it list.<br /><span className="text-[#c8763a]">One visit.</span>
             </h1>
             <p className="anim-fade-up mt-6 text-lg md:text-xl text-zinc-600 leading-relaxed max-w-xl" style={{ animationDelay: "160ms" }}>
-              Electrical, plumbing, TV mounting, assembly and repairs across Huntington Beach and Orange County. Send a photo, get a clear price, and Nikita shows up on time.
+              Electrical, plumbing, TV mounting, assembly and repairs for homes and businesses across Huntington Beach and Orange County. Send a photo, get a clear price, and Nikita shows up on time.
             </p>
             <div className="anim-fade-up mt-8 flex flex-col sm:flex-row gap-3" style={{ animationDelay: "240ms" }}>
               <a href="#quote" className={`${BTN_PRIMARY} px-8 py-5 rounded-full font-black text-lg text-center`}>Send photos, get a quote</a>
@@ -382,30 +382,6 @@ export default function Home() {
       </section>
 
 <HolidayBanner />
-
-      {/* ─── SERVICES + PRICES ─── */}
-      <section id="services" className="max-w-7xl mx-auto px-5 py-16 md:py-20">
-        <div data-reveal className="flex flex-wrap items-end justify-between gap-4 mb-10">
-          <div>
-            <p className="text-[#9a5524] font-black uppercase tracking-widest">Services &amp; starting prices</p>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tight mt-3 leading-[0.95]">Know the price<br />before I arrive.</h2>
-          </div>
-          <a href="/services" className="font-black text-[#9a5524] hover:text-zinc-950 transition">All services →</a>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {services.map((s, i) => (
-            <a key={s.slug} href={`/services/${s.slug}`} data-reveal style={{ transitionDelay: `${i * 50}ms` }}
-              className="group bg-white rounded-[24px] p-6 border border-[#ead9c6] hover:border-[#c8763a] hover:-translate-y-1 hover:shadow-xl transition duration-300 flex flex-col">
-              <h3 className="text-xl font-black">{s.title}</h3>
-              <p className="mt-2 text-zinc-600 leading-snug text-[15px] flex-1">{s.short}</p>
-              <div className="mt-5 flex items-center justify-between">
-                <span className="font-black text-[#9a5524]">{s.price}</span>
-                <span className="text-[#c8763a] font-black group-hover:translate-x-1 transition" aria-hidden="true">→</span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
 
       {/* ─── HOW IT WORKS ─── */}
       <section className="bg-[#efe3d4]/60">
@@ -488,13 +464,14 @@ export default function Home() {
       {/* ─── WHY + AREA ─── */}
       <section id="area" className="max-w-7xl mx-auto px-5 py-16 md:py-20 grid lg:grid-cols-2 gap-8">
         <div data-reveal>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-[1]">Why homeowners call HandyYet</h2>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-[1]">Why homeowners and businesses call HandyYet</h2>
           <ul className="mt-8 grid gap-4">
             {[
               ["Insured LLC.", "General liability coverage on every job."],
               ["One person, start to finish.", "The person you text is the person who shows up."],
               ["Many jobs, one trip.", "No separate trip fee for each small fix."],
               ["Clean work.", "Floors covered, dust vacuumed, old parts hauled away."],
+              ["Commercial too.", "Retail stores, offices and property managers: work orders, photo reports and invoices."],
             ].map(([b, t]) => (
               <li key={b} className="flex gap-3 text-lg leading-snug">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#c8763a" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 mt-0.5"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
@@ -510,6 +487,17 @@ export default function Home() {
             {["Huntington Beach", "Newport Beach", "Costa Mesa", "Irvine", "Fountain Valley", "Westminster", "Garden Grove", "Long Beach"].map((c) => (
               <span key={c} className="px-4 py-2 rounded-full border border-[#e2cdb6] font-bold text-sm">{c}</span>
             ))}
+          </div>
+        </div>
+        <div data-reveal className="lg:col-span-2 bg-[#efe3d4]/70 rounded-[28px] p-7 md:p-10 flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-[#9a5524] font-black uppercase tracking-widest text-sm">For businesses</p>
+            <h3 className="mt-2 text-3xl md:text-4xl font-black tracking-tight leading-tight">Retail stores, offices &amp; property managers</h3>
+            <p className="mt-3 text-zinc-700 leading-relaxed">Store fixtures, lighting, doors and hardware, plumbing and small repairs. Work orders handled fast, before/after photo reports, invoices to your LLC. Insured, with a certificate of insurance on request.</p>
+          </div>
+          <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
+            <a href="mailto:hello@handyyet.com?subject=Commercial%20work%20order" className={`${BTN_PRIMARY} px-7 py-4 rounded-full font-black text-center`}>Send a work order</a>
+            <a href="tel:+19498283959" className={`${BTN_OUTLINE} px-7 py-4 rounded-full font-black text-center`}>(949) 828-3959</a>
           </div>
         </div>
       </section>
